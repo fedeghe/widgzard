@@ -100,7 +100,6 @@ The Widgzard is shipped with a _minimal_ stylesheet that allows to easily create
 
 ---  
 
-#Sample
 
 
 [1]: https://github.com/fedeghe/jmvc
