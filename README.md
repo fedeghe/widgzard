@@ -62,7 +62,7 @@ Every node has basically the following structure
 		
 
 		// SEMI-MADATORY (at least this or the previous, or even both)
-		content : [many elements like this]
+		content : [one or more elements like this]
 		
 		// HINT: `html` and `content` can coexist, the `html` will be appended
 		// before appending childs in `content`
