@@ -38,6 +38,7 @@
 
 
     Widgzard.render({
+        cb :function () {alert('done');},
         style : {backgroundColor: color2},
         content : [{
             attrs : {'class' : 'round respfixed'},
@@ -61,7 +62,7 @@
                 style : {textAlign : 'left', 'float':'left', width: '50%', letterSpacing : '600px', textIndent:'600px'},
                 html : 'Zard',
                 tag : 'h1'
-                ,cb : function () {shrinkFonts.call(this, true);}
+                ,cb : function () {shrinkFonts.call(this, true); this.done();}
             },'clearer']
 
         },{
