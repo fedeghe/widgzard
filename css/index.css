@@ -1,6 +1,13 @@
 
+
+@font-face {
+    font-family: "Luckiest Guy";
+    font-style: normal;
+    font-weight: 400;
+    src: local("Luckiest Guy"), local("LuckiestGuy-Regular"), url("lukiestguy.woff") format("woff");
+}
 body{
-    font-family:verdana, sans;
+    font-family:Verdana, sans;
     margin:30px;
 }
 h1,h2,h3,h4,h5,h6{
@@ -22,4 +29,52 @@ pre{
     line-height: 16px;
     font-size:12px;
     font-family:monospace;
+}
+
+
+html:after {
+
+    /* common custom values */
+    content: "HOT"; /* your site name */
+    font-size: 920%;         /* font size */
+    color: rgba(256, 0, 0, .3);
+    background-color:rgba(256, 256, 256, .3);
+    padding:10px 0px;
+    /* alpha, could be even rgba(0,0,0,.05) */
+
+    /* rest of the logic */
+    z-index: 9999;
+    cursor: default;
+    display: block;
+    position: fixed;
+    top: 33%;
+    left: 0;
+    right:0;
+    width:100%;
+
+    font-family: sans-serif;
+    font-weight: bold;
+    font-style: italic;
+    text-align: center;
+    line-height: 100%;
+
+    /* not sure about who implemented what ..
+    ... so bring it all */
+    -webkit-pointer-events: none;
+    -moz-pointer-events: none;
+    -ms-pointer-events: none;
+    -o-pointer-events: none;
+    pointer-events: none;
+
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }

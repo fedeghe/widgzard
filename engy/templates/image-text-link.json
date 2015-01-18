@@ -1,0 +1,15 @@
+{
+    "cb" : function () {
+        this.done();
+    },
+    "content" : [{
+            "tag" : "img",
+            "attrs" : {
+                "src":"#PARAM{img}"
+            }
+        }, {
+
+        }
+    ]
+
+}

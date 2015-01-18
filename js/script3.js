@@ -45,14 +45,14 @@
             if(i > 0 && !(i%s)) {
                 tmp = document.createElement('br');
                 tmp.className = 'clearer';
-                SELF.appendChild(tmp); 
+                SELF.node.appendChild(tmp); 
                 c++;    
             }
 
             tmp = document.createElement('div');
             tmp.className = 'square ' + (c % 2 ? 'w' : 'b');
             tmp.innerHTML = pieces.white[keys[Math.floor(Math.random() * 6)] ];
-            SELF.appendChild(tmp);
+            SELF.node.appendChild(tmp);
             c++;
             
         }

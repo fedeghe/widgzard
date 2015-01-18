@@ -1,0 +1,235 @@
+// this is the stating user generated 
+// conf.json
+{
+    "component" : "carousel",
+    "params" : {
+        "id" : "d23q2qdd2q243",
+        "layout" : {
+            "size" : {
+                "width": "200px",
+                "height" : "100px"
+            }
+        },
+        "cards" : [{
+            "component" : "image-text-link",
+            "params" : {
+                "imageUrl" : "https://www.google.com/images/srpr/logo11w.png",
+                "text" : "Hello from Google",
+                "link" : "http://www.google.com"
+            }
+        }, {
+            "component" : "image-link",
+            "params" : {
+                "imageUrl" : "https://www.google.com/images/srpr/logo11w.png",
+                "link" : "http://www.google.com"
+            }
+        }]
+    }
+}
+
+[{"component" : "...", "params" : {}}, ... ]   => [{"content" : ["... result ..."]} ]
+
+/**
+ * all TPL containing at least
+ * {component: s1 , k1 : x1, k2: ,x2, .....} or 
+ * {component: s1 , params: {}, k1 : x1, k2: ,x2, .....}
+ *
+ * will be at the end replaced with
+ * {content : [ resulting ], k1 : x1, k2: ,x2, .....}
+ *
+ * and that is done creating a new object
+ *
+ * > the first step is to create an object {content : []}
+ *   and copy into it all elements from TPL that are nor component nor params
+ *
+ * > component and params must be saved for this object
+ *
+ * > the component s1 must be obtained via xhr or through a component bag
+ *   already loaded (that would speed up a lot)
+ *
+ *
+ * > if the component is for example the following
+ */
+// carousel.json
+{
+    "tag" : "div",
+    "wid" : "#PARAM{id}",
+    "attrs" : "#PARAM{id}",
+    "style" : {
+        "width" : "#PARAMS{layout.size.width}",
+        "height" : "#PARAMS{layout.size.height}"
+    },
+    "content" : [{
+            "tag" : "div",
+            "html" : "<"
+        },{
+            "content" : "#PARAM{cards}"
+        },{
+            "tag" : "div",
+            "html" : ">"
+    }]
+}
+
+/**
+ * then the first iteration would produce
+ */
+
+{
+    "tag" : "div",
+    "wid" : "d23q2qdd2q243",
+    "attrs" : "d23q2qdd2q243",
+    "style" : {
+        "width" : "200px",
+        "height" : "10ppx"
+    },
+    "content" : [{
+            "tag" : "div",
+            "html" : "<"
+        },
+        [{
+            "component" : "image-text-link",
+            "params" : {
+                "imageUrl" : "https://www.google.com/images/srpr/logo11w.png",
+                "text" : "Hello from Google",
+                "link" : "http://www.google.com"
+            }
+        }, {
+            "component" : "image-link",
+            "params" : {
+                "imageUrl" : "https://www.google.com/images/srpr/logo11w.png",
+                "link" : "http://www.google.com"
+            }
+        }],
+        {
+            "tag" : "div",
+            "html" : ">"
+    }]
+}
+
+/*
+ ____  _____ ____ ___  _   _ ____  
+/ ___|| ____/ ___/ _ \| \ | |  _ \ 
+\___ \|  _|| |  | | | |  \| | | | |
+ ___) | |__| |__| |_| | |\  | |_| |
+|____/|_____\____\___/|_| \_|____/ 
+
+*/
+
+// scan again and at 2nd level find 'components' image-text-link and image-link
+
+// second involved component: 'image-text-link'
+// itl.json
+{
+    "tag" : "div",
+    "content" : [{
+        "tag" : "h3",
+        "html" : "#PARAM{text}"
+    },{
+        "tag" : "a",
+        "attrs" : {
+            "href" : "#PARAM{link}"
+        },
+        "content" : [{
+            "tag" : "img",
+            "attrs" : {
+                "src" : "#PARAM{imageUrl}"
+            }
+        }]
+    }] 
+}
+
+// third involved component: 'image-link'
+// il.json
+{
+    "tag" : "div",
+    "content" : [{
+        "tag" : "a",
+        "attrs" : {
+            "href" : "#PARAM{link}"
+        },
+        "content" : [{
+            "tag" : "img",
+            "attrs" : {
+                "src" : "#PARAM{imageUrl}"
+            }
+        }]
+    }] 
+}
+
+
+// replace in the result obtaining
+
+
+
+
+{
+    "tag" : "div",
+    "wid" : "d23q2qdd2q243",
+    "attrs" : "d23q2qdd2q243",
+    "style" : {
+        "width" : "200px",
+        "height" : "10ppx"
+    },
+    "content" : [{
+            "tag" : "div",
+            "html" : "<"
+        },{
+            "content" : [
+                {
+                    "tag" : "div",
+                    "content" : [{
+                        "tag" : "h3",
+                        "html" : "Hello from Google"
+                    },{
+                        "tag" : "a",
+                        "attrs" : {
+                            "href" : "http://www.google.com"
+                        },
+                        "content" : [{
+                            "tag" : "img",
+                            "attrs" : {
+                                "src" : "https://www.google.com/images/srpr/logo11w.png"
+                            }
+                        }]
+                    }] 
+                },{
+                    "tag" : "div",
+                    "content" : [{
+                        "tag" : "a",
+                        "attrs" : {
+                            "href" : "http://www.google.com"
+                        },
+                        "content" : [{
+                            "tag" : "img",
+                            "attrs" : {
+                                "src" : "https://www.google.com/images/srpr/logo11w.png"
+                            }
+                        }]
+                    }] 
+                }
+            ]
+        },{
+            "tag" : "div",
+            "html" : ">"
+        }
+    ]
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

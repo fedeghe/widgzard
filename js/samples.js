@@ -1,12 +1,36 @@
 Widgzard.render({
     target : document.getElementById('getsamples'),
-    style : {padding : '20px'},
+    
     content : [
         {
-            tag : 'p',
-            html : 'Some samples'
+            style : {padding:'10px', textTransform : 'uppercase', position:'relative'},
+            html : 'Some samples',
+            content:[{
+                style : {
+                    position : 'absolute',
+                    right:'0px', top:'0px', width:'15px', height:'15px',
+                    lineHeight:'8px',
+                    fontSize:'10px',
+                    fontWeight:'bold',
+                    backgroundColor : 'black',
+                    color:'white',
+                    margin : '10px', padding:'2px',
+                    border:'1px solid black',
+                    textAlign : 'center',
+                    cursor:'pointer'
+                },
+                attrs : {'class' : 'round respfixed'},
+                html : 'X',
+                cb : function () {
+                    FG.events.on(this.node, 'click', function (){
+                        Widgzard.load('js/samplesback.js');
+                    });
+                    this.done();
+                }
+            }]
         },{
             tag : 'ul',
+            style : {padding:'10px'},
             content : [
                 {
                     tag : 'li',
@@ -33,4 +57,4 @@ Widgzard.render({
             ]
         }
     ]
-},true);
+}, true);

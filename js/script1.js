@@ -10,7 +10,7 @@ Widgzard.render({
         document.body.style.backgroundColor = 'gainsboro';
     },
     
-    content : [
+    content : [ 
         {
             content : [
                 {
@@ -45,12 +45,12 @@ Widgzard.render({
                 }
             ],
             cb : function () {
-                var cnt1 = this.getNode('cnt1'),
-                    cnt2 = this.getNode('cnt2'),
-                    cnt3 = this.getNode('cnt3'),
-                    tng1 = this.getNode('tb1'),
-                    tng2 = this.getNode('tb2'),
-                    tng3 = this.getNode('tb3');
+                var cnt1 = this.getNode('cnt1').node,
+                    cnt2 = this.getNode('cnt2').node,
+                    cnt3 = this.getNode('cnt3').node,
+                    tng1 = this.getNode('tb1').node,
+                    tng2 = this.getNode('tb2').node,
+                    tng3 = this.getNode('tb3').node;
 
                 function hide (cnt, tng) {
                     cnt.style.display = 'none';
@@ -67,17 +67,17 @@ Widgzard.render({
                     hide(cnt3, tng3);
                 }
 
-                FG.events.bind(tng1, 'click', function () {
+                FG.events.on(tng1, 'click', function () {
                     hideall();
                     show(cnt1, tng1);
                 });
 
-                FG.events.bind(tng2, 'click', function () {
+                FG.events.on(tng2, 'click', function () {
                     hideall();
                     show(cnt2, tng2);
                 });
 
-                FG.events.bind(tng3, 'click', function () {
+                FG.events.on(tng3, 'click', function () {
                     hideall();
                     show(cnt3, tng3);
                 });

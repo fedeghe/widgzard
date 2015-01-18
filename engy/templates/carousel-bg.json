@@ -1,0 +1,18 @@
+[
+    {
+        "id" : "#PARAM{id}",
+        "size" : {
+            "width"  : "#PARAM{width}",
+            "height" : "#PARAM{height}",
+            "innerWidth" : "#PARAM{innerWidth}",
+            "innerHeight" : "#PARAM{innerHeight}"
+        },
+        "bg" : {
+            "type" : "#PARAM{type}", // image or color
+            "ref"  : "#PARAM{ref}",
+            "link" : "#PARAM{link}",
+            "target" : "#PARAM{target}" // self, parent
+        },
+        "cards" : "#PARAM{cards}"
+    }
+]

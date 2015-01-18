@@ -1,0 +1,17 @@
+body{
+    margin : 10px;
+    font-family: Verdana, sans;
+    background-color:#ddd;
+}
+.clearer, .clearfix{
+    clear: both;
+    display: block;
+    zoom: 1;
+    height: 0;
+    font-size: 0;
+    width: 0;
+    line-height: 0;
+    visibility: hidden;
+    overflow: hidden;
+    content: ".";
+}

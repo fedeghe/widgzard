@@ -1,5 +1,5 @@
 /*
-[MALTA] core.js
+[MALTA] ../core.js
 */
 /**
  * Autoexecuted closure that allows to create namespaces,
@@ -58,11 +58,33 @@
     }
 
 
+    function checkns(ns, ctx) {
+        var els = ns.split(/\.|\//),
+            i = 0,
+            l = els.length;
+        ctx = (ctx !== undefined) ? ctx : W;
+
+        if (!ns) return ctx;
+
+        for (null; i < l; i += 1) {
+
+            if (typeof ctx[els[i]] !== 'undefined') {
+                ctx = ctx[els[i]];
+            } else {
+                // break it
+                return undefined;
+            }
+        }
+        return ctx;
+    }
+
+
     // use makens to publish itself and something more
     //
     makens(ns, {
 
         makeNS : makens,
+        checkNS : checkns,
 
         debug : function (f) {
             debugActive = !!f;
@@ -98,7 +120,193 @@
 
 
 /*
-[MALTA] io.js
+[MALTA] ../util.js
+*/
+FG.util = {
+	uniqueid: new function () {
+        var count = 0,
+            self = this;
+        this.prefix = 'FG';
+        this.toString = function () {
+            ++count;
+            return  self.prefix + count;
+        };
+	},
+	isValidEmail: function (email) {
+		var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		return re.test(email);
+	},
+    delegate: function (func, ctx) {
+        // get relevant arguments
+        var args = Array.prototype.slice.call(arguments, 2);
+        return function () {
+            return func.apply(
+                ctx || null,
+                [].concat(args, Array.prototype.slice.call(arguments, 0))
+            );
+        };
+    }
+};
+/*
+[MALTA] ../object.js
+*/
+FG.object = (function (){
+
+    /**
+     * maps an object literal to a string according using the map function  passed
+     * @param  {Literal}   o  the object literal
+     * @param  {Function} fn  the map function
+     * @return {String}       the resulting string
+     */
+    function map(o, fn) {
+        var ret = '', j;
+        for (j in o) {
+            o.hasOwnProperty(j) && (ret += fn(o, j, ret));
+        }
+        return ret;
+    }
+
+    function jCompare(obj1, obj2) {
+        return typeof JSON !== 'undefined' ? JSON.stringify(obj1) === JSON.stringify(obj2) : obj1 == obj2;
+    }
+
+    function digFor(what, obj, target) {
+        if(!what.match(/key|value/)) {
+            throw new Error('Bad param for object.digFor');
+        }
+        var matches = {
+                key : function (k1, k2, key) {
+                    return (FG.object.isString(k1) && key instanceof RegExp) ?
+                        k1.match(key)
+                        :
+                        jCompare(k1, key);
+                },
+                value : function (k1, k2, val) {
+                    return (FG.object.isString(k2) && val instanceof RegExp) ?
+                        k2.match(val)
+                        :
+                        jCompare(k2, val);
+                }
+            }[what],
+            res = [],
+            maybeDoPush = function (path, index, key, obj, level) {
+                var p = [].concat.call(path, [index]),
+                    tmp = matches(index, obj[index], key);
+                if (tmp) {
+                    res.push({
+                        value: obj[index],
+                        key : p[p.length - 1],
+                        parentKey : p[p.length - 2],
+                        path : p.join('/'),
+                        container : p.slice(0, p.length - 1).join('/'),
+                        parentContainer : p.slice(0, p.length - 2).join('/'),
+                        regexp : tmp,
+                        level : level
+                    });
+                }
+                dig(obj[index], key, p, level+1);
+            },
+            dig = function (o, k, path, level) {
+                var i, l, p, tmp;
+                if (o instanceof Array) {                
+                    for (i = 0, l = o.length; i < l; i++) {
+                        maybeDoPush(path, i, k, o, level);
+                    }
+                } else if (typeof o === 'object') {
+                    for (i in o) {
+                        maybeDoPush(path, i, k, o, level);
+                    }
+                } else {
+                    return;
+                }
+            };
+        dig(obj, target, [], 0);
+        return res;
+    }
+
+
+    return {
+        /**
+         * uses map private function to map an onject literal to a querystring ready for url
+         * @param  {Literal} obj    the object literal
+         * @return {String}         the mapped object
+         */
+        toQs : function (obj) {
+            return map(obj, function (o, i, r) {
+                return ((r ? '&' : '?') + encodeURIComponent(i) + '=' + encodeURIComponent(o[i])).replace(/\'/g, '%27');
+            });
+        },
+        jCompare: jCompare,
+        digForKey : function (o, k) {
+            return digFor('key', o, k);
+        },
+
+        /**
+         * [digForValues description]
+         * @param  {[type]} o [description]
+         * @param  {[type]} k [description]
+         * @return {[type]}   [description]
+         */
+        digForValue : function (o, k) {
+            return digFor('value', o, k);
+        },
+
+
+        isString : function(o) {
+            return typeof o === 'string' || o instanceof String;
+        },
+        extend: function(o, ext, force) {
+            var obj = FG.object.clone(o),
+                j;
+            for (j in ext) {
+                if (ext.hasOwnProperty(j) && (!(j in obj) || force)) {
+                    obj[j] = ext[j];
+                }
+            }
+            return obj;
+        },
+        clone: function(obj) {
+            var self = FG.object,
+                copy,
+                i, l;
+            // Handle the 3 simple types, and null or undefined
+            if (null === obj || "object" !== typeof obj) {
+                return obj;
+            }
+
+            // Handle Date
+            if (obj instanceof Date) {
+                copy = new Date();
+                copy.setTime(obj.getTime());
+                return copy;
+            }
+
+            // Handle Array
+            if (obj instanceof Array) {
+                copy = [];
+                for (i = 0, l = obj.length; i < l; i++) {
+                    copy[i] = self.clone(obj[i]);
+                }
+                return copy;
+            }
+
+            // Handle Object
+            if (obj instanceof Object) {
+                copy = {};
+                for (i in obj) {
+                    if (obj.hasOwnProperty(i)) {
+                        copy[i] = self.clone(obj[i]);
+                    }
+                }
+                return copy;
+            }
+
+            throw new Error("Unable to copy obj! Its type isn't supported.");
+        }
+    };
+})();
+/*
+[MALTA] ../io.js
 */
 FG.makeNS('FG/io');
 FG.io = (function (){
@@ -146,7 +354,7 @@ FG.io = (function (){
                 state = false;
             //prepare data, caring of cache
             if (!cache) {data.C = +new Date; }
-            data = H24.object.toQs(data).substr(1);
+            data = FG.object.toQs(data).substr(1);
             xhr.onreadystatechange = function () {
                 var tmp;
                 if (state === xhr.readyState) {
@@ -268,11 +476,77 @@ FG.io = (function (){
 })();
 //-----------------------------------------------------------------------------
 /*
-[MALTA] events.js
+[MALTA] ../css.js
+*/
+FG.makeNS('FG/css');
+
+FG.css.style = function (el, prop, val ) {
+
+    var prop_is_obj = (typeof prop === 'object' && typeof val === 'undefined'),
+        ret = false,
+        newval, k;
+
+    if (!prop_is_obj && typeof val === 'undefined') {
+
+        ret = el.currentStyle ? el.currentStyle[prop] : el.style[prop];
+        return ret;
+    }
+
+    if (prop_is_obj) {
+        for (k in prop) {
+            el.style[k] = prop[k];
+        }
+    } else if (typeof val !== 'undefined') {
+        val += '';
+
+        el.style[prop] = val;
+
+        if (prop === 'opacity') {
+            el.style.filter = 'alpha(opacity = ' + (~~(100 * parseFloat(val, 10))) + ')';
+        }
+        
+    }
+};
+/*
+[MALTA] ../dom.js
+*/
+FG.dom = {
+
+	addClass : function (elem, addingClass) {
+	    var cls = !!(elem.className) ? elem.className : '',
+	    	reg = new RegExp('(\\s|^)' + addingClass + '(\\s|$)');
+	    if (!cls.match(reg)) {
+	        elem.className = addingClass + ' '+ cls;
+	    }
+	},
+
+	removeClass : function (elem, removingClass) {
+		var reg = new RegExp('(\\s|^)' + removingClass + '(\\s|$)');
+	    elem.className = elem.className.replace(reg, ' ');
+	},
+
+	descendant : function () {
+        var args = Array.prototype.slice.call(arguments, 0),
+            i = 0,
+            res = args.shift(),
+            l = args.length;
+        if (!l) return res;
+        while (i < l) {
+            res = res.children.item(~~args[i++]);
+        }
+        return res;
+    },
+    remove : function (el) {
+    	var parent = el.parentNode;
+        parent.removeChild(el);
+    }
+};
+/*
+[MALTA] ../events.js
 */
 FG.makeNS('FG/events');
 
-FG.events.bind = (function(W) {
+FG.events.on = (function(W) {
     var fn;
 
     if ('addEventListener' in W) {
@@ -290,9 +564,222 @@ FG.events.bind = (function(W) {
     }
     return fn;
 })(this);
+
+FG.events.eventTarget = function(e) {
+    e = e ? e : window.event;
+    var targetElement = e.currentTarget || (typeof e.target !== 'undefined') ? e.target : e.srcElement;
+    if (!targetElement) {
+        return false;
+    }
+    while (targetElement.nodeType === 3 && targetElement.parentNode !== null) {
+        targetElement = targetElement.parentNode;
+    }
+    return targetElement;
+};
+
+FG.events.kill = function(e) {
+    if (!e) {
+        e = W.event;
+        e.cancelBubble = true;
+        e.returnValue = false;
+    }
+    'stopPropagation' in e && e.stopPropagation() && e.preventDefault();
+    return false;
+};
+
+/* From Modernizr */
+FG.events.transitionEnd = (function () {
+    var n = document.createElement('fake'),
+        k,
+        trans = {
+          'transition':'transitionend',
+          'OTransition':'oTransitionEnd',
+          'MozTransition':'transitionend',
+          'WebkitTransition':'webkitTransitionEnd'
+        };
+    for(k in trans){
+        if (n.style[k] !== undefined ){
+            return trans[k];
+        }
+    }
+})();
 /*
-[MALTA] widgzard.js
+[MALTA] ../channel.js
 */
+/**
+ * [Channel description]
+ * @param {[type]} n [description]
+ */
+FG.Channel = (function () {
+    var channels = {},
+
+        // function added to free completely
+        // that object from dependencies
+        // 
+        findInArray = function (arr, mvar) {
+            //IE6,7,8 would fail here
+            if ('indexOf' in arr) {
+                return arr.indexOf(mvar);
+            }
+            var l = arr.length - 1;
+            while (arr[l] !== mvar) {
+                l--;
+            }
+            return l;
+        },
+
+        _Channel = function () {
+            this.topic2cbs = {};
+            this.enabled = true;
+        };
+
+    /**
+     * [prototype description]
+     * @type {Object}
+     */
+    _Channel.prototype = {
+        /**
+         * enable cb execution on publish
+         * @return {undefined}
+         */
+        enable : function () {
+            this.enabled = true;
+        },
+
+        /**
+         * disable cb execution on publish
+         * @return {undefined}
+         */
+        disable : function () {
+            this.enabled = false;
+        },
+
+        /**
+         * publish an event on that channel
+         * @param  {String} topic
+         *                  the topic that must be published
+         * @param  {Array} args
+         *                 array of arguments that will be passed
+         *                 to every callback
+         * @return {undefined}
+         */
+        pub : function (topic, args) {
+            var i = 0,
+                l;
+            if (!(topic in this.topic2cbs) || !this.enabled) {
+                return false;
+            }
+            for (l = this.topic2cbs[topic].length; i < l; i += 1) {
+                this.topic2cbs[topic][i].apply(null, [topic].concat(args));
+            }
+            return true;
+        },
+
+        /**
+         * add a callback to a topic
+         * @param {String} topic
+         *                 the topic that must be published
+         * @param {Function} cb
+         *                   the callback will receive as first
+         *                   argument the topic, the others follow
+         * @return {undefined}
+         */
+        sub : function (topic, cb, force) {
+            var i = 0,
+                l;
+            if (topic instanceof Array) {
+                for (l = topic.length; i < l; i += 1) {
+                    this.sub(topic[i], cb);
+                }
+            }
+
+            if (!(topic in this.topic2cbs) || !this.enabled) {
+                this.topic2cbs[topic] = [];
+            }
+
+            if (!force && findInArray(this.topic2cbs[topic], cb) >= 0) {
+                return this;
+            }
+
+            this.topic2cbs[topic].push(cb);
+        },
+
+        /**
+         * removes an existing booked callback from the topic list
+         * @param  {[type]}   topic [description]
+         * @param  {Function} cb    [description]
+         * @return {[type]}         [description]
+         */
+        unsub : function (topic, cb) {
+            var i = 0,
+                l;
+            if (topic instanceof Array) {
+                for (l = topic.length; i < l; i += 1) {
+                    this.unsub(topic[i], cb);
+                }
+            }
+            if (topic in this.topic2cbs) {
+                i = findInArray(this.topic2cbs[topic], cb);
+                if (i >= 0) {
+                    this.topic2cbs[topic].splice(i, 1);
+                }
+            }
+            return this;
+        },
+        
+        /**
+         * one shot sub with auto unsub after first shot
+         * @param  {[type]}   topic [description]
+         * @param  {Function} cb    [description]
+         * @return {[type]}         [description]
+         */
+        once : function (topic, cb){
+            var self = this,
+                cb2 = function () {
+                    cb.apply(null, Array.prototype.slice.call(arguments, 0));
+                    self.unsub(topic, cb2);
+                };
+            this.sub(topic, cb2);
+        },
+
+        /**
+         * Removes all callbacks for one or more topic
+         * @param [String] ...
+         *                 the topic queues that must  be emptied
+         * @return [Channel] the instance
+         */
+        reset : function () {
+            var ts = Array.prototype.slice.call(arguments, 0),
+                l = ts.length,
+                i = 0;
+            if (!l) {
+                this.topic2cbs = {};
+                return this;
+            }
+            for (null; i < l; i += 1) {
+                ts[i] in this.topic2cbs && (this.topic2cbs[ts[i]] = []);
+            }
+            return this;
+        }
+    };
+
+    /**
+     * returning function
+     */
+    return function (name) {
+        if (!(name in channels)) {
+            channels[name] = new _Channel();
+        }
+        return channels[name];
+    };
+})();
+/*
+[MALTA] ../widgzard.js
+*/
+    
+// read this : http://stackoverflow.com/questions/1915341/whats-wrong-with-adding-properties-to-dom-element-objects
+
+
 /**
  * Widgzard module
  * 
@@ -306,21 +793,20 @@ FG.events.bind = (function(W) {
  */
 (function (W){
     
-    'use strict';
-
-    
+    'use strict';    
 
     // clearer class that should provide right
     // css float clearing
     // ex: TB uses `clearfix`, I don`t
     // 
-    var clearerClassName = 'clearer',
-        noop = function () {},
-        delegate,
-        eulerWalk,
+    var clearerClassName = 'clearer', 
+        nodeIdentifier = 'wid',
         autoclean = true,
-        htmlspecialchars,
-        load;
+        debug = true,
+        Wproto = Wnode.prototype,
+        Promise,
+        htmlspecialchars, delegate, eulerWalk,
+        noop = function () {};
 
     /**
      * Main object constructor represeting any node created
@@ -331,7 +817,7 @@ FG.events.bind = (function(W) {
      *                        to every node that has the gindID attribute
      */
     function Wnode(conf, trg, mapcnt) {
-
+        
         // save a reference to the instance
         // 
         var self = this,
@@ -351,7 +837,11 @@ FG.events.bind = (function(W) {
         // 
         this.node = document.createElement(tag);
 
-        // save a reference toe the node configuration
+
+        //this.target.childrens = [];
+
+
+        // save a reference to the node configuration
         // will be useful on append to append to conf.target
         // if specified
         //
@@ -361,37 +851,51 @@ FG.events.bind = (function(W) {
         // otherwise create a function that do nothing but
         // freeing the parent promise from waiting
         //
-        this.node.WIDGZARD_cb = conf.cb || function () {
+        this.WIDGZARD_cb = conf.cb || function () {
+            debug && console.log('autoresolving  ', self.node);
             // autoresolve
-            self.node.resolve();
+            self.resolve();
         };
+
+        
+        // a reference the the root
+        //
+        this.root = mapcnt.root;
+
+        // save a reference to the parent
+        // 
+        this.parent = trg;
 
         // save a reference to a brand new Promise
         // the Promise.node() will be called as far as
         // all the child elements cb have called 
         // this.done OR this.resolve
         // 
-        this.node.WIDGZARD_promise = new Promise();
+        this.WIDGZARD_promise = Promise.create();
 
         // When called Promise.done means that 
         // the parent callback can be called
         // delegating the parent context
         //
-        this.node.WIDGZARD_promise.then(trg.WIDGZARD_cb, trg);
+        this.WIDGZARD_promise.then(self.WIDGZARD_cb, self);
 
-        // as said at the begibbibg every node keeps a reference
+        // as said at the beginning every node keeps a reference
         // to a function that allow to get a reference to any
-        // node that in his configuration has a `wid` value
+        // node that in his configuration has a `nodeIdentifier` value
         // specified
         //
         this.map = mapcnt.map;
-        this.node.getNode = mapcnt.getNode;
+
+        // publish in the node the getNode fucntion that allows for
+        // getting any node produced from the same json having a 
+        // `nodeIdentifier` with a valid value
+        this.getNode = mapcnt.getNode;
 
         // how many elements are found in the content field?
         // that counter is fundamental for calling this node
         // callback only when every child callback has done
         // 
-        this.node.WIDGZARD_len = conf.content ? conf.content.length : 0;
+        this.WIDGZARD_len = conf.content ? conf.content.length : 0;
 
         // through these two alias from within a callback
         // (where the DOMnode is passed as context)
@@ -399,22 +903,61 @@ FG.events.bind = (function(W) {
         // if the count is nulled it means that the promise 
         // is done, thus it`s safe to call its callback
         //
-        this.node.done = this.node.resolve = function () {
+        this.done = this.resolve = this.solve = function () {
           
             // if all the child has called done/resolve
             // it`s time to honour the node promise,
             // thus call the node callback
-            // 
-            !--self.target.WIDGZARD_len && self.node.WIDGZARD_promise.done();
+            //
+            if (--self.target.WIDGZARD_len == 0) {
+                if (self.target.WIDGZARD_promise) {
+                    self.target.WIDGZARD_promise.done();
+                } else {
+                    self.target.WIDGZARD_cb();   
+                }
+            }
+
         };
     }
+
+    /**
+     * save a function to climb up n-parent
+     * @param  {[type]} n [description]
+     * @return {[type]}   [description]
+     */
+    Wproto.climb = function (n) {
+        n = n || 1;
+        var ret = this;
+        while (n--) {
+            ret = ret.parent;
+        }
+        return ret;
+    };
+
+
+    /**
+     * and one to go down
+     * @return {[type]} [description]
+     */
+    Wproto.descendant = function () {
+        var self = this,
+            args = Array.prototype.slice.call(arguments, 0),
+            i = 0,
+            res = self,
+            l = args.length;
+        if (!l) return res;
+        while (i < l) {
+            res = res.childrens[~~args[i++]];
+        }
+        return res;
+    };
 
     /**
      * Set neo attributes
      * @param {DOMnode} node  the node
      * @param {Object} attrs  the hash of attributes->values
      */
-    Wnode.prototype.setAttrs = function (node, attrs) {
+    Wproto.setAttrs = function (node, attrs) {
         // if set, append all attributes (*class)
         // 
         if (typeof attrs !== 'undefined') { 
@@ -428,8 +971,6 @@ FG.events.bind = (function(W) {
                 } else {
                     node.className = attrs[j];
                 }
-                    
-                
             }
         }
         return this;
@@ -440,7 +981,7 @@ FG.events.bind = (function(W) {
      * @param {DOMnode} node  the node
      * @param {Object} style  the hash of rules
      */
-    Wnode.prototype.setStyle = function (node, style) {
+    Wproto.setStyle = function (node, style) {
         // if set, append all styles (*class)
         //
         if (typeof style !== 'undefined') { 
@@ -456,15 +997,15 @@ FG.events.bind = (function(W) {
      * @param {DOMnode} node  the node
      * @param {Object} data   the hash of properties to be attached
      */
-    Wnode.prototype.setData = function (node, data) {
-        node.data = data || {};
+    Wproto.setData = function (el, data) {
+        el.data = data || {};
         return this;
     };
     
     /**
      * add method for the Wnode
      */
-    Wnode.prototype.add = function () {
+    Wproto.add = function () {
 
         var conf = this.conf,
             node = this.node;
@@ -473,7 +1014,7 @@ FG.events.bind = (function(W) {
         // 
         this.setAttrs(node, conf.attrs)
             .setStyle(node, conf.style)
-            .setData(node, conf.data);
+            .setData(this, conf.data);
 
         // if `html` key is found on node conf 
         // inject its value
@@ -484,20 +1025,29 @@ FG.events.bind = (function(W) {
         //
         //// this.conf.node = this.node;
 
-        // if the node configuration has a `wid` key
+        // if the node configuration has a `nodeIdentifier` key
         // (and a String value), the node can be reached 
         // from all others callback invoking
         // this.getNode(keyValue)
         //
-        typeof conf.wid !== 'undefined' && (this.map[conf.wid] = node);
+        
+        if (typeof conf[nodeIdentifier] !== 'undefined') {
+            this.map[conf[nodeIdentifier]] = this;
+        }
+        
 
         // if the user specifies a node the is not the target 
         // passed to the constructor we use it as destination node
         // (node that in the constructor the node.target is always
         // the target passed)
         // 
-        (conf.target || this.target).appendChild(node);
-        node.WIDGZARD = true;
+        (conf.target || this.target.node).appendChild(node);
+
+        if (!('childrens' in (conf.target || this.target))) {
+            (conf.target || this.target).childrens = [];
+        }
+        (conf.target || this.target).childrens.push(this);
+        this.WIDGZARD = true;
 
         // if the node configuration do not declares content array
         // then the callback is executed.
@@ -506,51 +1056,42 @@ FG.events.bind = (function(W) {
         // this.done() OR this.resolve()
         // this is the node itself, those functions are attached
         // 
-        !conf.content && node.WIDGZARD_cb.call(node);
+        (!conf.content || conf.content.length == 0) && this.WIDGZARD_cb.call(this);
 
-        return node;
+        return this;
     };
 
 
-    function cleanup(node) {
-
-
-        var keys = [
-                'WIDGZARD',
-                'WIDGZARD_cb',
-                'WIDGZARD_promise',
-                'WIDGZARD_length',
-                'getNode',
-                'done',
-                'resolve',
-                'data'
-            ],
-            elsToBeCleaned = [],
-            i = 0,
-            l = keys.length,
-            removeNode = function (n) {
-                var parent = n.parentNode;
-                parent.removeChild(n);
+    function cleanup(trg) {
+        var node = trg.node,
+            removeNode = function (t) {
+                t.parentNode.removeChild(t);
                 return true;
-            };
-
-        eulerWalk(node, function (n, p) {
-
-            if (n !== node && n.nodeType != 3) {
-                elsToBeCleaned.push(n);
-            }
-
+            },
+            nodesToBeCleaned = [],
+            keys = [
+                'WIDGZARD', 'WIDGZARD_cb', 'WIDGZARD_promise', 'WIDGZARD_length',
+                'parent', 'getNode', 'climb', 'root', 'done', 'resolve', 'data'
+            ],
+            kL = keys.length,
+            i = 0, j = 0, k = 0,
+            n = null;
+        
+        // pick up postorder tree traversal
+        eulerWalk(node, function (n) {
+            //skip root & text nodes
+            n !== node && n.nodeType != 3 && nodesToBeCleaned.push(n) && k++;
         }, 'post');
         
-        for (var  j = 0, k = elsToBeCleaned.length; j < k; j++) {
-            var n = elsToBeCleaned[j];
-            for (null; i < l; i++) {                    
-                n[keys[i]] = null;
-            }
-            
-            removeNode(n); //&& console.log('removed > ', n);
+        while (j < k) {
+            n = nodesToBeCleaned[j++];
+            while (i < kL) n[keys[i++]] = null;
+            removeNode(n);
         }
-        console.log('autoclean');
+
+        nodesToBeCleaned = null, keys = null;
+
+        return true;
     }
 
     /**
@@ -569,7 +1110,15 @@ FG.events.bind = (function(W) {
      */
     function render (params, clean) {
 
-        var target = params.target || document.body;
+        var target = {
+                node : params.target || document.body
+            },
+            targetFragment = {
+                node : document.createDocumentFragment('div')
+            };
+
+        // debug ? 
+        debug = !!params.debug;
 
         // maybe cleanup previous
         //
@@ -584,28 +1133,34 @@ FG.events.bind = (function(W) {
         // reached afterward calling this.getNode(id)
         // from any callback
         // 
-        var inner = {
+        var mapcnt = {
+            root : target.node,
             map : {},
             getNode : function (id) {
-                return inner.map[id] || false;
+                return mapcnt.map[id] || false;
             }
         };
+
 
         // rape Node prototype funcs
         // to set attributes & styles
         // 
-        Wnode.prototype
-            .setAttrs(target, params.attrs)
-            .setStyle(target, params.style)
-            .setData(target, params.data);
+        Wproto
+            .setAttrs(target.node, params.attrs)
+            .setStyle(target.node, params.style)
+            .setData(target, params.data)
+            .setData(targetFragment, params.data);
 
+        target.descendant = Wproto.descendant;
+        targetFragment.descendant = Wproto.descendant;
         // maybe clean
         // 
-        if (!!clean) target.innerHTML = '';
+        if (!!clean) target.node.innerHTML = '';
 
         // maybe a raw html is requested before treating content
+        // 
         if (typeof params.html !== 'undefined') {
-            target.innerHTML = params.html;
+            target.node.innerHTML = params.html;
         }
         
         // initialize the root node to respect what is needed
@@ -614,18 +1169,29 @@ FG.events.bind = (function(W) {
         // - len : the lenght of the content array
         // - cb : exactly the end callback
         // 
-        target.WIDGZARD_len = params.content.length;
-        target.WIDGZARD_cb = params.cb || function () {};
+        target.WIDGZARD_len = params.content ? params.content.length : 0;
+        targetFragment.WIDGZARD_len = params.content ? params.content.length : 0;
 
-        //flag to enable cleaning
+        targetFragment.WIDGZARD_cb = target.WIDGZARD_cb = function () {
+            
+            target.node.appendChild(targetFragment.node)
+            &&
+            params.cb && params.cb.call(target);
+        };
+
+
+        // flag to enable cleaning
+        //
         target.WIDGZARD = true;
 
         // allow to use getNode from root
         // 
-        target.getNode = inner.getNode;
+        target.getNode = 
+        targetFragment.getNode = mapcnt.getNode;
 
         // start recursion
         // 
+        
         (function recur(cnf, trg){
             
             // change the class if the element is simply a "clearer" String
@@ -638,67 +1204,175 @@ FG.events.bind = (function(W) {
                             attrs : {'class' : clearerClassName}
                         };
                     }
-                    recur(cnf.content[i], new Wnode(cnf.content[i], trg, inner).add());
+        
+                    recur(cnf.content[i], new Wnode(cnf.content[i], trg, mapcnt).add());
                 }
             }
             
-        })(params, target);
+        })(params, targetFragment);
+        // /console.dir(mapcnt);
     }
 
-    // ------------------------------------------------
-    function Promise() {
-        this.cbacks = [];
-        this.len = 0;
-        this.completed = false;
-        this.res = false;
-        this.err = false;
-        this.reset = function () {
-            this.len = 0;
-            this.cbacks = [];
+    // MY WONDERFUL Promise Implementation
+    // 
+    Promise = (function() {
+        var _Promise = function() {
+                this.cbacks = [];
+                this.solved = false;
+                this.result = null;
+            },
+            proto = _Promise.prototype;
+        /**
+         * [then description]
+         * @param  {[type]} func [description]
+         * @param  {[type]} ctx  [description]
+         * @return {[type]}      [description]
+         */
+        proto.then = function(func, ctx) {
+            var self = this,
+                f = function() {
+                    self.solved = false;
+                    func.apply(ctx || self, [ctx || self, self.result]);
+                };
+            if (this.solved) {
+                f();
+            } else {
+                this.cbacks.push(f);
+            }
+            return this;
         };
-    };
-    Promise.prototype.done = function (res, err) {
-        var i = 0;
-        this.completed = true;
-        this.res = res;
-        this.err = err;
-        for (null; i < this.len; i += 1) {
-            this.cbacks[i](res, err);
+
+        /**
+         * [done description]
+         * @return {Function} [description]
+         */
+        proto.done = function() {
+            var r = [].slice.call(arguments, 0);
+            this.result = r;
+            this.solved = true;
+            if (!this.cbacks.length) {
+                return this.result;
+            }
+            this.cbacks.shift()(r);
+        };
+
+        /**
+         * [chain description]
+         * @param  {[type]} funcs [description]
+         * @param  {[type]} args  [description]
+         * @return {[type]}       [description]
+         */
+        function chain(funcs, args) {
+
+            var p = new _Promise();
+            var first = (function() {
+
+                    funcs[0].apply(p, [p].concat([args]));
+                    return p;
+                })(),
+                tmp = [first];
+
+            for (var i = 1, l = funcs.length; i < l; i++) {
+                tmp.push(tmp[i - 1].then(funcs[i]));
+            }
+            return p;
         }
-        this.reset();
-    };
-    Promise.prototype.then = function (cback, ctx) {
-        var func = delegate(cback, ctx);
-        if (this.completed) {
-            func(this.res, this.err);
-        } else {
-            this.cbacks[this.len] = func;
-            this.len += 1;
+
+        /**
+         * [join description]
+         * @param  {[type]} pros [description]
+         * @param  {[type]} args [description]
+         * @return {[type]}      [description]
+         */
+        function join(pros, args) {
+            var endP = new _Promise(),
+                res = [],
+                stack = [],
+                i = 0,
+                l = pros.length,
+                limit = l,
+                solved = function (remainder) {
+                    !remainder && endP.done.apply(endP, res);
+                };
+
+            for (null; i < l; i++) {
+                (function (k) {
+                    stack[k] = new _Promise();
+
+                    // inside every join function the context is a Promise, and
+                    // is possible to return it or not 
+                    var _p = pros[k].apply(stack[k], [stack[k], args]);
+                    (_p instanceof _Promise ? _p : stack[k])
+                    .then(function (p, r) {
+                        res[k] = r;
+                        solved(--limit);
+                    });
+                })(i);
+            }
+            return endP;
         }
-        return this;
+
+        /* returning module
+        */
+        return {
+            create: function() {
+                return new _Promise();
+            },
+            chain: chain,
+            join: join
+        };
+    })();
+
+    /**
+     * [get description]
+     * @param  {[type]} params [description]
+     * @return {[type]}        [description]
+     */
+    function get (params) {
+        var r = document.createElement('div');
+        params.target = r;
+        render(params);
+        return r;
+    }
+    
+    // Widgzard.load('js/_index.js');
+    function load (src) {
+        var s = document.createElement('script');
+        document.getElementsByTagName('head')[0].appendChild(s);
+        s.src = src;
+        
+        // when finished remove the script tag
+        s.onload = function () {
+            s.parentNode.removeChild(s);
+        }
     };
 
+    /**
+     * [eulerWalk description]
+     * @param  {[type]} root [description]
+     * @param  {[type]} func [description]
+     * @param  {[type]} mode [description]
+     * @return {[type]}      [description]
+     */
     eulerWalk = function (root, func, mode) {
         mode = {pre : 'pre', post : 'post'}[mode] || 'post';
         var nope = function () {},
             pre = mode === 'pre' ? func : nope,
             post = mode === 'post' ? func : nope,
-            walk = (function (m) {
-                return function (n, _n) {
-                    pre(n);
-                    _n = n.firstChild;
+            walk = (function () {
+                return function (n_, _n) {
+                    pre(n_);
+                    _n = n_.firstChild;
                     while (_n) {
                         walk(_n);
                         _n = _n.nextSibling;
                     }
-                    post(n);
+                    post(n_);
                 };
-            })(mode);
-
+            })();
         walk(root);
     };
 
-    
     /**
      * Dummy delegation function 
      * @param  {[type]} func [description]
@@ -720,21 +1394,12 @@ FG.events.bind = (function(W) {
             );
         };
     };
-    
 
-    // FG.doScript('js/_index.js');
-    load = function (src) {
-        var s = document.createElement('script');
-        document.getElementsByTagName('head')[0].appendChild(s);
-        s.src = src;
-        
-        // when finished remove the script tag
-        //
-        s.onload = function () {
-            s.parentNode.removeChild(s);
-        }
-    };
-
+    /**
+     * [htmlspecialchars description]
+     * @param  {[type]} c [description]
+     * @return {[type]}   [description]
+     */
     htmlspecialchars = function (c) {
         return '<pre>' +
             c.replace(/&(?![\w\#]+;)/g, '&amp;')
@@ -742,15 +1407,16 @@ FG.events.bind = (function(W) {
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#039;'); +
-            '</pre>';
+        '</pre>';
     };
-
 
     // publish module
     W.Widgzard = {
         render : render,
+        get : get,
         load : load,
-        htmlspecialchars : htmlspecialchars
+        htmlspecialchars : htmlspecialchars,
+        Promise : Promise
     };
 
 })(this);

@@ -1,18 +1,23 @@
+var start = +new Date,
+    end;
 !function (){
 
     var DOMstress = function (node) {
             node.leak = [];
-            var t = 1000,
+            var t = 10000,
                 tmp;
             for (var i = 0; i < t; i++) {
                 tmp = document.createElement('div');
+                tmp.addEventListener('click', function (){alert(this.innerHTML); }, false);
                 tmp.innerHTML = +new Date;
                 node.appendChild(tmp);
             }
         },
         trg = document.body,
         end = function () {
-            console.debug('Done');
+            console.log('Done');
+            DOMstress(document.body);
+            stats();
         },
         conf = [{
             style : {backgroundColor:'red'},
@@ -20,14 +25,17 @@
                 tag : 'h1',
                 html : 'HELLO I`M RED',
                 attrs : {'class':'round'},
-                style : {padding:'10px',margin : '20px 0px', fontSize:'30px',backgroundColor: '#FFF', color:'red'}
+                style : {padding:'10px',margin : '20px 0px', fontSize:'30px',backgroundColor: '#FFF', color:'red'},
+                cb: function () {
+                    this.done();
+                } 
             },{
                 tag : 'button',
                 style : {margin : '20px 0px', padding : '10px'},
                 html : 'go green',
                 cb : function () {
-                    this.addEventListener('click', swap, false);
-                    DOMstress(document.body);
+                    this.node.addEventListener('click', swap, false);
+                    
                     this.done();
                 }
             }],
@@ -44,20 +52,29 @@
                 style : {margin : '20px 0px', padding : '10px'},
                 html : 'go red',
                 cb : function (){
-                    this.addEventListener('click', swap, false);
-                    DOMstress(document.body);
+                    FG.events.on(this.node,'click', swap);
                     this.done();
                 }
             }],
             cb : end
         }],
+
         index = 0,
+        
         swap = function () {
             index = (index + 1) %2;
             render();
         },
+        
         render = function () {
             Widgzard.render(conf[index], true);
+        },
+        
+        stats = function (){
+            window.JSON && console.log('json size : ' + JSON.stringify(conf).length);
+            console.log('html size : ' + document.documentElement.innerHTML.length);
+            end = +new Date();
+            console.log('TTR : ' + (end - start));
         };
 
     render();
