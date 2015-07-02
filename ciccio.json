@@ -1,0 +1,73 @@
+{
+    "webRoot": "http://nmp.stailamedia.com/interactive/Beiersdorf/Mockup/DE",
+    "i18n": {
+        "ourText": {
+            "en": "Your specialist for online branding",
+            "it": "Il vostro specialista per il branding online",
+            "fr": "Votre spécialiste pour l'image de marque en ligne",
+            "de": "Ihr Spezialist für Online-Branding"
+        }
+    },
+    "brand": {
+        "logo": "http://www.stailamedia.com/wp-content/themes/staila/images/logo-mob.jpg",
+        "label": "Hello world"
+    },
+    "rotate": true,
+    "info": "Lorem ipsum dolor sit <a href=\"http://www.google.com\" target =\"_blank\">amet</a>, consectetur ...",
+    "speed": 0.4,
+    "cards": [
+        {
+            "component": "video",
+            "params": {
+                "info": "Sicherer Schutz vor Schweissgeruch und Achselnässe - selbst in unerwartet stressigen Situationen",
+                "mp4Url": "movie.mp4",
+                "webmUrl": "movie.webm",
+                "poster": "ani.gif",
+                "autoplay": true,
+                "controls": false,
+                "loop": true
+            }
+        },
+        {
+            "component": "article",
+            "params": {
+                "image": "offer1.jpg",
+                "info": "i18n(ourText)",
+                "clickUrl": "http://www.de.nivea.ch/Produkte/Deodorant/stress-protect/"
+            }
+        },
+        {
+            "component": "contact",
+            "params": {
+                "info": "contact flat info contextualized CONTACT",
+                "image": "offer1.jpg",
+                "title": "Ja! Ich m&ouml;chte Stress Protect 1 Jahr lang kostenlos testen.",
+                "form": {
+                    "campaignId": 10,
+                    "adId": 100,
+                    "submitUrl": "http://staging.stailamedia.com/contactCard"
+                }
+            }
+        },
+        {
+            "component": "storeLocator",
+            "params": {
+                "places": [
+                    {
+                        "address": "Stauffacherstrasse 16, Zürich",
+                        "message": "<a target=\"_blank\" href=\"http://www.stailamedia.com\"><img height=\"40\" src=\"http://www.stailamedia.com/wp-content/themes/staila/images/logo4.svg\"></a><h3 style=\"margin-top:5px\">Stailamedia AG</h3>Stauffacherstrasse 16, 8004 Zürich<br><br><a href=\"mailto:info@stailamedia.com\">info@stailamedia.com</a><br><br><b>T</b> +41 44 500 13 50 &bull; <b>F</b> +41 43 243 81 83",
+                        "name": "Stailamedia"
+                    }
+                ]
+            }
+        },
+        {
+            "component": "fb",
+            "params": {
+                "fbPageUrl": "https://www.facebook.com/stailamedia",
+                "scrolling": "yes",
+                "colorscheme": "light"
+            }
+        }
+    ]
+}

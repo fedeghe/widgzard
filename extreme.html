@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Widgzard samples</title>
+    <meta name="fragment" content="!">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="copyright" content="&copy; 2014 Federico Ghedina">
+    <meta name="generator" content="JMVC pure javascript mvc">
+    <meta name="description" content="JMVC is a pure javascript mvc framework">
+    <meta name="keywords" content="jmvc,javascript mvc,pure javascript mvc,pure javascript">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="lib/widgzard.css">
+</head>
+<body class="resp">
+    <script src="js/lib.min.js"></script>
+    <script>
+        Widgzard.render({
+            content : [{
+                target : document.body,
+                html : 'hello'
+            },{
+                target : document.body,
+                content : [{
+                    cb : function () {
+                        var self = this;
+
+                        Widgzard.render({
+                            target : self.node,
+                            html : "myworld",
+                            cb : function () {
+
+                                // this.done()
+                                // calling done on a root has no sense
+                                
+                                // but has on self wich references a Wnode in the outer render
+                                // 
+                                self.done();
+                                self.stop();
+                            }
+                        });
+                    }
+                },{
+                    tag : 'h1',
+                    html : 'Hello'
+                }]
+            }],
+            cb: function () {
+                alert('the end')
+            }
+
+        });
+    </script>
+</body>
+</html>
