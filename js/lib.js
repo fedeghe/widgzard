@@ -138,7 +138,11 @@ FG.util = {
 	},
     delegate: function (func, ctx) {
         // get relevant arguments
+        // 
         var args = Array.prototype.slice.call(arguments, 2);
+        
+        // return the function with wired context
+        // 
         return function () {
             return func.apply(
                 ctx || null,
@@ -236,7 +240,9 @@ FG.object = (function (){
                 return ((r ? '&' : '?') + encodeURIComponent(i) + '=' + encodeURIComponent(o[i])).replace(/\'/g, '%27');
             });
         },
+
         jCompare: jCompare,
+        
         digForKey : function (o, k) {
             return digFor('key', o, k);
         },
@@ -255,6 +261,7 @@ FG.object = (function (){
         isString : function(o) {
             return typeof o === 'string' || o instanceof String;
         },
+
         extend: function(o, ext, force) {
             var obj = FG.object.clone(o),
                 j;
@@ -265,6 +272,7 @@ FG.object = (function (){
             }
             return obj;
         },
+
         clone: function(obj) {
             var self = FG.object,
                 copy,
@@ -300,7 +308,6 @@ FG.object = (function (){
                 }
                 return copy;
             }
-
             throw new Error("Unable to copy obj! Its type isn't supported.");
         }
     };
@@ -776,11 +783,15 @@ FG.Channel = (function () {
 /*
 [MALTA] ../widgzard.js
 */
-    
-// read this : http://stackoverflow.com/questions/1915341/whats-wrong-with-adding-properties-to-dom-element-objects
-
-
 /**
+
+      _/          _/  _/_/_/  _/_/_/      _/_/_/  _/_/_/_/_/    _/_/    _/_/_/    _/_/_/    
+     _/          _/    _/    _/    _/  _/              _/    _/    _/  _/    _/  _/    _/   
+    _/    _/    _/    _/    _/    _/  _/  _/_/      _/      _/_/_/_/  _/_/_/    _/    _/    
+     _/  _/  _/      _/    _/    _/  _/    _/    _/        _/    _/  _/    _/  _/    _/     
+      _/  _/      _/_/_/  _/_/_/      _/_/_/  _/_/_/_/_/  _/    _/  _/    _/  _/_/_/   
+
+
  * Widgzard module
  * 
  * Create an arbitrary dom tree json based allowing for each node to 
@@ -790,6 +801,10 @@ FG.Channel = (function () {
  *   > every child has finished (explicitly calling the done function on his context)
  *
  * @author Federico Ghedina <fedeghe@gmail.com>
+ *
+ *
+ *
+ * PLEASE read this : http://stackoverflow.com/questions/1915341/whats-wrong-with-adding-properties-to-dom-element-objects
  */
 (function (W){
     
@@ -802,7 +817,7 @@ FG.Channel = (function () {
     var clearerClassName = 'clearer', 
         nodeIdentifier = 'wid',
         autoclean = true,
-        debug = true,
+        debug = false,
         Wproto = Wnode.prototype,
         Promise,
         htmlspecialchars, delegate, eulerWalk,
@@ -886,10 +901,19 @@ FG.Channel = (function () {
         //
         this.map = mapcnt.map;
 
+
+
+        //function to abort all
+        this.abort = mapcnt.abort;
+
         // publish in the node the getNode fucntion that allows for
         // getting any node produced from the same json having a 
         // `nodeIdentifier` with a valid value
         this.getNode = mapcnt.getNode;
+
+
+        // get all nodes mapped
+        this.getNodes = mapcnt.getNodes;
 
         // how many elements are found in the content field?
         // that counter is fundamental for calling this node
@@ -918,7 +942,10 @@ FG.Channel = (function () {
             }
 
         };
+
+        this.lateWid = mapcnt.lateWid;
     }
+
 
     /**
      * save a function to climb up n-parent
@@ -1001,6 +1028,30 @@ FG.Channel = (function () {
         el.data = data || {};
         return this;
     };
+
+    /**
+     * [checkInit description]
+     * @param  {[type]} el [description]
+     * @return {[type]}    [description]
+     */
+    Wproto.checkInit = function (el, conf) {
+        if ('init' in conf && typeof conf.init === 'function') {
+            conf.init.call(el);
+        }
+        return this;
+    }
+
+    /**
+     * [checkInit description]
+     * @param  {[type]} el [description]
+     * @return {[type]}    [description]
+     */
+    Wproto.checkEnd = function (el, conf) {
+        if ('end' in conf && typeof conf.end === 'function') {
+            this.root.endFunctions.push(function () {conf.end.call(el);});
+        }
+        return this;
+    }
     
     /**
      * add method for the Wnode
@@ -1014,16 +1065,14 @@ FG.Channel = (function () {
         // 
         this.setAttrs(node, conf.attrs)
             .setStyle(node, conf.style)
-            .setData(this, conf.data);
+            .setData(this, conf.data)
+            .checkInit(this, conf)
+            .checkEnd(this, conf);
 
         // if `html` key is found on node conf 
         // inject its value
         //
         typeof conf.html !== 'undefined' && (node.innerHTML = conf.html);
-        
-        // save a reference back to json
-        //
-        //// this.conf.node = this.node;
 
         // if the node configuration has a `nodeIdentifier` key
         // (and a String value), the node can be reached 
@@ -1058,11 +1107,12 @@ FG.Channel = (function () {
         // 
         (!conf.content || conf.content.length == 0) && this.WIDGZARD_cb.call(this);
 
+        // chain
         return this;
     };
 
 
-    function cleanup(trg) {
+    function cleanupWnode(trg) {
         var node = trg.node,
             removeNode = function (t) {
                 t.parentNode.removeChild(t);
@@ -1111,18 +1161,20 @@ FG.Channel = (function () {
     function render (params, clean) {
 
         var target = {
-                node : params.target || document.body
+                node : params.target || document.body,
+                endFunctions : []
             },
             targetFragment = {
                 node : document.createDocumentFragment('div')
-            };
+            },
+            active = true;
 
         // debug ? 
         debug = !!params.debug;
 
         // maybe cleanup previous
         //
-        autoclean && target.WIDGZARD && cleanup(target)
+        autoclean && target.WIDGZARD && cleanupWnode(target)
 
         if (!params) {
             throw new Exception('ERROR : Check parameters for render function');
@@ -1134,22 +1186,34 @@ FG.Channel = (function () {
         // from any callback
         // 
         var mapcnt = {
-            root : target.node,
+            root : target,
             map : {},
             getNode : function (id) {
                 return mapcnt.map[id] || false;
+            },
+            getNodes : function () {
+                return mapcnt.map;
+            },
+            abort : function () {
+                active = false;
+                return false;
+            },
+            lateWid : function (wid) {
+                mapcnt.map[wid] = this;
             }
         };
 
-
         // rape Node prototype funcs
         // to set attributes & styles
+        // and check init function 
         // 
         Wproto
             .setAttrs(target.node, params.attrs)
             .setStyle(target.node, params.style)
             .setData(target, params.data)
             .setData(targetFragment, params.data);
+
+
 
         target.descendant = Wproto.descendant;
         targetFragment.descendant = Wproto.descendant;
@@ -1173,27 +1237,44 @@ FG.Channel = (function () {
         targetFragment.WIDGZARD_len = params.content ? params.content.length : 0;
 
         targetFragment.WIDGZARD_cb = target.WIDGZARD_cb = function () {
-            
+            active 
+            &&
             target.node.appendChild(targetFragment.node)
             &&
             params.cb && params.cb.call(target);
-        };
 
+            //ending functions
+            //
+            if (target.endFunctions.length) {
+                for (var i = 0, l = target.endFunctions.length; i < l; i++) {
+                    target.endFunctions[i]();
+                }
+            }
+        };
 
         // flag to enable cleaning
         //
         target.WIDGZARD = true;
 
-        // allow to use getNode from root
+        // allow to use getNode & getNodes from root
         // 
-        target.getNode = 
-        targetFragment.getNode = mapcnt.getNode;
+        target.getNode = targetFragment.getNode = mapcnt.getNode;
+        target.getNodes = targetFragment.getNodes = mapcnt.getNodes;
+        target.abort = targetFragment.abort = function () {
+            target.node.innerHTML = '';
+        };
+
+
+        // what about a init root function?
+        // 
+        Wproto.checkInit(targetFragment, params);
 
         // start recursion
-        // 
-        
+        //
         (function recur(cnf, trg){
-            
+            if (!active) {
+                return false;
+            }
             // change the class if the element is simply a "clearer" String
             // 
             if (cnf.content) {
@@ -1210,7 +1291,6 @@ FG.Channel = (function () {
             }
             
         })(params, targetFragment);
-        // /console.dir(mapcnt);
     }
 
     // MY WONDERFUL Promise Implementation
@@ -1334,6 +1414,11 @@ FG.Channel = (function () {
         render(params);
         return r;
     }
+
+
+    function cleanup(trg){
+        render({target : trg, content : [{html : "no content"}]}, true);
+    }
     
     // Widgzard.load('js/_index.js');
     function load (src) {
@@ -1413,6 +1498,7 @@ FG.Channel = (function () {
     // publish module
     W.Widgzard = {
         render : render,
+        cleanup : cleanup,
         get : get,
         load : load,
         htmlspecialchars : htmlspecialchars,

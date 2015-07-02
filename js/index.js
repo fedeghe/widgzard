@@ -81,6 +81,9 @@
                     //console.log(this.root);
                     //console.log(this.node.data.name);
                     //debugger;
+                },
+                end : function () {
+                    console.log(this.node);
                 }
             },'clearer']
         },
@@ -133,6 +136,9 @@
                                     Widgzard.load('js/samples.js');
                                 });
                                 this.done();
+                            },
+                            end : function () {
+                                console.log(this.node);
                             }
                         }]
                     }]  
@@ -282,6 +288,9 @@
                 backgroundColor : 'white',
                 padding : padding,
                 margin : margin + ' 0px'
+            },
+            end : function () {
+                console.log(this.node);
             }
         }]
     };
