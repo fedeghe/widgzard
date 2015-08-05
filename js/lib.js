@@ -1035,8 +1035,10 @@ FG.Channel = (function () {
      * @return {[type]}    [description]
      */
     Wproto.checkInit = function (el, conf) {
+        var keepRunning = true;
         if ('init' in conf && typeof conf.init === 'function') {
-            conf.init.call(el);
+            keepRunning = conf.init.call(el);
+            !keepRunning && el.abort();
         }
         return this;
     }
@@ -1168,7 +1170,7 @@ FG.Channel = (function () {
                 node : document.createDocumentFragment('div')
             },
             active = true;
-
+        // target.root = target;
         // debug ? 
         debug = !!params.debug;
 
@@ -1196,6 +1198,7 @@ FG.Channel = (function () {
             },
             abort : function () {
                 active = false;
+                target.node.innerHTML = '';
                 return false;
             },
             lateWid : function (wid) {
@@ -1214,9 +1217,9 @@ FG.Channel = (function () {
             .setData(targetFragment, params.data);
 
 
-
         target.descendant = Wproto.descendant;
         targetFragment.descendant = Wproto.descendant;
+        
         // maybe clean
         // 
         if (!!clean) target.node.innerHTML = '';
@@ -1260,14 +1263,13 @@ FG.Channel = (function () {
         // 
         target.getNode = targetFragment.getNode = mapcnt.getNode;
         target.getNodes = targetFragment.getNodes = mapcnt.getNodes;
-        target.abort = targetFragment.abort = function () {
-            target.node.innerHTML = '';
-        };
+        target.abort = targetFragment.abort = mapcnt.abort;
 
 
         // what about a init root function?
         // 
         Wproto.checkInit(targetFragment, params);
+        
 
         // start recursion
         //

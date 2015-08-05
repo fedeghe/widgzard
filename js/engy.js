@@ -96,6 +96,28 @@ FG.engy.process = function () {
 
         if (FG.engy.config.lazyLoading) { 
             self.getComponentsPromise().then(function () {
+
+
+                var pZebra = self.retFuncs.length ?
+                    // the component,params is explicitly speficfied
+                    // 
+                    Promise.join(self.retFuncs)
+                    :
+                    // or the json does not require a component at this level
+                    // 
+                    Promise.create();
+
+                pZebra
+                .then(function (pro) {
+                    // let the build resolve it
+                    // and his promise to return the result
+                    // 
+                    build(self, pro);
+                }).then(function (p, r) {
+                    endPromise.done(r[0].config);
+                }).done();
+
+                /*
                 Widgzard.Promise.join(self.retFuncs).then(function (pro, r) {
                     
                     build(self, pro); // let the build resolve it
@@ -105,6 +127,7 @@ FG.engy.process = function () {
                     endPromise.done(r[0].config);
 
                 });
+                */
             });
         } else {
             // get position
