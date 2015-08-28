@@ -852,10 +852,6 @@ FG.Channel = (function () {
         // 
         this.node = document.createElement(tag);
 
-
-        //this.target.childrens = [];
-
-
         // save a reference to the node configuration
         // will be useful on append to append to conf.target
         // if specified
