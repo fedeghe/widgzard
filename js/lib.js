@@ -349,7 +349,7 @@ FG.io = (function (){
                 cb_loading = (options && options.loading) || function () {},
                 cb_error = (options && options.error) || function () {},
                 cb_abort = (options && options.abort) || function () {},
-                sync = options && options.sync,
+                async = options && options.async || true,
                 data = (options && options.data) || false,
                 type = (options && options.type) || 'text/html',
                 cache = (options && options.cache !== undefined) ? options.cache : true,
@@ -421,7 +421,7 @@ FG.io = (function (){
                 cb_abort && cb_abort.apply(null, arguments);
             };
             //open request
-            xhr.open(method, (method === 'GET') ? (uri + ((data) ? '?' + data: '')) : uri, sync);
+            xhr.open(method, (method === 'GET') ? (uri + ((data) ? '?' + data: '')) : uri, async);
             //thread abortion
             W.setTimeout(function () {
                 if (!complete) {
@@ -440,21 +440,21 @@ FG.io = (function (){
     // return module
     return {
         getxhr : _.getxhr,
-        post : function (uri, cback, sync, data, cache, err) {
+        post : function (uri, cback, async, data, cache, err) {
             return _.ajcall(uri, {
                 cback : cback,
                 method : 'POST',
-                sync : sync,
+                async : !!async,
                 data : data,
                 cache : cache,
                 error: err
             });
         },
-        get : function (uri, cback, sync, data, cache, err) {
+        get : function (uri, cback, async, data, cache, err) {
             return _.ajcall(uri, {
                 cback : cback || function () {},
                 method : 'GET',
-                sync : sync,
+                async : !!async,
                 data : data,
                 cache : cache,
                 error : err
@@ -464,7 +464,6 @@ FG.io = (function (){
             return _.ajcall(uri, {
                 type : 'json',
                 method: 'GET',
-                sync : false,
                 cback : function (r) {
                     cback( (W.JSON && W.JSON.parse) ? JSON.parse(r) : eval('(' + r + ')') );
                 },
@@ -474,7 +473,6 @@ FG.io = (function (){
         getXML : function (uri, cback) {
             return _.ajcall(uri, {
                 method : 'GET',
-                sync : false,
                 type : 'xml',
                 cback : cback || function () {}
             });
@@ -1289,6 +1287,15 @@ FG.Channel = (function () {
             }
             
         })(params, targetFragment);
+
+        // if no content in the root there are no childs
+        // thus, let the cb execute
+        // 
+        if (!('content' in params)) {
+            targetFragment.WIDGZARD_cb();
+        }
+
+        return target;
     }
 
     // MY WONDERFUL Promise Implementation
@@ -1414,8 +1421,8 @@ FG.Channel = (function () {
     }
 
 
-    function cleanup(trg){
-        render({target : trg, content : [{html : "no content"}]}, true);
+    function cleanup(trg, msg){
+        render({target : trg, content : [{html : msg || ""}]}, true);
     }
     
     // Widgzard.load('js/_index.js');
@@ -1489,7 +1496,7 @@ FG.Channel = (function () {
             .replace(/</g, '&lt;')
             .replace(/>/g, '&gt;')
             .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;'); +
+            .replace(/'/g, '&#039;') +
         '</pre>';
     };
 
@@ -1504,3 +1511,135 @@ FG.Channel = (function () {
     };
 
 })(this);
+
+/*
+[MALTA] ../engy/config.js
+*/
+FG.makeNS('FG/engy');
+
+FG.engy.config = {
+    componentsUrl : '/engy/components/',
+    lazyLoading : true
+};
+
+/*
+[MALTA] ../engy/engy2.js
+*/
+FG.engy.process = function () {
+
+    var config = [].slice.call(arguments, 0)[0],
+        endPromise = Widgzard.Promise.create(),
+        Processor, proto;
+
+    function overwrite(ns, path, o) {
+        var pathEls = path.split(/\.|\//),
+            i = 0, l = pathEls.length;
+        if (l > 1) {
+            for (null; i < l-1; i++) ns = ns[pathEls[i]];
+        }
+        ns[pathEls[l-1]] = o;
+    }
+
+    function mergeComponent(ns, path, o) {
+
+        var componentPH = FG.checkNS(path, ns),
+            replacementOBJ = o,
+            merged = {}, i,
+            pathEls = path.split(/\.|\//),
+            i = 0, l = pathEls.length;
+
+        // start from the replacement
+        // 
+        for (i in replacementOBJ) {
+            merged[i] = replacementOBJ[i];
+        }
+
+        // copy everything but 'component' & 'params', overriding
+        // 
+        for (i in componentPH) {
+            if(!(i.match(/component|params/))) {
+                merged[i] = componentPH[i];
+            }
+        }
+        
+        overwrite(ns, path, merged);
+    }
+
+    Processor = function (config) {
+        this.components = [];
+        this.retFuncs = [];
+        this.config = config;
+    };
+    proto = Processor.prototype;
+
+    proto.run = function () {
+        var self = this,
+            tmp = FG.object.digForKey(self.config, 'component'),
+            i, l,
+            myChain = []; 
+
+        if (tmp.length) {
+            for (i in tmp) {
+                (function (j) {
+                    myChain.push(function (p) {
+                        FG.io.get(
+                            FG.engy.config.componentsUrl + tmp[j].value + '.js',
+                            function (r) {
+                                var o = eval('(' + r.replace(/\/n|\/r/g, '') + ')'),
+                                    params = FG.checkNS(tmp[j].container + '/params', self.config),
+                                    usedParams, k, l, v, t;
+
+                                if (params) {
+                                    // check if into the component are used var placeholders
+                                    // 
+                                    usedParams = FG.object.digForValue(o, /#PARAM{([^}|]*)?\|?([^}]*)}/);
+
+                                    l = usedParams.length;
+                                    if (l) {
+                                        for (k = 0; k < l; k++) {
+                                            
+                                            v = FG.checkNS(usedParams[k].path, o);
+                                            params[usedParams[k].regexp[1]];
+                                            usedParams[k].regexp[2];
+                                            t = usedParams[k].regexp[1] in params ?
+                                                params[usedParams[k].regexp[1]]
+                                                :
+                                                (usedParams[k].regexp[2] || "")
+
+                                            // v = v.replace(usedParams[k].regexp[0],  t);
+                                            
+                                            overwrite(
+                                                o,
+                                                usedParams[k].path,
+                                                v.replace(usedParams[k].regexp[0],  t)
+                                            );
+                                        }
+                                    }
+                                }
+                                mergeComponent(self.config, tmp[j].container, o);
+                                // overwrite(self.config, tmp[j].container, o);
+
+                                p.done();
+                            },
+                            true
+                        );
+                    });
+                })(i);
+            }
+
+            // solve & recur
+            //
+            Widgzard.Promise.chain(myChain).then(function (p, r) {
+                self.run();
+            });
+
+        // we're done!
+        // 
+        } else {
+            endPromise.done(self.config);
+        }
+    };
+    (new Processor(config)).run();
+    return endPromise;
+};
+

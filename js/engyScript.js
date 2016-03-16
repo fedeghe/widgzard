@@ -108,20 +108,7 @@ window.onload = function () {
                             text : 'Google announces <a target="_blank" href="https://www.google.com/atap/projecttango/#project">project Tango</a>'
                         }
                     },
-/*
 
-                    {
-                        component: "cards/video",
-                        params: {
-                            mp4Url: "http://banner.stailamedia.com/interactive/Lidl/ON-01445/su12/de/movie.mp4"
-                            ,oggUrl: "http://banner.stailamedia.com/interactive/Lidl/ON-01445/su12/de/movie.webm"
-                             //// ???????? WAT ...hahahahah ogg !== webm
-                             ///
-                            ,autoplay : false
-                            ,controls : true
-                        }
-                    },
-*/
 
                     {
                         component : 'cards/fb',

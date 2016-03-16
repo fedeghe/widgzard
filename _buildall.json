@@ -1,5 +1,6 @@
 {
-    "lib/tpl/lib.js" : "js/",
+    "lib/tpl/widgzard.js" : "js/",
     "lib/tpl/engy.js" : "js/",
+    "lib/tpl/engy2.js" : "js/",
     "lib/tpl/engy.less" : "engy/css/"
 }
