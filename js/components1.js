@@ -65,7 +65,7 @@
 		
 		// if not specified is Body
 		//
-		r[0].target = document.getElementById('target');
+		r[0].target = document.getElementById('target1');
 	    
 	    Widgzard.render(r[0], true);
 	    t2 = +new Date;
