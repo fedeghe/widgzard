@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="lib/widgzard.css">
 </head>
 <body class="resp">
-    <script src="js/lib.min.js"></script>
+    <script src="js/lib.js"></script>
     <script>
         Widgzard.render({
             content : [{
@@ -38,8 +38,10 @@
                                 
                                 // but has on self wich references a Wnode in the outer render
                                 // 
+                                
+                                self.abort();
                                 self.done();
-                                self.stop();
+                                
                             }
                         });
                     }
@@ -50,8 +52,11 @@
             }],
             cb: function () {
                 alert('the end')
+            },
+            onAbort : function () {
+                console.debug(arguments);
+                alert('aborted')
             }
-
         });
     </script>
 </body>

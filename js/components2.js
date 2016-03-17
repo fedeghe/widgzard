@@ -53,9 +53,6 @@
 			style : {
 				fontFamily : 'Verdana, sans',
 				padding:'10px'
-			},
-			onAbort : function (r) {
-				console.debug(r);
 			}
 		};
 

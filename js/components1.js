@@ -52,24 +52,18 @@
 		style : {
 			fontFamily : 'Verdana, sans',
 			padding:'10px'
-		},
-		onAbort : function (r) {
-			console.debug(r);
 		}
 	};
 
 	
 
-	var t1 = +new Date, t2;
+	var t = +new Date;
 	FG.engy.process( o ).then(function(p, r) {
-		
 		// if not specified is Body
 		//
 		r[0].target = document.getElementById('target1');
-	    
 	    Widgzard.render(r[0], true);
-	    t2 = +new Date;
-	    console.log('t1: ' + (t2-t1));
+	    console.log('t1: ' + (+new Date - t));
 
 	});
 })();
