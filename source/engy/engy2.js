@@ -74,22 +74,26 @@ $ns$.engy2.process = function () {
 							function (r) {
 								var o = eval('(' + r.replace(/\/n|\/r/g, '') + ')'),
 									params = $ns$.checkNS(tmp[j].container + '/params', self.config),
-									usedParams, k, l, v, t;
+									usedParams, k, l, v, t, y;
 
 								if (params) {
 
 									// check if into the component are used var placeholders
 									// 
 									usedParams = $ns$.object.digForValue(o, /#PARAM{([^}|]*)?\|?([^}]*)}/);
-
+									// debugger;
 									l = usedParams.length;
 									if (l) {
 										for (k = 0; k < l; k++) {
 											
-											t = usedParams[k].regexp[1] in params ?
-												params[usedParams[k].regexp[1]]
-												:
-												(usedParams[k].regexp[2] || "");
+											// check if the label of the placeholder is in the
+											// params
+											y = $ns$.checkNS(usedParams[k].regexp[1], params);
+											
+											// in case use it otherwise, the fallback otherwise cleanup
+											//
+											t = y ? y : (usedParams[k].regexp[2] || "");
+
 
 											v = $ns$.checkNS(usedParams[k].path, o)
 												.replace(usedParams[k].regexp[0],  t);
