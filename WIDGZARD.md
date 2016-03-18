@@ -4,7 +4,7 @@
 
 
 
-# Widg`et` - `Wi`zard
+# Widg<sub style="font-size:0.4em">et</sub> - <sub style="font-size:0.4em">Wi</sub>zard
 I want to talk about a javascript module I wrote and his evolution over the time. That mainly concerns DOM creation enhanced with some useful tools.
 
 The first requirement for me at the very beginning was to have a function **to create** an **arbitrary tree** into an arbitrary node, giving as parameters all the informations needed in a object literal. That is pretty straightforward, can be done in many ways, the choice and the implementation will mainly determine the efficiency of the creation loop, I'm not here to discuss that, but one important aspect that should not be forgiven is to use a documentFragment as main container. A basic sample of usage could be, given a node with id `targetNode`
@@ -145,7 +145,7 @@ and obtain
     </div>
     
 
-Somehow is an hybrid sample seen we're still using createElement explicitly, later the solutions will be straightforward. What properties and functions will be available from within a callback context? We used the *node* property and the *getNode* and *solve* functions ... but there is more:
+Somehow is an hybrid sample seen we're still using createElement explicitly, later the solutions will be straightforward. What properties and functions will be available from within a callback context? I anticipated  the usage of the *node* property and the *getNode* and *solve* functions ... but there is more:
 
 *   **properties**
     
@@ -202,23 +202,22 @@ Returns the Domtree that would be obtained passing `cnf` to the _render_ functio
 
 	Widgzard.cleanup(<DOMnode> trg [,<String> msg])
 	
-##### Empties the DOMnode passed
+##### Empties the DOMnode passed 
 	
 Where  
 **trg** : the target DOMnode that must be cleaned
 **msg** : a string used for replacement, the default value is `""`.
 
---
+---
+---
+---
+
+#ENGY toward components
+
+The configuration _object literal_ passed as first parameter to the `Widgzard.render` function could quickly become **too big** and **unmantainable**. Moreover if somewhere is needed a component which has to be used in more places, there would be a big source of repetitions and many problems. In the end a huge mess. 
 
 
-# Example
 
-A real example can be found <a href="http://www.jmvc.org/widgzard/sample/" target="_blank">here</a>. The whole page is created with the Widgzard, as well the samples menu comes from a Widgzard.load call and all the 3 samples too.
-  
---
-
-  
-# Components
 
 Somehow a _Wnode_ configuration file can contain every information needed to render a component and set its behavior, completely. But if for example we have an element representing a book review card as :
 
@@ -253,6 +252,15 @@ We write one file _book.js_ containing a template object like:
 			}]
     	}]
     }
+    
+and one that represent the container of the books:
+
+	var BooksContainer = {
+		tag : 'ul',
+		data : {
+			books : 
+		}
+	}
    
 then we could obtain from the server only necessary data (I suppose here to get a json but for xml is almost the same) like :  
 
@@ -269,7 +277,9 @@ then we could obtain from the server only necessary data (I suppose here to get 
 	...
 	]
 	
-now there is everything needed, we have only to quickly build it using another function called __Engy.process__  
+that we'll store in the `books` variable.
+
+Now there is everything needed, we have only to quickly build it using another javascript module shipped within, which acts as a preprocessor for what concerns `components`.
 
 	Engy.process({
 		component: "bookcontainers",
@@ -282,12 +292,20 @@ now there is everything needed, we have only to quickly build it using another f
 		Widgzard.render(conf, true);
 	});
 	
+	// OR EVEN BETTER
+	
+	Engy.render({
+		target : document.getElementById('trg1'),
+		component: "bookcontainers",
+		params : {
+			books : [books]
+		}
+	})
 
---
 
-#ENGY
 
-The configuration _object literal_ passed as first parameter to the `Widgzard.render` function could quickly become too big and unmantainable. Moreover if somewhere is needed a component which has to be used in more places, there would be a big source of repetitions and many problems. In the end a huge mess.
+
+
 The `Engy.process` function will create the configuration object literal allowing us to employ _components_ which can receive parameters, recursively, allowing to solve many problems. A sample will clarify:
 
 ---

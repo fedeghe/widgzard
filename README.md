@@ -40,6 +40,8 @@ Every node has basically the following structure
 		// SEMI-MANDATORY (at least this or the next, or even both)
 		html : '<h1>hello world</h1>',
 		
+		text : 'hello world',
+		
 		// SEMI-MADATORY (at least this or the previous, or even both)
 		// HINT: `html` and `content` can coexist, the `html` will be appended
 		// before appending childs in `content`

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title></title>
+    <script>
+    var mytable = [{
+        p: {
+            nested: [{
+                table: {
+                    nested: [{
+                        thead: {
+                            nested: [{
+                                tr: {
+                                    nested: [{
+                                        th: {}
+                                    }, {
+                                        th: {}
+                                    }, {
+                                        th: {}
+                                    }]
+                                }
+                            }]
+                        }
+                    }, {
+                        tbody: {}
+                    }]
+                }
+            }]
+        }
+    }];
+
+    function toHTML(j, n) {
+    	
+    	n = n || document.createDocumentFragment('div');
+    	for (var i = 0, o, l = j.length; i < l; i++) {
+    		for (var tag in j[i]) {
+    			o = document.createElement(tag);
+    			n.appendChild(o);
+    			'nested' in j[i][tag] && toHTML(j[i][tag].nested, o);
+    		}
+    	}
+    	return n;
+    }
+    </script>
+</head>
+
+<body>
+
+	<script>
+		document.body.appendChild(toHTML(mytable));
+	</script>
+</body>
+
+</html>

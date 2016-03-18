@@ -21,6 +21,19 @@
 		},
 		style : {
 			padding:'10px'
+		},
+		data : {
+			arr : "#PARAM{arr}",
+			doList : "#PARAM{doList}"
+		},
+		cb : function () {
+			var self = this;
+			
+			if (self.data.doList){
+				
+				console.debug(self.data.arr);
+			}
+			self.done();
 		}
 	},{
 		style : {
@@ -29,5 +42,7 @@
 			padding:'10px'
 		},
 		html : 'hello crazy'
+	},{
+		html : "#PARAM{one.two.three.four.five.six.seven.eight.nine}"
 	}]
 }

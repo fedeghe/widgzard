@@ -28,7 +28,24 @@
 					component : 'test/base',
 					params : {
 						a:"Vicente goes to hollywood",
-						b:2
+						b:2,
+						one : {
+							two : {
+								three : {
+									four : {
+										five : {
+											six : {
+												seven : {
+													eight : {
+														nine : '<strong>ten</strong>'
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
 					},
 					style : {
 						backgroundColor : 'orange',
