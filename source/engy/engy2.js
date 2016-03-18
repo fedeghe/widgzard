@@ -93,12 +93,17 @@ $ns$.engy2.process = function () {
 											// in case use it otherwise, the fallback otherwise cleanup
 											//
 											t = y ? y : (usedParams[k].regexp[2] || "");
+											
+											// string or an object?
+											//
+											if ((typeof t).match(/string/i)){
+												v = $ns$.checkNS(usedParams[k].path, o)
+													.replace(usedParams[k].regexp[0],  t);
+												_overwrite(o, usedParams[k].path, v);
+											} else {
+												_overwrite(o, usedParams[k].path, t);
+											}
 
-
-											v = $ns$.checkNS(usedParams[k].path, o)
-												.replace(usedParams[k].regexp[0],  t);
-
-											_overwrite(o, usedParams[k].path, v);
 										}
 									}
 								}
