@@ -1,8 +1,8 @@
-FG.util = {
+$ns$.util = {
 	uniqueid: new function () {
         var count = 0,
             self = this;
-        this.prefix = 'FG';
+        this.prefix = '$ns$';
         this.toString = function () {
             ++count;
             return  self.prefix + count;

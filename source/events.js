@@ -1,6 +1,6 @@
-FG.makeNS('FG/events');
+$ns$.makeNS('$ns$/events');
 
-FG.events.on = (function(W) {
+$ns$.events.on = (function(W) {
     var fn;
 
     if ('addEventListener' in W) {
@@ -19,7 +19,7 @@ FG.events.on = (function(W) {
     return fn;
 })(this);
 
-FG.events.eventTarget = function(e) {
+$ns$.events.eventTarget = function(e) {
     e = e ? e : window.event;
     var targetElement = e.currentTarget || (typeof e.target !== 'undefined') ? e.target : e.srcElement;
     if (!targetElement) {
@@ -31,7 +31,7 @@ FG.events.eventTarget = function(e) {
     return targetElement;
 };
 
-FG.events.kill = function(e) {
+$ns$.events.kill = function(e) {
     if (!e) {
         e = W.event;
         e.cancelBubble = true;
@@ -41,7 +41,7 @@ FG.events.kill = function(e) {
     return false;
 };
 
-FG.events.ready = (function () {
+$ns$.events.ready = (function () {
     var cb = [],
         readyStateCheckInterval = setInterval(function() {
             if (document.readyState === "complete") {
@@ -61,7 +61,7 @@ FG.events.ready = (function () {
 })();
 
 /* From Modernizr */
-FG.events.transitionEnd = (function () {
+$ns$.events.transitionEnd = (function () {
     var n = document.createElement('fake'),
         k,
         trans = {

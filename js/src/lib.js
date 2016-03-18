@@ -174,7 +174,26 @@ FG.object = (function (){
         return typeof JSON !== 'undefined' ? JSON.stringify(obj1) === JSON.stringify(obj2) : obj1 == obj2;
     }
 
+    //Returns true if it is a DOM node
+    function isNode(o){
+        return (
+            typeof Node === "object" ? o instanceof Node : 
+            o && typeof o === "object" && typeof o.nodeType === "number" && typeof o.nodeName==="string"
+        );
+    }
+
+    //Returns true if it is a DOM element    
+    function isElement(o){
+        return (
+            typeof HTMLElement === "object" ?
+                o instanceof HTMLElement
+                : //DOM2
+                o && typeof o === "object" && o !== null && o.nodeType === 1 && typeof o.nodeName==="string"
+        );
+    }
+
     function digFor(what, obj, target) {
+
         if(!what.match(/key|value/)) {
             throw new Error('Bad param for object.digFor');
         }
@@ -194,6 +213,7 @@ FG.object = (function (){
             }[what],
             res = [],
             maybeDoPush = function (path, index, key, obj, level) {
+
                 var p = [].concat.call(path, [index]),
                     tmp = matches(index, obj[index], key);
                 if (tmp) {
@@ -211,6 +231,8 @@ FG.object = (function (){
                 dig(obj[index], key, p, level+1);
             },
             dig = function (o, k, path, level) {
+                // if is a domnode must be avoided
+                if (isNode(o) || isElement(o)) return;
                 var i, l, p, tmp;
                 if (o instanceof Array) {                
                     for (i = 0, l = o.length; i < l; i++) {
@@ -592,6 +614,25 @@ FG.events.kill = function(e) {
     return false;
 };
 
+FG.events.ready = (function () {
+    var cb = [],
+        readyStateCheckInterval = setInterval(function() {
+            if (document.readyState === "complete") {
+                clearInterval(readyStateCheckInterval);
+                for (var i = 0, l = cb.length; i < l; i++) {
+                    cb[i].call(this);
+                }
+            }
+        }, 10);
+    return function (c) {
+        if (document.readyState === "complete") {
+            c.call(this);
+        } else {
+            cb.push(c);
+        }
+    };
+})();
+
 /* From Modernizr */
 FG.events.transitionEnd = (function () {
     var n = document.createElement('fake'),
@@ -804,6 +845,8 @@ FG.Channel = (function () {
  *
  * PLEASE read this : http://stackoverflow.com/questions/1915341/whats-wrong-with-adding-properties-to-dom-element-objects
  */
+
+
 (function (W){
     
     'use strict';    
@@ -1055,7 +1098,8 @@ FG.Channel = (function () {
     Wproto.add = function () {
 
         var conf = this.conf,
-            node = this.node;
+            node = this.node,
+            tmp;
 
         // set attributes and styles
         // 
@@ -1069,6 +1113,15 @@ FG.Channel = (function () {
         // inject its value
         //
         typeof conf.html !== 'undefined' && (node.innerHTML = conf.html);
+
+
+        // if `text` is found on node conf
+        // it will be appended
+        //  
+        if (typeof conf.text !== 'undefined') {
+            tmp = document.createTextNode("" + conf.text);
+            node.appendChild(tmp);
+        }
 
         // if the node configuration has a `nodeIdentifier` key
         // (and a String value), the node can be reached 
@@ -1163,7 +1216,8 @@ FG.Channel = (function () {
             targetFragment = {
                 node : document.createDocumentFragment('div')
             },
-            active = true;
+            active = true,
+            originalHTML = target.node.innerHTML + "";
         // target.root = target;
         // debug ? 
         debug = !!params.debug;
@@ -1191,8 +1245,14 @@ FG.Channel = (function () {
                 return mapcnt.map;
             },
             abort : function () {
+                
                 active = false;
-                target.node.innerHTML = '';
+                target.node.innerHTML = originalHTML;
+                
+                'onAbort' in params &&
+                (typeof params.onAbort).match(/function/i) &&
+                params.onAbort.call(null, params);
+                
                 return false;
             },
             lateWid : function (wid) {
@@ -1501,7 +1561,7 @@ FG.Channel = (function () {
     };
 
     // publish module
-    W.Widgzard = {
+    FG.Widgzard = {
         render : render,
         cleanup : cleanup,
         get : get,
@@ -1511,135 +1571,144 @@ FG.Channel = (function () {
     };
 
 })(this);
-
 /*
-[MALTA] ../engy/config.js
+[MALTA] ../engy/engy2.js
 */
-FG.makeNS('FG/engy');
-
-FG.engy.config = {
+FG.makeNS('FG/engy2');
+FG.engy2.config = {
     componentsUrl : '/engy/components/',
     lazyLoading : true
 };
 
-/*
-[MALTA] ../engy/engy2.js
-*/
-FG.engy.process = function () {
+FG.engy2.process = function () {
 
-    var config = [].slice.call(arguments, 0)[0],
-        endPromise = Widgzard.Promise.create(),
-        Processor, proto;
+	var config = [].slice.call(arguments, 0)[0],
+		endPromise = FG.Widgzard.Promise.create(),
+		Processor, proto;
+		engy = this;
 
-    function overwrite(ns, path, o) {
-        var pathEls = path.split(/\.|\//),
-            i = 0, l = pathEls.length;
-        if (l > 1) {
-            for (null; i < l-1; i++) ns = ns[pathEls[i]];
-        }
-        ns[pathEls[l-1]] = o;
-    }
+	function _overwrite(ns, path, o) {
+		var pathEls = path.split(/\.|\//),
+			i = 0, l = pathEls.length;
 
-    function mergeComponent(ns, path, o) {
+		if (l > 1) {
+			for (null; i < l-1; i++) ns = ns[pathEls[i]];
+		}
 
-        var componentPH = FG.checkNS(path, ns),
-            replacementOBJ = o,
-            merged = {}, i,
-            pathEls = path.split(/\.|\//),
-            i = 0, l = pathEls.length;
+		ns[pathEls[l-1]] = o;
+	}
 
-        // start from the replacement
-        // 
-        for (i in replacementOBJ) {
-            merged[i] = replacementOBJ[i];
-        }
+	function _mergeComponent(ns, path, o) {
 
-        // copy everything but 'component' & 'params', overriding
-        // 
-        for (i in componentPH) {
-            if(!(i.match(/component|params/))) {
-                merged[i] = componentPH[i];
-            }
-        }
-        
-        overwrite(ns, path, merged);
-    }
+		var componentPH = FG.checkNS(path, ns),
+			replacementOBJ = o,
+			merged = {}, i,
+			pathEls = path.split(/\.|\//),
+			i = 0, l = pathEls.length;
 
-    Processor = function (config) {
-        this.components = [];
-        this.retFuncs = [];
-        this.config = config;
-    };
-    proto = Processor.prototype;
+		// start from the replacement
+		// 
+		for (i in replacementOBJ)
+			merged[i] = replacementOBJ[i];
 
-    proto.run = function () {
-        var self = this,
-            tmp = FG.object.digForKey(self.config, 'component'),
-            i, l,
-            myChain = []; 
+		// copy everything but 'component' & 'params', overriding
+		// 
+		for (i in componentPH) {
+			!(i.match(/component|params/))
+			&&
+			(merged[i] = componentPH[i]);
+		}
+		
+		_overwrite(ns, path, merged);
+	}
 
-        if (tmp.length) {
-            for (i in tmp) {
-                (function (j) {
-                    myChain.push(function (p) {
-                        FG.io.get(
-                            FG.engy.config.componentsUrl + tmp[j].value + '.js',
-                            function (r) {
-                                var o = eval('(' + r.replace(/\/n|\/r/g, '') + ')'),
-                                    params = FG.checkNS(tmp[j].container + '/params', self.config),
-                                    usedParams, k, l, v, t;
+	Processor = function (config) {
+		this.components = [];
+		this.retFuncs = [];
+		this.config = config;
+	};
+	proto = Processor.prototype;
 
-                                if (params) {
-                                    // check if into the component are used var placeholders
-                                    // 
-                                    usedParams = FG.object.digForValue(o, /#PARAM{([^}|]*)?\|?([^}]*)}/);
+	proto.run = function () {
+		var self = this,
+			tmp = FG.object.digForKey(self.config, 'component'),
+			i, l,
+			myChain = []; 
 
-                                    l = usedParams.length;
-                                    if (l) {
-                                        for (k = 0; k < l; k++) {
-                                            
-                                            v = FG.checkNS(usedParams[k].path, o);
-                                            params[usedParams[k].regexp[1]];
-                                            usedParams[k].regexp[2];
-                                            t = usedParams[k].regexp[1] in params ?
-                                                params[usedParams[k].regexp[1]]
-                                                :
-                                                (usedParams[k].regexp[2] || "")
+		if (tmp.length) {
+			for (i in tmp) {
+				(function (j) {
+					myChain.push(function (p) {
+						
+						FG.io.get(
+							// File
+							// 
+							engy.config.componentsUrl + tmp[j].value + '.js',
 
-                                            // v = v.replace(usedParams[k].regexp[0],  t);
-                                            
-                                            overwrite(
-                                                o,
-                                                usedParams[k].path,
-                                                v.replace(usedParams[k].regexp[0],  t)
-                                            );
-                                        }
-                                    }
-                                }
-                                mergeComponent(self.config, tmp[j].container, o);
-                                // overwrite(self.config, tmp[j].container, o);
+							// callback
+							// 
+							function (r) {
+								var o = eval('(' + r.replace(/\/n|\/r/g, '') + ')'),
+									params = FG.checkNS(tmp[j].container + '/params', self.config),
+									usedParams, k, l, v, t;
 
-                                p.done();
-                            },
-                            true
-                        );
-                    });
-                })(i);
-            }
+								if (params) {
 
-            // solve & recur
-            //
-            Widgzard.Promise.chain(myChain).then(function (p, r) {
-                self.run();
-            });
+									// check if into the component are used var placeholders
+									// 
+									usedParams = FG.object.digForValue(o, /#PARAM{([^}|]*)?\|?([^}]*)}/);
 
-        // we're done!
-        // 
-        } else {
-            endPromise.done(self.config);
-        }
-    };
-    (new Processor(config)).run();
-    return endPromise;
+									l = usedParams.length;
+									if (l) {
+										for (k = 0; k < l; k++) {
+											
+											t = usedParams[k].regexp[1] in params ?
+												params[usedParams[k].regexp[1]]
+												:
+												(usedParams[k].regexp[2] || "");
+
+											v = FG.checkNS(usedParams[k].path, o)
+												.replace(usedParams[k].regexp[0],  t);
+
+											_overwrite(o, usedParams[k].path, v);
+										}
+									}
+								}
+								_mergeComponent(self.config, tmp[j].container, o);
+
+								// file got, solve the promise
+								// 
+								p.done();
+							},
+							true
+						);
+					});
+				})(i);
+			}
+
+			// solve & recur
+			//
+			FG.Widgzard.Promise.chain(myChain).then(function (p, r) {
+				self.run();
+			});
+
+		// in that case everything is done since
+		// we have no more components in the object
+		// 
+		} else {
+			endPromise.done(self.config);
+		}
+	};
+
+	(new Processor(config)).run();
+
+	return endPromise;
 };
 
+FG.engy2.render = function (params, clean) {
+	var t = +new Date;
+	FG.engy2.process( params ).then(function(p, r) {
+	    FG.Widgzard.render(r[0], clean);
+	    console.log('t: ' + (+new Date - t));
+	});
+}

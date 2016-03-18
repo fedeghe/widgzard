@@ -7,6 +7,4 @@ $$../dom.js$$
 $$../events.js$$
 $$../channel.js$$
 $$../widgzard.js$$
-FG.makeNS('FG/engy2');
-$$../engy/config2.js$$
 $$../engy/engy2.js$$

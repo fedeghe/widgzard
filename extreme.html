@@ -16,9 +16,9 @@
     <link rel="stylesheet" href="lib/widgzard.css">
 </head>
 <body class="resp">
-    <script src="js/lib.js"></script>
+    <script src="js/src/lib.js"></script>
     <script>
-        Widgzard.render({
+        FG.Widgzard.render({
             content : [{
                 target : document.body,
                 html : 'hello'
@@ -28,7 +28,7 @@
                     cb : function () {
                         var self = this;
 
-                        Widgzard.render({
+                        FG.Widgzard.render({
                             target : self.node,
                             html : "myworld",
                             cb : function () {

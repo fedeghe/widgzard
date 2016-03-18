@@ -1,0 +1,5 @@
+{
+	"ns" : "FG",
+	"componentsUrl" : "/engy/components/",
+	"lazyLoading" : "true"
+}

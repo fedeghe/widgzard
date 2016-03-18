@@ -21,6 +21,8 @@
  *
  * PLEASE read this : http://stackoverflow.com/questions/1915341/whats-wrong-with-adding-properties-to-dom-element-objects
  */
+
+
 (function (W){
     
     'use strict';    
@@ -735,7 +737,7 @@
     };
 
     // publish module
-    W.Widgzard = {
+    $ns$.Widgzard = {
         render : render,
         cleanup : cleanup,
         get : get,

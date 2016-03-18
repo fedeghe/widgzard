@@ -1,7 +1,13 @@
-FG.engy2.process = function () {
+$ns$.makeNS('$ns$/engy2');
+$ns$.engy2.config = {
+    componentsUrl : '$componentsUrl$',
+    lazyLoading : $lazyLoading$
+};
+
+$ns$.engy2.process = function () {
 
 	var config = [].slice.call(arguments, 0)[0],
-		endPromise = Widgzard.Promise.create(),
+		endPromise = $ns$.Widgzard.Promise.create(),
 		Processor, proto;
 		engy = this;
 
@@ -18,7 +24,7 @@ FG.engy2.process = function () {
 
 	function _mergeComponent(ns, path, o) {
 
-		var componentPH = FG.checkNS(path, ns),
+		var componentPH = $ns$.checkNS(path, ns),
 			replacementOBJ = o,
 			merged = {}, i,
 			pathEls = path.split(/\.|\//),
@@ -49,7 +55,7 @@ FG.engy2.process = function () {
 
 	proto.run = function () {
 		var self = this,
-			tmp = FG.object.digForKey(self.config, 'component'),
+			tmp = $ns$.object.digForKey(self.config, 'component'),
 			i, l,
 			myChain = []; 
 
@@ -58,7 +64,7 @@ FG.engy2.process = function () {
 				(function (j) {
 					myChain.push(function (p) {
 						
-						FG.io.get(
+						$ns$.io.get(
 							// File
 							// 
 							engy.config.componentsUrl + tmp[j].value + '.js',
@@ -67,14 +73,14 @@ FG.engy2.process = function () {
 							// 
 							function (r) {
 								var o = eval('(' + r.replace(/\/n|\/r/g, '') + ')'),
-									params = FG.checkNS(tmp[j].container + '/params', self.config),
+									params = $ns$.checkNS(tmp[j].container + '/params', self.config),
 									usedParams, k, l, v, t;
 
 								if (params) {
 
 									// check if into the component are used var placeholders
 									// 
-									usedParams = FG.object.digForValue(o, /#PARAM{([^}|]*)?\|?([^}]*)}/);
+									usedParams = $ns$.object.digForValue(o, /#PARAM{([^}|]*)?\|?([^}]*)}/);
 
 									l = usedParams.length;
 									if (l) {
@@ -85,7 +91,7 @@ FG.engy2.process = function () {
 												:
 												(usedParams[k].regexp[2] || "");
 
-											v = FG.checkNS(usedParams[k].path, o)
+											v = $ns$.checkNS(usedParams[k].path, o)
 												.replace(usedParams[k].regexp[0],  t);
 
 											_overwrite(o, usedParams[k].path, v);
@@ -106,7 +112,7 @@ FG.engy2.process = function () {
 
 			// solve & recur
 			//
-			Widgzard.Promise.chain(myChain).then(function (p, r) {
+			$ns$.Widgzard.Promise.chain(myChain).then(function (p, r) {
 				self.run();
 			});
 
@@ -123,10 +129,10 @@ FG.engy2.process = function () {
 	return endPromise;
 };
 
-FG.engy2.render = function (params, clean) {
+$ns$.engy2.render = function (params, clean) {
 	var t = +new Date;
-	FG.engy2.process( params ).then(function(p, r) {
-	    Widgzard.render(r[0], clean);
-	    console.log('t2: ' + (+new Date - t));
+	$ns$.engy2.process( params ).then(function(p, r) {
+	    $ns$.Widgzard.render(r[0], clean);
+	    console.log('t: ' + (+new Date - t));
 	});
 }

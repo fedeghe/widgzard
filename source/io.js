@@ -1,5 +1,5 @@
-FG.makeNS('FG/io');
-FG.io = (function (){
+$ns$.makeNS('$ns$/io');
+$ns$.io = (function (){
 
     var W = window,
         _ = {
@@ -44,7 +44,7 @@ FG.io = (function (){
                 state = false;
             //prepare data, caring of cache
             if (!cache) {data.C = +new Date; }
-            data = FG.object.toQs(data).substr(1);
+            data = $ns$.object.toQs(data).substr(1);
             xhr.onreadystatechange = function () {
                 var tmp;
                 if (state === xhr.readyState) {

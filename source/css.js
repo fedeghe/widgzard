@@ -1,6 +1,6 @@
-FG.makeNS('FG/css');
+$ns$.makeNS('$ns$/css');
 
-FG.css.style = function (el, prop, val ) {
+$ns$.css.style = function (el, prop, val ) {
 
     var prop_is_obj = (typeof prop === 'object' && typeof val === 'undefined'),
         ret = false,

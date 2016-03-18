@@ -1,4 +1,4 @@
-FG.engy.process = function () {
+$ns$.engy.process = function () {
 
     var args = [].slice.call(arguments, 0),
         config = args[0],
@@ -14,7 +14,7 @@ FG.engy.process = function () {
 
     processorPROTO.getComponents = function () {
         var self = this,
-            tmp = FG.object.digForKey(self.config, 'component'),
+            tmp = $ns$.object.digForKey(self.config, 'component'),
             i, l;
 
         //build at level
@@ -25,7 +25,7 @@ FG.engy.process = function () {
             }     
             self.components[tmp[i].level].push({
                 component : tmp[i],
-                params : FG.checkNS(tmp[i].container ?  tmp[i].container + '.params' : 'params' , self.config)
+                params : $ns$.checkNS(tmp[i].container ?  tmp[i].container + '.params' : 'params' , self.config)
             });
         }
     }; 
@@ -52,11 +52,11 @@ FG.engy.process = function () {
 
                             var pr = Widgzard.Promise.create(),
 
-                                file = FG.engy.config.componentsUrl + self.components[j1][j2].component.value + '.js';
+                                file = $ns$.engy.config.componentsUrl + self.components[j1][j2].component.value + '.js';
                     
                             // not get it as json , so it's possible to specify the cb within the component
                             // net being it validated from JSON.parse
-                            FG.io.get(
+                            $ns$.io.get(
                                 file,
                                 function (r) {
                                     self.components[j1][j2].json = eval('(' + r.replace(/\/n|\/r/g, '') + ')');
@@ -79,7 +79,7 @@ FG.engy.process = function () {
         var self = this,
             tmp, i1, i2 , l1, l2;
 
-        if (FG.engy.config.lazyLoading) { 
+        if ($ns$.engy.config.lazyLoading) { 
             self.getComponentsPromise().then(function () {
 
 
@@ -117,11 +117,11 @@ FG.engy.process = function () {
         } else {
             // get position
             self.getComponents();
-            // now look into FG ns to get the missing json, the one loaded in lazy mode
+            // now look into $ns$ ns to get the missing json, the one loaded in lazy mode
             for (i1 = 0, l1 = self.components.length; i1 < l1 ; i1++) {
                 if (self.components[i1]) {
                     for (i2 = 0, l2 = self.components[i1].length; i2 < l2; i2++) {
-                        self.components[i1][i2].json = FG.components[self.components[i1][i2].component.value]; //FG.components;
+                        self.components[i1][i2].json = $ns$.components[self.components[i1][i2].component.value]; //$ns$.components;
                     }
                 }
             }
@@ -169,16 +169,16 @@ FG.engy.process = function () {
             solve = function (j, p) {
 
                 // use 
-                var replacing = FG.object.digForValue(j, /#PARAM{([^}|]*)?\|?([^}]*)}/),
+                var replacing = $ns$.object.digForValue(j, /#PARAM{([^}|]*)?\|?([^}]*)}/),
                     i, l,
                     mayP, fback, ref,
                     ret;
                 
                 for (i = 0, l = replacing.length; i < l; i++) {
                     
-                    mayP = FG.checkNS(replacing[i].regexp[1], p),
+                    mayP = $ns$.checkNS(replacing[i].regexp[1], p),
                     fback = replacing[i].regexp[2],
-                    ref = FG.checkNS(replacing[i].container, j);
+                    ref = $ns$.checkNS(replacing[i].container, j);
                     if (mayP !== undefined) {
                         ref[replacing[i].key] = mayP;    
                     } else {
@@ -203,7 +203,7 @@ FG.engy.process = function () {
 
                     res = solve(json, params);
 
-                    ref = FG.checkNS(comp.component.parentContainer, config);
+                    ref = $ns$.checkNS(comp.component.parentContainer, config);
                     
                     if (comp.component.parentKey != undefined) {
                         ref[comp.component.parentKey] = res;

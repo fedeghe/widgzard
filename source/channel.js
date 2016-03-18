@@ -2,7 +2,7 @@
  * [Channel description]
  * @param {[type]} n [description]
  */
-FG.Channel = (function () {
+$ns$.Channel = (function () {
     var channels = {},
 
         // function added to free completely

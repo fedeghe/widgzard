@@ -1,4 +1,4 @@
-FG.object = (function (){
+$ns$.object = (function (){
 
     /**
      * maps an object literal to a string according using the map function  passed
@@ -43,13 +43,13 @@ FG.object = (function (){
         }
         var matches = {
                 key : function (k1, k2, key) {
-                    return (FG.object.isString(k1) && key instanceof RegExp) ?
+                    return ($ns$.object.isString(k1) && key instanceof RegExp) ?
                         k1.match(key)
                         :
                         jCompare(k1, key);
                 },
                 value : function (k1, k2, val) {
-                    return (FG.object.isString(k2) && val instanceof RegExp) ?
+                    return ($ns$.object.isString(k2) && val instanceof RegExp) ?
                         k2.match(val)
                         :
                         jCompare(k2, val);
@@ -129,7 +129,7 @@ FG.object = (function (){
         },
 
         extend: function(o, ext, force) {
-            var obj = FG.object.clone(o),
+            var obj = $ns$.object.clone(o),
                 j;
             for (j in ext) {
                 if (ext.hasOwnProperty(j) && (!(j in obj) || force)) {
@@ -140,7 +140,7 @@ FG.object = (function (){
         },
 
         clone: function(obj) {
-            var self = FG.object,
+            var self = $ns$.object,
                 copy,
                 i, l;
             // Handle the 3 simple types, and null or undefined
