@@ -9,16 +9,15 @@ $ns$.engy2.process = function () {
 	var config = [].slice.call(arguments, 0)[0],
 		endPromise = $ns$.Widgzard.Promise.create(),
 		Processor, proto;
-		engy = this;
+		engy = this,
+		components = {};
 
 	function _overwrite(ns, path, o) {
 		var pathEls = path.split(/\.|\//),
 			i = 0, l = pathEls.length;
-
 		if (l > 1) {
 			for (null; i < l-1; i++) ns = ns[pathEls[i]];
 		}
-
 		ns[pathEls[l-1]] = o;
 	}
 
@@ -64,57 +63,62 @@ $ns$.engy2.process = function () {
 				(function (j) {
 					myChain.push(function (p) {
 						
-						$ns$.io.get(
-							// File
-							// 
-							engy.config.componentsUrl + tmp[j].value + '.js',
-
-							// callback
-							// 
-							function (r) {
-								var o = eval('(' + r.replace(/\/n|\/r/g, '') + ')'),
-									params = $ns$.checkNS(tmp[j].container + '/params', self.config),
-									usedParams, k, l, v, t, y;
-
-								if (params) {
-
-									// check if into the component are used var placeholders
-									// 
-									usedParams = $ns$.object.digForValue(o, /#PARAM{([^}|]*)?\|?([^}]*)}/);
-									// debugger;
-									l = usedParams.length;
-									if (l) {
-										for (k = 0; k < l; k++) {
-											
-											// check if the label of the placeholder is in the
-											// params
-											y = $ns$.checkNS(usedParams[k].regexp[1], params);
-											
-											// in case use it otherwise, the fallback otherwise cleanup
-											//
-											t = y ? y : (usedParams[k].regexp[2] || "");
-											
-											// string or an object?
-											//
-											if ((typeof t).match(/string/i)){
-												v = $ns$.checkNS(usedParams[k].path, o)
-													.replace(usedParams[k].regexp[0],  t);
-												_overwrite(o, usedParams[k].path, v);
-											} else {
-												_overwrite(o, usedParams[k].path, t);
-											}
-
+						var store,
+							componentName = engy.config.componentsUrl + tmp[j].value + '.js';
+						
+						function cback(r) {
+							if (store) {
+								components[componentName] = r;
+							}
+							var o = eval('(' + r.replace(/\/n|\/r/g, '') + ')'),
+								params = $ns$.checkNS(tmp[j].container + '/params', self.config),
+								usedParams, k, l, v, t, y;
+							if (params) {
+								// check if into the component are used var placeholders
+								// 
+								usedParams = $ns$.object.digForValue(o, /#PARAM{([^}|]*)?\|?([^}]*)}/);
+								// debugger;
+								l = usedParams.length;
+								if (l) {
+									for (k = 0; k < l; k++) {
+										
+										// check if the label of the placeholder is in the
+										// params
+										y = $ns$.checkNS(usedParams[k].regexp[1], params);
+										
+										// in case use it otherwise, the fallback otherwise cleanup
+										//
+										t = y ? y : (usedParams[k].regexp[2] || "");
+										
+										// string or an object?
+										//
+										if ((typeof t).match(/string/i)){
+											v = $ns$.checkNS(usedParams[k].path, o)
+												.replace(usedParams[k].regexp[0],  t);
+											_overwrite(o, usedParams[k].path, v);
+										} else {
+											_overwrite(o, usedParams[k].path, t);
 										}
 									}
 								}
-								_mergeComponent(self.config, tmp[j].container, o);
+							}
+							_mergeComponent(self.config, tmp[j].container, o);
 
-								// file got, solve the promise
-								// 
-								p.done();
-							},
-							true
-						);
+							// file got, solve the promise
+							// 
+							p.done();
+						}
+
+						if (componentName in components) {
+							store = false;
+							cback (components[componentName]);
+						} else {
+							store = true;
+							$ns$.io.get(componentName, cback, true);	
+						}
+
+
+						
 					});
 				})(i);
 			}
