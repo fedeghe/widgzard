@@ -63,11 +63,14 @@ $ns$.engy2.process = function () {
 				(function (j) {
 					myChain.push(function (p) {
 						
-						var store,
-							componentName = engy.config.componentsUrl + tmp[j].value + '.js';
-						
+						var componentName = engy.config.componentsUrl + tmp[j].value + '.js',
+							cached = componentName in components;
+
 						function cback(r) {
-							if (store) {
+
+							// maybe is the 
+							//
+							if (!cached) {
 								components[componentName] = r;
 							}
 							var o = eval('(' + r.replace(/\/n|\/r/g, '') + ')'),
@@ -109,13 +112,11 @@ $ns$.engy2.process = function () {
 							p.done();
 						}
 
-						if (componentName in components) {
-							store = false;
-							cback (components[componentName]);
-						} else {
-							store = true;
+						cached ?
+							cback (components[componentName])
+							:
 							$ns$.io.get(componentName, cback, true);	
-						}
+						
 
 
 						
