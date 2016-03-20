@@ -1,7 +1,7 @@
 {
 	tag : 'p',
 	style : {
-		color:'white',
+		color:'black',
 		padding:'10px'
 	},
 	content : [{

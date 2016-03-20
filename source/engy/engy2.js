@@ -68,11 +68,12 @@ $ns$.engy2.process = function () {
 
 						function cback(r) {
 
-							// maybe is the 
+							// maybe is not already cached
 							//
 							if (!cached) {
 								components[componentName] = r;
 							}
+							
 							var o = eval('(' + r.replace(/\/n|\/r/g, '') + ')'),
 								params = $ns$.checkNS(tmp[j].container + '/params', self.config),
 								usedParams, k, l, v, t, y;
@@ -109,7 +110,9 @@ $ns$.engy2.process = function () {
 
 							// file got, solve the promise
 							// 
-							p.done();
+							p.done();	
+
+							
 						}
 
 						cached ?
