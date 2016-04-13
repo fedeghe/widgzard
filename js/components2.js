@@ -9,6 +9,20 @@
 			target : document.getElementById('target2'),
 
 			content : [{
+				tag : 'p',
+				style : {margin:'5px'},
+				content : [{
+					tag : 'span',
+					text : String.fromCharCode(9654)
+				},{
+					tag : 'span',
+					html : 'll',
+					style : {
+						letterSpacing : '0px',
+						fontWeight:'bold'
+					}
+				}]
+			},{
 				tag : 'b',
 				text : 'hello LEVEL1',
 				style : {
@@ -28,6 +42,8 @@
 					component : 'test/base',
 					params : {
 						a:"Vicente goes to hollywood",
+						doList : true,
+						arr : [1,2,3,4,5],
 						b:2,
 						one : {
 							two : {
@@ -88,7 +104,9 @@
 
 		// });
 
-		FG.engy2.render(o, true);
+		FG.engy2.render(o,true).then(function (p, r) {
+			console.debug(r[0])
+		});
 
 	// });
 	

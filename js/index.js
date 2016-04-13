@@ -21,7 +21,7 @@
                 }, time);
             })();
             this.done();
-        },
+        },  
         
         color0 = '#FFFFFF',
         color1 = '#FF8800',
