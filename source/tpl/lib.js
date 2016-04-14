@@ -6,5 +6,6 @@ $$../css.js$$
 $$../dom.js$$
 $$../events.js$$
 $$../channel.js$$
+$$../promise.js$$
 $$../widgzard.js$$
 $$../engy/engy2.js$$

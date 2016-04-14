@@ -42,19 +42,25 @@
      *     
      */
     function makens(str, obj, ctx) {
-        var chr = '.',
-            els = str.split(/\.|\//),
+        var els = str.split(/\.|\//),
             l = els.length,
             _u_ = 'undefined',
             ret;
+        // default context window
         (typeof ctx === _u_) && (ctx = window);
+
+        // default object empty
         (typeof obj === _u_) && (obj = {});
+
+        // if function
+        (typeof obj === 'function') && (obj = obj());        
+
         //
         if (!ctx[els[0]]) {
             ctx[els[0]] = (l === 1) ? obj : {};
         }
         ret = ctx[els[0]];
-        return (l > 1) ? makens(els.slice(1).join(chr), obj, ctx[els[0]]) : ret;
+        return (l > 1) ? makens(els.slice(1).join('.'), obj, ctx[els[0]]) : ret;
     }
 
 
@@ -820,6 +826,126 @@ FG.Channel = (function () {
     };
 })();
 /*
+[MALTA] ../promise.js
+*/
+/**
+ * [Channel description]
+ * @param {[type]} n [description]
+ */
+FG.Promise = (function () {
+
+    // MY WONDERFUL Promise Implementation
+    // 
+    
+    var _Promise = function() {
+            this.cbacks = [];
+            this.solved = false;
+            this.result = null;
+        },
+        proto = _Promise.prototype;
+    /**
+     * [then description]
+     * @param  {[type]} func [description]
+     * @param  {[type]} ctx  [description]
+     * @return {[type]}      [description]
+     */
+    proto.then = function(func, ctx) {
+        var self = this,
+            f = function() {
+                self.solved = false;
+                func.apply(ctx || self, [ctx || self, self.result]);
+            };
+        if (this.solved) {
+            f();
+        } else {
+            this.cbacks.push(f);
+        }
+        return this;
+    };
+
+    /**
+     * [done description]
+     * @return {Function} [description]
+     */
+    proto.done = function() {
+        var r = [].slice.call(arguments, 0);
+        this.result = r;
+        this.solved = true;
+        if (!this.cbacks.length) {
+            return this.result;
+        }
+        this.cbacks.shift()(r);
+    };
+
+
+    /**
+     * [chain description]
+     * @param  {[type]} funcs [description]
+     * @param  {[type]} args  [description]
+     * @return {[type]}       [description]
+     */
+    function chain(funcs, args) {
+
+        var p = new _Promise();
+        var first = (function() {
+
+                funcs[0].apply(p, [p].concat([args]));
+                return p;
+            })(),
+            tmp = [first];
+
+        for (var i = 1, l = funcs.length; i < l; i++) {
+            tmp.push(tmp[i - 1].then(funcs[i]));
+        }
+        return p;
+    }
+
+    /**
+     * [join description]
+     * @param  {[type]} pros [description]
+     * @param  {[type]} args [description]
+     * @return {[type]}      [description]
+     */
+    function join(pros, args) {
+        var endP = new _Promise(),
+            res = [],
+            stack = [],
+            i = 0,
+            l = pros.length,
+            limit = l,
+            solved = function (remainder) {
+                !remainder && endP.done.apply(endP, res);
+            };
+
+        for (null; i < l; i++) {
+            (function (k) {
+                stack[k] = new _Promise();
+
+                // inside every join function the context is a Promise, and
+                // is possible to return it or not 
+                var _p = pros[k].apply(stack[k], [stack[k], args]);
+                (_p instanceof _Promise ? _p : stack[k])
+                .then(function (p, r) {
+                    res[k] = r;
+                    solved(--limit);
+                });
+            })(i);
+        }
+        return endP;
+    }
+
+    /* returning module
+    */
+    return {
+        create: function() {
+            return new _Promise();
+        },
+        chain: chain,
+        join: join
+    };
+    
+})();
+/*
 [MALTA] ../widgzard.js
 */
 /**
@@ -847,6 +973,7 @@ FG.Channel = (function () {
  */
 
 
+
 (function (W){
     
     'use strict';    
@@ -860,7 +987,7 @@ FG.Channel = (function () {
         autoclean = true,
         debug = false,
         Wproto = Wnode.prototype,
-        Promise,
+        Promise = FG.Promise,
         htmlspecialchars, delegate, eulerWalk,
         noop = function () {};
 
@@ -1358,115 +1485,7 @@ FG.Channel = (function () {
         return target;
     }
 
-    // MY WONDERFUL Promise Implementation
-    // 
-    Promise = (function() {
-        var _Promise = function() {
-                this.cbacks = [];
-                this.solved = false;
-                this.result = null;
-            },
-            proto = _Promise.prototype;
-        /**
-         * [then description]
-         * @param  {[type]} func [description]
-         * @param  {[type]} ctx  [description]
-         * @return {[type]}      [description]
-         */
-        proto.then = function(func, ctx) {
-            var self = this,
-                f = function() {
-                    self.solved = false;
-                    func.apply(ctx || self, [ctx || self, self.result]);
-                };
-            if (this.solved) {
-                f();
-            } else {
-                this.cbacks.push(f);
-            }
-            return this;
-        };
-
-        /**
-         * [done description]
-         * @return {Function} [description]
-         */
-        proto.done = function() {
-            var r = [].slice.call(arguments, 0);
-            this.result = r;
-            this.solved = true;
-            if (!this.cbacks.length) {
-                return this.result;
-            }
-            this.cbacks.shift()(r);
-        };
-
-        /**
-         * [chain description]
-         * @param  {[type]} funcs [description]
-         * @param  {[type]} args  [description]
-         * @return {[type]}       [description]
-         */
-        function chain(funcs, args) {
-
-            var p = new _Promise();
-            var first = (function() {
-
-                    funcs[0].apply(p, [p].concat([args]));
-                    return p;
-                })(),
-                tmp = [first];
-
-            for (var i = 1, l = funcs.length; i < l; i++) {
-                tmp.push(tmp[i - 1].then(funcs[i]));
-            }
-            return p;
-        }
-
-        /**
-         * [join description]
-         * @param  {[type]} pros [description]
-         * @param  {[type]} args [description]
-         * @return {[type]}      [description]
-         */
-        function join(pros, args) {
-            var endP = new _Promise(),
-                res = [],
-                stack = [],
-                i = 0,
-                l = pros.length,
-                limit = l,
-                solved = function (remainder) {
-                    !remainder && endP.done.apply(endP, res);
-                };
-
-            for (null; i < l; i++) {
-                (function (k) {
-                    stack[k] = new _Promise();
-
-                    // inside every join function the context is a Promise, and
-                    // is possible to return it or not 
-                    var _p = pros[k].apply(stack[k], [stack[k], args]);
-                    (_p instanceof _Promise ? _p : stack[k])
-                    .then(function (p, r) {
-                        res[k] = r;
-                        solved(--limit);
-                    });
-                })(i);
-            }
-            return endP;
-        }
-
-        /* returning module
-        */
-        return {
-            create: function() {
-                return new _Promise();
-            },
-            chain: chain,
-            join: join
-        };
-    })();
+ 
 
     /**
      * [get description]
@@ -1574,7 +1593,178 @@ FG.Channel = (function () {
 /*
 [MALTA] ../engy/engy2.js
 */
-FG.makeNS('FG/engy2');
+FG.makeNS('engy2', function () {
+
+
+
+	var components = {};
+
+	function _overwrite(ns, path, o) {
+		var pathEls = path.split(/\.|\//),
+			i = 0, l = pathEls.length;
+		if (l > 1) {
+			for (null; i < l-1; i++) ns = ns[pathEls[i]];
+		}
+		ns[pathEls[l-1]] = o;
+	}
+
+	function _mergeComponent(ns, path, o) {
+
+		var componentPH = FG.checkNS(path, ns),
+			replacementOBJ = o,
+			merged = {}, i,
+			pathEls = path.split(/\.|\//),
+			i = 0, l = pathEls.length;
+
+		// start from the replacement
+		// 
+		for (i in replacementOBJ)
+			merged[i] = replacementOBJ[i];
+
+		// copy everything but 'component' & 'params', overriding
+		// 
+		for (i in componentPH) {
+			!(i.match(/component|params/))
+			&&
+			(merged[i] = componentPH[i]);
+		}
+		
+		_overwrite(ns, path, merged);
+	}
+
+
+	return {
+
+		config : {
+		    componentsUrl : '/engy/components/',
+		    lazyLoading : true
+		},
+
+		process : function () {
+			var config = [].slice.call(arguments, 0)[0],
+				endPromise = FG.Widgzard.Promise.create(),
+				Processor, proto;
+				engy = this;;
+
+			Processor = function (config) {
+				this.retFuncs = [];
+				this.config = config;
+			};
+			proto = Processor.prototype;
+
+			proto.run = function () {
+				var self = this,
+					tmp = FG.object.digForKey(self.config, 'component'),
+					i, l,
+					myChain = []; 
+
+				if (tmp.length) {
+					for (i in tmp) {
+						(function (j) {
+							myChain.push(function (p) {
+								
+								var componentName = engy.config.componentsUrl + tmp[j].value + '.js',
+									cached = componentName in components;
+
+								function cback(r) {
+
+									// maybe is not already cached
+									//
+									if (!cached) {
+										components[componentName] = r;
+									}
+									
+									var o = eval('(' + r.replace(/\/n|\/r/g, '') + ')'),
+										params = FG.checkNS(tmp[j].container + '/params', self.config),
+										usedParams, k, l, v, t, y;
+
+									if (params) {
+
+										// check if into the component are used var placeholders
+										// 
+										usedParams = FG.object.digForValue(o, /#PARAM{([^}|]*)?\|?([^}]*)}/);
+
+										l = usedParams.length;
+
+										if (l) {
+
+											for (k = 0; k < l; k++) {
+												
+												// check if the label of the placeholder is in the
+												// params
+												y = FG.checkNS(usedParams[k].regexp[1], params);
+												
+												// in case use it otherwise, the fallback otherwise cleanup
+												//
+												t = y ? y : (usedParams[k].regexp[2] || "");
+												
+												// string or an object?
+												//
+												if ((typeof t).match(/string/i)){
+													v = FG.checkNS(usedParams[k].path, o)
+														.replace(usedParams[k].regexp[0],  t);
+													_overwrite(o, usedParams[k].path, v);
+												} else {
+													_overwrite(o, usedParams[k].path, t);
+												}
+											}
+										}
+									}
+									_mergeComponent(self.config, tmp[j].container, o);
+
+									// file got, solve the promise
+									// 
+									p.done();
+								}
+
+								/**
+								 * maybe is cached
+								 */
+								cached ?
+									cback (components[componentName])
+									:
+									FG.io.get(componentName, cback, true);	
+							});
+						})(i);
+					}
+
+					// solve & recur
+					//
+					FG.Widgzard.Promise.chain(myChain).then(function (p, r) {
+						self.run();
+					});
+
+				// in that case everything is done since
+				// we have no more components in the object
+				// 
+				} else {
+					endPromise.done(self.config);
+				}
+			};
+
+			(new Processor(config)).run();
+
+			return endPromise;
+		},
+
+		render : function (params, clean) {
+			var t = +new Date,
+				pRet = FG.Widgzard.Promise.create();
+
+			FG.engy2.process( params ).then(function(p, r) {
+			    var r = FG.Widgzard.render(r[0], clean);
+			    console.log('t: ' + (+new Date - t));
+			    pRet.done(r);
+			});
+
+			return pRet;
+		}
+	};
+
+
+
+}, FG);
+/*
 FG.engy2 = (function () {
 
 
@@ -1658,13 +1848,17 @@ FG.engy2 = (function () {
 									var o = eval('(' + r.replace(/\/n|\/r/g, '') + ')'),
 										params = FG.checkNS(tmp[j].container + '/params', self.config),
 										usedParams, k, l, v, t, y;
+
 									if (params) {
+
 										// check if into the component are used var placeholders
 										// 
 										usedParams = FG.object.digForValue(o, /#PARAM{([^}|]*)?\|?([^}]*)}/);
-										// debugger;
+
 										l = usedParams.length;
+
 										if (l) {
+
 											for (k = 0; k < l; k++) {
 												
 												// check if the label of the placeholder is in the
@@ -1691,14 +1885,12 @@ FG.engy2 = (function () {
 
 									// file got, solve the promise
 									// 
-									p.done();	
-
-									
+									p.done();
 								}
 
-								/**
-								 * maybe is cached
-								 */
+								
+								//maybe is cached
+								 
 								cached ?
 									cback (components[componentName])
 									:
@@ -1729,12 +1921,15 @@ FG.engy2 = (function () {
 		render : function (params, clean) {
 			var t = +new Date,
 				pRet = FG.Widgzard.Promise.create();
+
 			FG.engy2.process( params ).then(function(p, r) {
 			    var r = FG.Widgzard.render(r[0], clean);
 			    console.log('t: ' + (+new Date - t));
 			    pRet.done(r);
 			});
+
 			return pRet;
 		}
 	};
 })();
+*/
