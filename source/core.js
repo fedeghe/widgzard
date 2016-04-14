@@ -39,19 +39,25 @@
      *     
      */
     function makens(str, obj, ctx) {
-        var chr = '.',
-            els = str.split(/\.|\//),
+        var els = str.split(/\.|\//),
             l = els.length,
             _u_ = 'undefined',
             ret;
+        // default context window
         (typeof ctx === _u_) && (ctx = window);
+
+        // default object empty
         (typeof obj === _u_) && (obj = {});
+
+        // if function
+        (typeof obj === 'function') && (obj = obj());        
+
         //
         if (!ctx[els[0]]) {
             ctx[els[0]] = (l === 1) ? obj : {};
         }
         ret = ctx[els[0]];
-        return (l > 1) ? makens(els.slice(1).join(chr), obj, ctx[els[0]]) : ret;
+        return (l > 1) ? makens(els.slice(1).join('.'), obj, ctx[els[0]]) : ret;
     }
 
 
