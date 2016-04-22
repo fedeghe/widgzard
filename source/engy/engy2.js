@@ -1,15 +1,51 @@
+/**
+
+	      ..      .          ...     ...           ....        .                      
+	   x88f` `..x88. .>   .=*8888n.."%888:      .x88" `^x~  xH(`      .xnnx.  .xx.    
+	 :8888   xf`*8888%   X    ?8888f '8888     X888   x8 ` 8888h    .f``"888X< `888.  
+	:8888f .888  `"`     88x. '8888X  8888>   88888  888.  %8888    8L   8888X  8888  
+	88888' X8888. >"8x  '8888k 8888X  '"*8h. <8888X X8888   X8?    X88h. `8888  X888k 
+	88888  ?88888< 888>  "8888 X888X .xH8    X8888> 488888>"8888x  '8888 '8888  X8888 
+	88888   "88888 "8%     `8" X888!:888X    X8888>  888888 '8888L  `*88>'8888  X8888 
+	88888 '  `8888>       =~`  X888 X888X    ?8888X   ?8888>'8888X    `! X888~  X8888 
+	`8888> %  X88!         :h. X8*` !888X     8888X h  8888 '8888~   -`  X*"    X8888 
+	 `888X  `~""`   :     X888xX"   '8888..:   ?888  -:8*"  <888"     xH88hx  . X8888 
+	   "88k.      .~    :~`888f     '*888*"     `*88.      :88%     .*"*88888~  X888X 
+	     `""*==~~`          ""        `"`          ^"~====""`       `    "8%    X888> 
+	                                                                   .x..     888f  
+	                                                                  88888    :88f   
+	                                                                  "88*"  .x8*~   v.2.0
+
+	@author Federico Ghedina <fedeghe@gmail.com>
+	@date 22-04-2016
+	@version 2.0
+
+
+*/
+
+
 $ns$.makeNS('engy2', function () {
 
+	var components = {},
+		CONST = {
+			fileNameSeparator : "/",
+			ext : "$CARD_EXT$"
+		},
+		Engy = {
+			config : {
+			    componentsUrl : '$COMPONENTS_URL$'
+			}
+		};
 
-
-	var components = {};
 
 	function _overwrite(ns, path, o) {
 		var pathEls = path.split(/\.|\//),
 			i = 0, l = pathEls.length;
-		if (l > 1) {
-			for (null; i < l-1; i++) ns = ns[pathEls[i]];
-		}
+
+		if (l > 1) 
+			for (null; i < l-1; i++)
+				ns = ns[pathEls[i]];
+		
 		ns[pathEls[l-1]] = o;
 	}
 
@@ -38,303 +74,133 @@ $ns$.makeNS('engy2', function () {
 	}
 
 
-	return {
+	function Processor(config) {
+		this.retFuncs = [];
+		this.config = config;
+		this.endPromise = $ns$.Promise.create();
+	}
+	
+	Processor.prototype.run = function () {
+		var self = this,
+			foundComponents = $ns$.object.digForKey(self.config, 'component'),
+			i, l,
+			myChain = []; 
 
-		config : {
-		    componentsUrl : '$componentsUrl$',
-		    lazyLoading : $lazyLoading$
-		},
+		if (foundComponents.length) {
 
-		process : function () {
-			var config = [].slice.call(arguments, 0)[0],
-				endPromise = $ns$.Widgzard.Promise.create(),
-				Processor, proto;
-				engy = this;;
+			for (i in foundComponents)
 
-			Processor = function (config) {
-				this.retFuncs = [];
-				this.config = config;
-			};
-			proto = Processor.prototype;
+				(function (j) {
+					myChain.push(function (pro) {
+						
+						var componentName = Engy.config.componentsUrl  + foundComponents[j].value + CONST.ext,
+							cached = componentName in components;
 
-			proto.run = function () {
-				var self = this,
-					tmp = $ns$.object.digForKey(self.config, 'component'),
-					i, l,
-					myChain = []; 
+						function cback(xhrResponseText) {
 
-				if (tmp.length) {
-					for (i in tmp) {
-						(function (j) {
-							myChain.push(function (p) {
-								
-								var componentName = engy.config.componentsUrl + tmp[j].value + '.js',
-									cached = componentName in components;
 
-								function cback(r) {
+							var params = $ns$.checkNS(foundComponents[j].container + '/params', self.config),
+								obj,
+								usedParams, foundParam, foundParamValue, foundParamValueReplaced, i, l;
 
-									// maybe is not already cached
-									//
-									if (!cached) {
-										components[componentName] = r;
-									}
-									
-									var o = eval('(' + r.replace(/\/n|\/r/g, '') + ')'),
-										params = $ns$.checkNS(tmp[j].container + '/params', self.config),
-										usedParams, k, l, v, t, y;
+							// maybe is not already cached
+							//
+							if (!cached) {
+								components[componentName] = xhrResponseText;
+							}
 
-									if (params) {
+							obj = eval('(' + xhrResponseText.replace(/\/n|\/r/g, '').replace(/^[^{]*/, '').replace(/;?$/, '') + ')');
 
-										// check if into the component are used var placeholders
-										// 
-										usedParams = $ns$.object.digForValue(o, /#PARAM{([^}|]*)?\|?([^}]*)}/);
+							// before merging the object I check for the presence of parameters
+							//
+							if (params) {
 
-										l = usedParams.length;
+								// check if into the component are used var placeholders
+								// 
+								usedParams = $ns$.object.digForValue(obj, /#PARAM{([^}|]*)?\|?([^}]*)}/);
 
-										if (l) {
+								l = usedParams.length;
 
-											for (k = 0; k < l; k++) {
-												
-												// check if the label of the placeholder is in the
-												// params
-												y = $ns$.checkNS(usedParams[k].regexp[1], params);
-												
-												// in case use it otherwise, the fallback otherwise cleanup
-												//
-												t = y ? y : (usedParams[k].regexp[2] || "");
-												
-												// string or an object?
-												//
-												if ((typeof t).match(/string/i)){
-													v = $ns$.checkNS(usedParams[k].path, o)
-														.replace(usedParams[k].regexp[0],  t);
-													_overwrite(o, usedParams[k].path, v);
-												} else {
-													_overwrite(o, usedParams[k].path, t);
-												}
-											}
+								if (l) {
+
+									for (i = 0; i < l; i++) {
+										
+										// check if the label of the placeholder is in the params
+										//
+										foundParam = $ns$.checkNS(usedParams[i].regexp[1], params);
+										
+										// in case use it otherwise, the fallback otherwise cleanup
+										//
+										foundParamValue = foundParam ? foundParam : (usedParams[i].regexp[2] || "");
+										
+										// string or an object?
+										//
+										if ((typeof foundParamValue).match(/string/i)){
+
+											foundParamValueReplaced = $ns$.checkNS(usedParams[i].path, obj)
+												.replace(usedParams[i].regexp[0],  foundParamValue);
+											
+											_overwrite(obj, usedParams[i].path, foundParamValueReplaced);
+										} else {
+											_overwrite(obj, usedParams[i].path, foundParamValue);
 										}
 									}
-									_mergeComponent(self.config, tmp[j].container, o);
-
-									// file got, solve the promise
-									// 
-									p.done();
 								}
+							}
 
-								/**
-								 * maybe is cached
-								 */
-								cached ?
-									cback (components[componentName])
-									:
-									$ns$.io.get(componentName, cback, true);	
-							});
-						})(i);
-					}
 
-					// solve & recur
-					//
-					$ns$.Widgzard.Promise.chain(myChain).then(function (p, r) {
-						self.run();
+							_mergeComponent(self.config, foundComponents[j].container, obj);
+
+							// file got, solve the promise
+							// 
+							pro.done();
+						}
+
+						
+						// maybe is cached
+						//
+						cached ?
+							cback (components[componentName])
+							:
+							$ns$.io.get(componentName, cback, true);	
 					});
+				})(i);
+			
 
-				// in that case everything is done since
-				// we have no more components in the object
-				// 
-				} else {
-					endPromise.done(self.config);
-				}
-			};
-
-			(new Processor(config)).run();
-
-			return endPromise;
-		},
-
-		render : function (params, clean) {
-			var t = +new Date,
-				pRet = $ns$.Widgzard.Promise.create();
-
-			$ns$.engy2.process( params ).then(function(p, r) {
-			    var r = $ns$.Widgzard.render(r[0], clean);
-			    console.log('t: ' + (+new Date - t));
-			    pRet.done(r);
+			// solve & recur
+			//
+			$ns$.Promise.chain(myChain).then(function () {
+				self.run();
 			});
 
-			return pRet;
+		// in that case everything is done since
+		// we have no more components in the object
+		// 
+		} else {
+			self.endPromise.done(self.config);
 		}
+		return self.endPromise;
 	};
 
 
+	Engy.process = function (c) {
+		// var config = [].slice.call(arguments, 0)[0];
+		// return (new Processor(config)).run();
+		return (new Processor(c)).run();
+	};
+
+	Engy.render = function (params, clean, name) {
+		var t = +new Date,
+			pRet = $ns$.Promise.create();
+
+		$ns$.engy2.process( params ).then(function(p, r) {
+		    var r = $ns$.Widgzard.render(r[0], clean, name);
+		    console.log('t: ' + (+new Date - t));
+		    pRet.done(r);
+		});
+		return pRet;
+	};
+
+	return Engy;
 
 }, $ns$);
-/*
-$ns$.engy2 = (function () {
-
-
-	var components = {};
-
-	function _overwrite(ns, path, o) {
-		var pathEls = path.split(/\.|\//),
-			i = 0, l = pathEls.length;
-		if (l > 1) {
-			for (null; i < l-1; i++) ns = ns[pathEls[i]];
-		}
-		ns[pathEls[l-1]] = o;
-	}
-
-	function _mergeComponent(ns, path, o) {
-
-		var componentPH = $ns$.checkNS(path, ns),
-			replacementOBJ = o,
-			merged = {}, i,
-			pathEls = path.split(/\.|\//),
-			i = 0, l = pathEls.length;
-
-		// start from the replacement
-		// 
-		for (i in replacementOBJ)
-			merged[i] = replacementOBJ[i];
-
-		// copy everything but 'component' & 'params', overriding
-		// 
-		for (i in componentPH) {
-			!(i.match(/component|params/))
-			&&
-			(merged[i] = componentPH[i]);
-		}
-		
-		_overwrite(ns, path, merged);
-	}
-
-
-	return {
-
-		config : {
-		    componentsUrl : '$componentsUrl$',
-		    lazyLoading : $lazyLoading$
-		},
-
-		process : function () {
-			var config = [].slice.call(arguments, 0)[0],
-				endPromise = $ns$.Widgzard.Promise.create(),
-				Processor, proto;
-				engy = this;;
-
-			Processor = function (config) {
-				this.retFuncs = [];
-				this.config = config;
-			};
-			proto = Processor.prototype;
-
-			proto.run = function () {
-				var self = this,
-					tmp = $ns$.object.digForKey(self.config, 'component'),
-					i, l,
-					myChain = []; 
-
-				if (tmp.length) {
-					for (i in tmp) {
-						(function (j) {
-							myChain.push(function (p) {
-								
-								var componentName = engy.config.componentsUrl + tmp[j].value + '.js',
-									cached = componentName in components;
-
-								function cback(r) {
-
-									// maybe is not already cached
-									//
-									if (!cached) {
-										components[componentName] = r;
-									}
-									
-									var o = eval('(' + r.replace(/\/n|\/r/g, '') + ')'),
-										params = $ns$.checkNS(tmp[j].container + '/params', self.config),
-										usedParams, k, l, v, t, y;
-
-									if (params) {
-
-										// check if into the component are used var placeholders
-										// 
-										usedParams = $ns$.object.digForValue(o, /#PARAM{([^}|]*)?\|?([^}]*)}/);
-
-										l = usedParams.length;
-
-										if (l) {
-
-											for (k = 0; k < l; k++) {
-												
-												// check if the label of the placeholder is in the
-												// params
-												y = $ns$.checkNS(usedParams[k].regexp[1], params);
-												
-												// in case use it otherwise, the fallback otherwise cleanup
-												//
-												t = y ? y : (usedParams[k].regexp[2] || "");
-												
-												// string or an object?
-												//
-												if ((typeof t).match(/string/i)){
-													v = $ns$.checkNS(usedParams[k].path, o)
-														.replace(usedParams[k].regexp[0],  t);
-													_overwrite(o, usedParams[k].path, v);
-												} else {
-													_overwrite(o, usedParams[k].path, t);
-												}
-											}
-										}
-									}
-									_mergeComponent(self.config, tmp[j].container, o);
-
-									// file got, solve the promise
-									// 
-									p.done();
-								}
-
-								
-								//maybe is cached
-								 
-								cached ?
-									cback (components[componentName])
-									:
-									$ns$.io.get(componentName, cback, true);	
-							});
-						})(i);
-					}
-
-					// solve & recur
-					//
-					$ns$.Widgzard.Promise.chain(myChain).then(function (p, r) {
-						self.run();
-					});
-
-				// in that case everything is done since
-				// we have no more components in the object
-				// 
-				} else {
-					endPromise.done(self.config);
-				}
-			};
-
-			(new Processor(config)).run();
-
-			return endPromise;
-		},
-
-		render : function (params, clean) {
-			var t = +new Date,
-				pRet = $ns$.Widgzard.Promise.create();
-
-			$ns$.engy2.process( params ).then(function(p, r) {
-			    var r = $ns$.Widgzard.render(r[0], clean);
-			    console.log('t: ' + (+new Date - t));
-			    pRet.done(r);
-			});
-
-			return pRet;
-		}
-	};
-})();
-*/
