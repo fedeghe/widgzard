@@ -1,4 +1,4 @@
-{
+SM = {
     tag : "div",
     wid : "#PARAM{id}",   
     data : {

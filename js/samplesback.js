@@ -1,4 +1,4 @@
-Widgzard.render({
+FG.Widgzard.render({
     target : document.getElementById('getsamples'),
     attrs : {'class':'round respfixed', id : 'getsamples'},
     style : {backgroundColor:'#ddd'},
@@ -11,7 +11,7 @@ Widgzard.render({
         html : 'load some samples',
         cb : function () {
             FG.events.on(this.node, 'click', function (){
-                Widgzard.load('js/samples.js');
+                FG.Widgzard.load('js/samples.js');
             });
             this.done();
         }

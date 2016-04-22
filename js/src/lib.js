@@ -819,10 +819,13 @@ FG.Channel = (function () {
      * returning function
      */
     return function (name) {
+        /*
         if (!(name in channels)) {
             channels[name] = new _Channel();
         }
         return channels[name];
+        */
+        return name in channels ? channels[name] : (channels[name] = new _Channel());
     };
 })();
 /*
@@ -973,7 +976,6 @@ FG.Promise = (function () {
  */
 
 
-
 (function (W){
     
     'use strict';    
@@ -989,7 +991,9 @@ FG.Promise = (function () {
         Wproto = Wnode.prototype,
         Promise = FG.Promise,
         htmlspecialchars, delegate, eulerWalk,
-        noop = function () {};
+        noop = function () {},
+        time = 0,
+        renders = {};
 
     /**
      * Main object constructor represeting any node created
@@ -1036,7 +1040,6 @@ FG.Promise = (function () {
             self.resolve();
         };
 
-        
         // a reference the the root
         //
         this.root = mapcnt.root;
@@ -1064,8 +1067,6 @@ FG.Promise = (function () {
         // specified
         //
         this.map = mapcnt.map;
-
-
 
         //function to abort all
         this.abort = mapcnt.abort;
@@ -1241,7 +1242,6 @@ FG.Promise = (function () {
         //
         typeof conf.html !== 'undefined' && (node.innerHTML = conf.html);
 
-
         // if `text` is found on node conf
         // it will be appended
         //  
@@ -1260,7 +1260,6 @@ FG.Promise = (function () {
             this.map[conf[nodeIdentifier]] = this;
         }
         
-
         // if the user specifies a node the is not the target 
         // passed to the constructor we use it as destination node
         // (node that in the constructor the node.target is always
@@ -1286,7 +1285,6 @@ FG.Promise = (function () {
         // chain
         return this;
     };
-
 
     function cleanupWnode(trg) {
         var node = trg.node,
@@ -1334,18 +1332,23 @@ FG.Promise = (function () {
      *                         creating the tree inside it.
      * @return {undefined}
      */
-    function render (params, clean) {
+    function render (params, clean, name) {
 
-        var target = {
+        var t1 = +new Date(),
+            target = {
                 node : params.target || document.body,
-                endFunctions : []
+                endFunctions : [],
+                reload : function () {
+                    render(params, true);
+                }
             },
             targetFragment = {
                 node : document.createDocumentFragment('div')
             },
             active = true,
-            originalHTML = target.node.innerHTML + "";
-        // target.root = target;
+            originalHTML = target.node.innerHTML + "",
+            t2;
+        
         // debug ? 
         debug = !!params.debug;
 
@@ -1396,7 +1399,6 @@ FG.Promise = (function () {
             .setStyle(target.node, params.style)
             .setData(target, params.data)
             .setData(targetFragment, params.data);
-
 
         target.descendant = Wproto.descendant;
         targetFragment.descendant = Wproto.descendant;
@@ -1482,6 +1484,14 @@ FG.Promise = (function () {
             targetFragment.WIDGZARD_cb();
         }
 
+        // maybe save the reference
+        //
+        if (name && !(name in renders)) renders[name] = target;
+
+        t2 = +new Date();
+        
+        console.debug('Widgzard render time: ' + (t2-t1) + 'ms');
+        
         return target;
     }
 
@@ -1504,7 +1514,7 @@ FG.Promise = (function () {
         render({target : trg, content : [{html : msg || ""}]}, true);
     }
     
-    // Widgzard.load('js/_index.js');
+    
     function load (src) {
         var s = document.createElement('script');
         document.getElementsByTagName('head')[0].appendChild(s);
@@ -1580,31 +1590,76 @@ FG.Promise = (function () {
     };
 
     // publish module
+    // 
     FG.Widgzard = {
         render : render,
         cleanup : cleanup,
         get : get,
         load : load,
         htmlspecialchars : htmlspecialchars,
-        Promise : Promise
+        // Promise : Promise,
+        
+        getElement : function(n) {
+            return n in renders ? renders[n] : false;
+        },
+        getElements : function () {
+            return renders;
+        }
     };
 
 })(this);
+/*------------------------*/
 /*
 [MALTA] ../engy/engy2.js
 */
+/**
+
+	      ..      .          ...     ...           ....        .                      
+	   x88f` `..x88. .>   .=*8888n.."%888:      .x88" `^x~  xH(`      .xnnx.  .xx.    
+	 :8888   xf`*8888%   X    ?8888f '8888     X888   x8 ` 8888h    .f``"888X< `888.  
+	:8888f .888  `"`     88x. '8888X  8888>   88888  888.  %8888    8L   8888X  8888  
+	88888' X8888. >"8x  '8888k 8888X  '"*8h. <8888X X8888   X8?    X88h. `8888  X888k 
+	88888  ?88888< 888>  "8888 X888X .xH8    X8888> 488888>"8888x  '8888 '8888  X8888 
+	88888   "88888 "8%     `8" X888!:888X    X8888>  888888 '8888L  `*88>'8888  X8888 
+	88888 '  `8888>       =~`  X888 X888X    ?8888X   ?8888>'8888X    `! X888~  X8888 
+	`8888> %  X88!         :h. X8*` !888X     8888X h  8888 '8888~   -`  X*"    X8888 
+	 `888X  `~""`   :     X888xX"   '8888..:   ?888  -:8*"  <888"     xH88hx  . X8888 
+	   "88k.      .~    :~`888f     '*888*"     `*88.      :88%     .*"*88888~  X888X 
+	     `""*==~~`          ""        `"`          ^"~====""`       `    "8%    X888> 
+	                                                                   .x..     888f  
+	                                                                  88888    :88f   
+	                                                                  "88*"  .x8*~   v.2.0
+
+	@author Federico Ghedina <fedeghe@gmail.com>
+	@date 22-04-2016
+	@version 2.0
+
+
+*/
+
+
 FG.makeNS('engy2', function () {
 
+	var components = {},
+		CONST = {
+			fileNameSeparator : "/",
+			ext : ".js"
+		},
+		Engy = {
+			config : {
+			    componentsUrl : '/engy/components/'
+			}
+		};
 
-
-	var components = {};
 
 	function _overwrite(ns, path, o) {
 		var pathEls = path.split(/\.|\//),
 			i = 0, l = pathEls.length;
-		if (l > 1) {
-			for (null; i < l-1; i++) ns = ns[pathEls[i]];
-		}
+
+		if (l > 1) 
+			for (null; i < l-1; i++)
+				ns = ns[pathEls[i]];
+		
 		ns[pathEls[l-1]] = o;
 	}
 
@@ -1633,303 +1688,133 @@ FG.makeNS('engy2', function () {
 	}
 
 
-	return {
+	function Processor(config) {
+		this.retFuncs = [];
+		this.config = config;
+		this.endPromise = FG.Promise.create();
+	}
+	
+	Processor.prototype.run = function () {
+		var self = this,
+			foundComponents = FG.object.digForKey(self.config, 'component'),
+			i, l,
+			myChain = []; 
 
-		config : {
-		    componentsUrl : '/engy/components/',
-		    lazyLoading : true
-		},
+		if (foundComponents.length) {
 
-		process : function () {
-			var config = [].slice.call(arguments, 0)[0],
-				endPromise = FG.Widgzard.Promise.create(),
-				Processor, proto;
-				engy = this;;
+			for (i in foundComponents)
 
-			Processor = function (config) {
-				this.retFuncs = [];
-				this.config = config;
-			};
-			proto = Processor.prototype;
+				(function (j) {
+					myChain.push(function (pro) {
+						
+						var componentName = Engy.config.componentsUrl  + foundComponents[j].value + CONST.ext,
+							cached = componentName in components;
 
-			proto.run = function () {
-				var self = this,
-					tmp = FG.object.digForKey(self.config, 'component'),
-					i, l,
-					myChain = []; 
+						function cback(xhrResponseText) {
 
-				if (tmp.length) {
-					for (i in tmp) {
-						(function (j) {
-							myChain.push(function (p) {
-								
-								var componentName = engy.config.componentsUrl + tmp[j].value + '.js',
-									cached = componentName in components;
 
-								function cback(r) {
+							var params = FG.checkNS(foundComponents[j].container + '/params', self.config),
+								obj,
+								usedParams, foundParam, foundParamValue, foundParamValueReplaced, i, l;
 
-									// maybe is not already cached
-									//
-									if (!cached) {
-										components[componentName] = r;
-									}
-									
-									var o = eval('(' + r.replace(/\/n|\/r/g, '') + ')'),
-										params = FG.checkNS(tmp[j].container + '/params', self.config),
-										usedParams, k, l, v, t, y;
+							// maybe is not already cached
+							//
+							if (!cached) {
+								components[componentName] = xhrResponseText;
+							}
 
-									if (params) {
+							obj = eval('(' + xhrResponseText.replace(/\/n|\/r/g, '').replace(/^[^{]*/, '').replace(/;?$/, '') + ')');
 
-										// check if into the component are used var placeholders
-										// 
-										usedParams = FG.object.digForValue(o, /#PARAM{([^}|]*)?\|?([^}]*)}/);
+							// before merging the object I check for the presence of parameters
+							//
+							if (params) {
 
-										l = usedParams.length;
+								// check if into the component are used var placeholders
+								// 
+								usedParams = FG.object.digForValue(obj, /#PARAM{([^}|]*)?\|?([^}]*)}/);
 
-										if (l) {
+								l = usedParams.length;
 
-											for (k = 0; k < l; k++) {
-												
-												// check if the label of the placeholder is in the
-												// params
-												y = FG.checkNS(usedParams[k].regexp[1], params);
-												
-												// in case use it otherwise, the fallback otherwise cleanup
-												//
-												t = y ? y : (usedParams[k].regexp[2] || "");
-												
-												// string or an object?
-												//
-												if ((typeof t).match(/string/i)){
-													v = FG.checkNS(usedParams[k].path, o)
-														.replace(usedParams[k].regexp[0],  t);
-													_overwrite(o, usedParams[k].path, v);
-												} else {
-													_overwrite(o, usedParams[k].path, t);
-												}
-											}
+								if (l) {
+
+									for (i = 0; i < l; i++) {
+										
+										// check if the label of the placeholder is in the params
+										//
+										foundParam = FG.checkNS(usedParams[i].regexp[1], params);
+										
+										// in case use it otherwise, the fallback otherwise cleanup
+										//
+										foundParamValue = foundParam ? foundParam : (usedParams[i].regexp[2] || "");
+										
+										// string or an object?
+										//
+										if ((typeof foundParamValue).match(/string/i)){
+
+											foundParamValueReplaced = FG.checkNS(usedParams[i].path, obj)
+												.replace(usedParams[i].regexp[0],  foundParamValue);
+											
+											_overwrite(obj, usedParams[i].path, foundParamValueReplaced);
+										} else {
+											_overwrite(obj, usedParams[i].path, foundParamValue);
 										}
 									}
-									_mergeComponent(self.config, tmp[j].container, o);
-
-									// file got, solve the promise
-									// 
-									p.done();
 								}
+							}
 
-								/**
-								 * maybe is cached
-								 */
-								cached ?
-									cback (components[componentName])
-									:
-									FG.io.get(componentName, cback, true);	
-							});
-						})(i);
-					}
 
-					// solve & recur
-					//
-					FG.Widgzard.Promise.chain(myChain).then(function (p, r) {
-						self.run();
+							_mergeComponent(self.config, foundComponents[j].container, obj);
+
+							// file got, solve the promise
+							// 
+							pro.done();
+						}
+
+						
+						// maybe is cached
+						//
+						cached ?
+							cback (components[componentName])
+							:
+							FG.io.get(componentName, cback, true);	
 					});
+				})(i);
+			
 
-				// in that case everything is done since
-				// we have no more components in the object
-				// 
-				} else {
-					endPromise.done(self.config);
-				}
-			};
-
-			(new Processor(config)).run();
-
-			return endPromise;
-		},
-
-		render : function (params, clean) {
-			var t = +new Date,
-				pRet = FG.Widgzard.Promise.create();
-
-			FG.engy2.process( params ).then(function(p, r) {
-			    var r = FG.Widgzard.render(r[0], clean);
-			    console.log('t: ' + (+new Date - t));
-			    pRet.done(r);
+			// solve & recur
+			//
+			FG.Promise.chain(myChain).then(function () {
+				self.run();
 			});
 
-			return pRet;
+		// in that case everything is done since
+		// we have no more components in the object
+		// 
+		} else {
+			self.endPromise.done(self.config);
 		}
+		return self.endPromise;
 	};
 
 
+	Engy.process = function (c) {
+		// var config = [].slice.call(arguments, 0)[0];
+		// return (new Processor(config)).run();
+		return (new Processor(c)).run();
+	};
+
+	Engy.render = function (params, clean, name) {
+		var t = +new Date,
+			pRet = FG.Promise.create();
+
+		FG.engy2.process( params ).then(function(p, r) {
+		    var r = FG.Widgzard.render(r[0], clean, name);
+		    console.log('t: ' + (+new Date - t));
+		    pRet.done(r);
+		});
+		return pRet;
+	};
+
+	return Engy;
 
 }, FG);
-/*
-FG.engy2 = (function () {
-
-
-	var components = {};
-
-	function _overwrite(ns, path, o) {
-		var pathEls = path.split(/\.|\//),
-			i = 0, l = pathEls.length;
-		if (l > 1) {
-			for (null; i < l-1; i++) ns = ns[pathEls[i]];
-		}
-		ns[pathEls[l-1]] = o;
-	}
-
-	function _mergeComponent(ns, path, o) {
-
-		var componentPH = FG.checkNS(path, ns),
-			replacementOBJ = o,
-			merged = {}, i,
-			pathEls = path.split(/\.|\//),
-			i = 0, l = pathEls.length;
-
-		// start from the replacement
-		// 
-		for (i in replacementOBJ)
-			merged[i] = replacementOBJ[i];
-
-		// copy everything but 'component' & 'params', overriding
-		// 
-		for (i in componentPH) {
-			!(i.match(/component|params/))
-			&&
-			(merged[i] = componentPH[i]);
-		}
-		
-		_overwrite(ns, path, merged);
-	}
-
-
-	return {
-
-		config : {
-		    componentsUrl : '/engy/components/',
-		    lazyLoading : true
-		},
-
-		process : function () {
-			var config = [].slice.call(arguments, 0)[0],
-				endPromise = FG.Widgzard.Promise.create(),
-				Processor, proto;
-				engy = this;;
-
-			Processor = function (config) {
-				this.retFuncs = [];
-				this.config = config;
-			};
-			proto = Processor.prototype;
-
-			proto.run = function () {
-				var self = this,
-					tmp = FG.object.digForKey(self.config, 'component'),
-					i, l,
-					myChain = []; 
-
-				if (tmp.length) {
-					for (i in tmp) {
-						(function (j) {
-							myChain.push(function (p) {
-								
-								var componentName = engy.config.componentsUrl + tmp[j].value + '.js',
-									cached = componentName in components;
-
-								function cback(r) {
-
-									// maybe is not already cached
-									//
-									if (!cached) {
-										components[componentName] = r;
-									}
-									
-									var o = eval('(' + r.replace(/\/n|\/r/g, '') + ')'),
-										params = FG.checkNS(tmp[j].container + '/params', self.config),
-										usedParams, k, l, v, t, y;
-
-									if (params) {
-
-										// check if into the component are used var placeholders
-										// 
-										usedParams = FG.object.digForValue(o, /#PARAM{([^}|]*)?\|?([^}]*)}/);
-
-										l = usedParams.length;
-
-										if (l) {
-
-											for (k = 0; k < l; k++) {
-												
-												// check if the label of the placeholder is in the
-												// params
-												y = FG.checkNS(usedParams[k].regexp[1], params);
-												
-												// in case use it otherwise, the fallback otherwise cleanup
-												//
-												t = y ? y : (usedParams[k].regexp[2] || "");
-												
-												// string or an object?
-												//
-												if ((typeof t).match(/string/i)){
-													v = FG.checkNS(usedParams[k].path, o)
-														.replace(usedParams[k].regexp[0],  t);
-													_overwrite(o, usedParams[k].path, v);
-												} else {
-													_overwrite(o, usedParams[k].path, t);
-												}
-											}
-										}
-									}
-									_mergeComponent(self.config, tmp[j].container, o);
-
-									// file got, solve the promise
-									// 
-									p.done();
-								}
-
-								
-								//maybe is cached
-								 
-								cached ?
-									cback (components[componentName])
-									:
-									FG.io.get(componentName, cback, true);	
-							});
-						})(i);
-					}
-
-					// solve & recur
-					//
-					FG.Widgzard.Promise.chain(myChain).then(function (p, r) {
-						self.run();
-					});
-
-				// in that case everything is done since
-				// we have no more components in the object
-				// 
-				} else {
-					endPromise.done(self.config);
-				}
-			};
-
-			(new Processor(config)).run();
-
-			return endPromise;
-		},
-
-		render : function (params, clean) {
-			var t = +new Date,
-				pRet = FG.Widgzard.Promise.create();
-
-			FG.engy2.process( params ).then(function(p, r) {
-			    var r = FG.Widgzard.render(r[0], clean);
-			    console.log('t: ' + (+new Date - t));
-			    pRet.done(r);
-			});
-
-			return pRet;
-		}
-	};
-})();
-*/

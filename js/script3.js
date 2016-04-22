@@ -20,7 +20,7 @@
     // again cause of ie
     keys = ['king', 'queen', 'tower', 'alf', 'horse', 'ped'];
 
-    Widgzard.render({
+    FG.Widgzard.render({
         target : document.getElementById('container'),
         content : [{
             style : {border : '3px solid green', overflow : 'hidden'},

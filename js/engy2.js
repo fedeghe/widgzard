@@ -14,7 +14,7 @@ FG.engy2.config = {
 FG.engy2.process = function () {
 
 	var config = [].slice.call(arguments, 0)[0],
-		endPromise = FG.Widgzard.Promise.create(),
+		endPromise = FG.Promise.create(),
 		Processor, proto;
 		engy = this;
 
@@ -119,7 +119,7 @@ FG.engy2.process = function () {
 
 			// solve & recur
 			//
-			FG.Widgzard.Promise.chain(myChain).then(function (p, r) {
+			FG.Promise.chain(myChain).then(function (p, r) {
 				self.run();
 			});
 

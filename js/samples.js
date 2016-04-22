@@ -1,4 +1,4 @@
-Widgzard.render({
+FG.Widgzard.render({
     target : document.getElementById('getsamples'),
     
     content : [
@@ -23,7 +23,7 @@ Widgzard.render({
                 html : 'X',
                 cb : function () {
                     FG.events.on(this.node, 'click', function (){
-                        Widgzard.load('js/samplesback.js');
+                        FG.Widgzard.load('js/samplesback.js');
                     });
                     this.done();
                 }

@@ -32,5 +32,5 @@
 
     // console.dir(generateCountdownJson(5));
     // 
-    Widgzard.render(generateCountdownJson(5));
+    FG.Widgzard.render(generateCountdownJson(5));
 })();

@@ -1,48 +1,34 @@
-
-
 @font-face {
     font-family: "Luckiest Guy";
     font-style: normal;
     font-weight: 400;
     src: local("Luckiest Guy"), local("LuckiestGuy-Regular"), url("lukiestguy.woff") format("woff");
 }
+
 body{
     font-family:Verdana, sans;
-    margin:30px;
 }
-h1,h2,h3,h4,h5,h6{
-    font-weight:bold;
+
+p, ul, li{
+    margin-bottom: 1em;
 }
-sub{font-size:.5em;}
-p, ul, li{margin-bottom: 10px;}
+hr {
+    border:1px solid #FF6600;
+    /* background-color:#FF6600; */
+    height:0px;
+}
+
 p{
     line-height:1.6em;
 }
-strong {font-weight:bold;}
-.round{
-    border:none 5px #000000;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-}
-pre{
-    line-height: 16px;
-    font-size:12px;
-    font-family:monospace;
-}
-
-
-html:after {
-
-    /* common custom values */
-    content: "HOT"; /* your site name */
-    font-size: 920%;         /* font size */
+/*
+html:after {    
+    content: "HOT";
+    font-size: 920%;
     color: rgba(256, 0, 0, .3);
     background-color:rgba(256, 256, 256, .3);
     padding:10px 0px;
-    /* alpha, could be even rgba(0,0,0,.05) */
-
-    /* rest of the logic */
+    
     z-index: 9999;
     cursor: default;
     display: block;
@@ -58,8 +44,6 @@ html:after {
     text-align: center;
     line-height: 100%;
 
-    /* not sure about who implemented what ..
-    ... so bring it all */
     -webkit-pointer-events: none;
     -moz-pointer-events: none;
     -ms-pointer-events: none;
@@ -78,3 +62,4 @@ html:after {
     -o-user-select: none;
     user-select: none;
 }
+*/

@@ -23,7 +23,6 @@
  */
 
 
-
 (function (W){
     
     'use strict';    
@@ -39,7 +38,9 @@
         Wproto = Wnode.prototype,
         Promise = $ns$.Promise,
         htmlspecialchars, delegate, eulerWalk,
-        noop = function () {};
+        noop = function () {},
+        time = 0,
+        renders = {};
 
     /**
      * Main object constructor represeting any node created
@@ -86,7 +87,6 @@
             self.resolve();
         };
 
-        
         // a reference the the root
         //
         this.root = mapcnt.root;
@@ -114,8 +114,6 @@
         // specified
         //
         this.map = mapcnt.map;
-
-
 
         //function to abort all
         this.abort = mapcnt.abort;
@@ -291,7 +289,6 @@
         //
         typeof conf.html !== 'undefined' && (node.innerHTML = conf.html);
 
-
         // if `text` is found on node conf
         // it will be appended
         //  
@@ -310,7 +307,6 @@
             this.map[conf[nodeIdentifier]] = this;
         }
         
-
         // if the user specifies a node the is not the target 
         // passed to the constructor we use it as destination node
         // (node that in the constructor the node.target is always
@@ -336,7 +332,6 @@
         // chain
         return this;
     };
-
 
     function cleanupWnode(trg) {
         var node = trg.node,
@@ -384,18 +379,23 @@
      *                         creating the tree inside it.
      * @return {undefined}
      */
-    function render (params, clean) {
+    function render (params, clean, name) {
 
-        var target = {
+        var t1 = +new Date(),
+            target = {
                 node : params.target || document.body,
-                endFunctions : []
+                endFunctions : [],
+                reload : function () {
+                    render(params, true);
+                }
             },
             targetFragment = {
                 node : document.createDocumentFragment('div')
             },
             active = true,
-            originalHTML = target.node.innerHTML + "";
-        // target.root = target;
+            originalHTML = target.node.innerHTML + "",
+            t2;
+        
         // debug ? 
         debug = !!params.debug;
 
@@ -446,7 +446,6 @@
             .setStyle(target.node, params.style)
             .setData(target, params.data)
             .setData(targetFragment, params.data);
-
 
         target.descendant = Wproto.descendant;
         targetFragment.descendant = Wproto.descendant;
@@ -532,6 +531,14 @@
             targetFragment.WIDGZARD_cb();
         }
 
+        // maybe save the reference
+        //
+        if (name && !(name in renders)) renders[name] = target;
+
+        t2 = +new Date();
+        
+        console.debug('Widgzard render time: ' + (t2-t1) + 'ms');
+        
         return target;
     }
 
@@ -554,7 +561,7 @@
         render({target : trg, content : [{html : msg || ""}]}, true);
     }
     
-    // Widgzard.load('js/_index.js');
+    
     function load (src) {
         var s = document.createElement('script');
         document.getElementsByTagName('head')[0].appendChild(s);
@@ -630,13 +637,22 @@
     };
 
     // publish module
+    // 
     $ns$.Widgzard = {
         render : render,
         cleanup : cleanup,
         get : get,
         load : load,
         htmlspecialchars : htmlspecialchars,
-        Promise : Promise
+        // Promise : Promise,
+        
+        getElement : function(n) {
+            return n in renders ? renders[n] : false;
+        },
+        getElements : function () {
+            return renders;
+        }
     };
 
 })(this);
+/*------------------------*/

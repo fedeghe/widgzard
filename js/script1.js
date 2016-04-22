@@ -1,5 +1,5 @@
 
-Widgzard.render({
+FG.Widgzard.render({
 
     target : document.getElementById('container'),
     

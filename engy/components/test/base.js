@@ -1,4 +1,4 @@
-{
+SM = {
 	tag : 'div',
 	style : {
 		backgroundColor : 'red',

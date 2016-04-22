@@ -8,7 +8,7 @@
         },
         cb = function () {loadMap.call(this); };
 
-    Widgzard.render({
+    FG.Widgzard.render({
 
         style : {
             width : '80%',

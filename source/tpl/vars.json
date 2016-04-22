@@ -1,5 +1,5 @@
 {
 	"ns" : "FG",
-	"componentsUrl" : "/engy/components/",
-	"lazyLoading" : "true"
+	"COMPONENTS_URL" : "/engy/components/",
+	"CARD_EXT" : ".js"
 }
