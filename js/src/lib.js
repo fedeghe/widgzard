@@ -1697,12 +1697,13 @@ FG.makeNS('engy2', function () {
 	Processor.prototype.run = function () {
 		var self = this,
 			foundComponents = FG.object.digForKey(self.config, 'component'),
-			i, l,
-			myChain = []; 
+			myChain = [],
+			l = foundComponents.length,
+			i; 
+		
+		if (l) {
 
-		if (foundComponents.length) {
-
-			for (i in foundComponents)
+			for (i = 0; i < l; i++)
 
 				(function (j) {
 					myChain.push(function (pro) {
