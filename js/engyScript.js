@@ -176,9 +176,9 @@ window.onload = function () {
             // 
             conf.target = document.getElementById('trg1');
 
-            // unleash the Widgzard
+            // unleash the FG.Widgzard
             //
-            Widgzard.render(conf, true);
+            FG.Widgzard.render(conf, true);
         });
     }();
 

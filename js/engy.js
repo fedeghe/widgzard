@@ -6,7 +6,7 @@ FG.engy.process = function () {
 
     var args = [].slice.call(arguments, 0),
         config = args[0],
-        endPromise = Widgzard.Promise.create(),
+        endPromise = FG.Widgzard.Promise.create(),
         Processor, processorPROTO;
 
     Processor = function (config) {
@@ -36,7 +36,7 @@ FG.engy.process = function () {
     
     processorPROTO.getComponentsPromise = function () {
         var self = this,
-            p = Widgzard.Promise.create(),
+            p = FG.Widgzard.Promise.create(),
             i1, i2, l1, l2;
 
         self.getComponents();
@@ -54,7 +54,7 @@ FG.engy.process = function () {
 
                         self.retFuncs.push(function () {
 
-                            var pr = Widgzard.Promise.create(),
+                            var pr = FG.Widgzard.Promise.create(),
 
                                 file = FG.engy.config.componentsUrl + self.components[j1][j2].component.value + '.js';
                     
@@ -90,11 +90,11 @@ FG.engy.process = function () {
                 var pZebra = self.retFuncs.length ?
                     // the component,params is explicitly speficfied
                     // 
-                    Widgzard.Promise.join(self.retFuncs)
+                    FG.Widgzard.Promise.join(self.retFuncs)
                     :
                     // or the json does not require a component at this level
                     // 
-                    Widgzard.Promise.create();
+                    FG.Widgzard.Promise.create();
 
                 pZebra
                 .then(function (pro) {
@@ -107,7 +107,7 @@ FG.engy.process = function () {
                 }).done();
 
                 /*
-                Widgzard.Promise.join(self.retFuncs).then(function (pro, r) {
+                FG.Widgzard.Promise.join(self.retFuncs).then(function (pro, r) {
                     
                     build(self, pro); // let the build resolve it
 
@@ -129,7 +129,7 @@ FG.engy.process = function () {
                     }
                 }
             }
-            var p = Widgzard.Promise.create();
+            var p = FG.Widgzard.Promise.create();
             p.then(function (p, r) {
                 
                 //console.debug(r[0]);

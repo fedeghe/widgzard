@@ -1,4 +1,4 @@
-{
+XXX = {
 	tag : "li",
     data : {
     	autoplay : "#PARAM{autoplay|0}"

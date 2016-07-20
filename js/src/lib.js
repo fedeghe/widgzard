@@ -42,17 +42,22 @@
      *     
      */
     function makens(str, obj, ctx) {
+        str = str.replace(/^\//, '');
         var els = str.split(/\.|\//),
             l = els.length,
             _u_ = 'undefined',
             ret;
+
         // default context window
+        // 
         (typeof ctx === _u_) && (ctx = window);
 
         // default object empty
+        // 
         (typeof obj === _u_) && (obj = {});
 
         // if function
+        // 
         (typeof obj === 'function') && (obj = obj());        
 
         //
@@ -65,6 +70,8 @@
 
 
     function checkns(ns, ctx) {
+
+        ns = ns.replace(/^\//, '');
         var els = ns.split(/\.|\//),
             i = 0,
             l = els.length;
@@ -176,11 +183,19 @@ FG.object = (function (){
         return ret;
     }
 
+    // 
+    // 
     function jCompare(obj1, obj2) {
-        return typeof JSON !== 'undefined' ? JSON.stringify(obj1) === JSON.stringify(obj2) : obj1 == obj2;
+        // avoid tags
+        return  !isNode(obj1)
+                && typeof JSON !== 'undefined' ?
+            JSON.stringify(obj1) === JSON.stringify(obj2)
+            :
+            obj1 == obj2;
     }
 
-    //Returns true if it is a DOM node
+    // Returns true if it is a DOM node
+    //
     function isNode(o){
         return (
             typeof Node === "object" ? o instanceof Node : 
@@ -188,7 +203,8 @@ FG.object = (function (){
         );
     }
 
-    //Returns true if it is a DOM element    
+    // Returns true if it is a DOM element
+    // 
     function isElement(o){
         return (
             typeof HTMLElement === "object" ?
@@ -198,12 +214,15 @@ FG.object = (function (){
         );
     }
 
-    function digFor(what, obj, target) {
+    function digFor(what, obj, target, limit) {
 
         if(!what.match(/key|value/)) {
             throw new Error('Bad param for object.digFor');
         }
-        var matches = {
+        limit = ~~limit;
+        
+        var found = 0,
+            matches = {
                 key : function (k1, k2, key) {
                     return (FG.object.isString(k1) && key instanceof RegExp) ?
                         k1.match(key)
@@ -211,10 +230,13 @@ FG.object = (function (){
                         jCompare(k1, key);
                 },
                 value : function (k1, k2, val) {
-                    return (FG.object.isString(k2) && val instanceof RegExp) ?
+                    
+                    var v =  (FG.object.isString(k2) && val instanceof RegExp) ?
                         k2.match(val)
                         :
                         jCompare(k2, val);
+                    
+                    return v;
                 }
             }[what],
             res = [],
@@ -222,6 +244,7 @@ FG.object = (function (){
 
                 var p = [].concat.call(path, [index]),
                     tmp = matches(index, obj[index], key);
+
                 if (tmp) {
                     res.push({
                         value: obj[index],
@@ -233,6 +256,7 @@ FG.object = (function (){
                         regexp : tmp,
                         level : level
                     });
+                    found++;
                 }
                 dig(obj[index], key, p, level+1);
             },
@@ -240,13 +264,16 @@ FG.object = (function (){
                 // if is a domnode must be avoided
                 if (isNode(o) || isElement(o)) return;
                 var i, l, p, tmp;
+                
                 if (o instanceof Array) {                
                     for (i = 0, l = o.length; i < l; i++) {
                         maybeDoPush(path, i, k, o, level);
+                        if (limit && limit == found) break;
                     }
                 } else if (typeof o === 'object') {
                     for (i in o) {
                         maybeDoPush(path, i, k, o, level);
+                        if (limit && limit == found) break;
                     }
                 } else {
                     return;
@@ -271,8 +298,8 @@ FG.object = (function (){
 
         jCompare: jCompare,
         
-        digForKey : function (o, k) {
-            return digFor('key', o, k);
+        digForKey : function (o, k, lim) {
+            return digFor('key', o, k, lim);
         },
 
         /**
@@ -281,8 +308,8 @@ FG.object = (function (){
          * @param  {[type]} k [description]
          * @return {[type]}   [description]
          */
-        digForValue : function (o, k) {
-            return digFor('value', o, k);
+        digForValue : function (o, k, lim) {
+            return digFor('value', o, k, lim);
         },
 
 
@@ -829,993 +856,68 @@ FG.Channel = (function () {
     };
 })();
 /*
-[MALTA] ../promise.js
+[MALTA] ../i18n.js
 */
-/**
- * [Channel description]
- * @param {[type]} n [description]
- */
-FG.Promise = (function () {
+FG.makeNS('FG/i18n', function () {
+	var data = {};
 
-    // MY WONDERFUL Promise Implementation
-    // 
-    
-    var _Promise = function() {
-            this.cbacks = [];
-            this.solved = false;
-            this.result = null;
-        },
-        proto = _Promise.prototype;
-    /**
-     * [then description]
-     * @param  {[type]} func [description]
-     * @param  {[type]} ctx  [description]
-     * @return {[type]}      [description]
-     */
-    proto.then = function(func, ctx) {
-        var self = this,
-            f = function() {
-                self.solved = false;
-                func.apply(ctx || self, [ctx || self, self.result]);
-            };
-        if (this.solved) {
-            f();
-        } else {
-            this.cbacks.push(f);
-        }
-        return this;
-    };
+	FG.lang = typeof sm_lang !== 'undefined' ? sm_lang : 'en';
 
-    /**
-     * [done description]
-     * @return {Function} [description]
-     */
-    proto.done = function() {
-        var r = [].slice.call(arguments, 0);
-        this.result = r;
-        this.solved = true;
-        if (!this.cbacks.length) {
-            return this.result;
-        }
-        this.cbacks.shift()(r);
-    };
+	return  {
 
-
-    /**
-     * [chain description]
-     * @param  {[type]} funcs [description]
-     * @param  {[type]} args  [description]
-     * @return {[type]}       [description]
-     */
-    function chain(funcs, args) {
-
-        var p = new _Promise();
-        var first = (function() {
-
-                funcs[0].apply(p, [p].concat([args]));
-                return p;
-            })(),
-            tmp = [first];
-
-        for (var i = 1, l = funcs.length; i < l; i++) {
-            tmp.push(tmp[i - 1].then(funcs[i]));
-        }
-        return p;
-    }
-
-    /**
-     * [join description]
-     * @param  {[type]} pros [description]
-     * @param  {[type]} args [description]
-     * @return {[type]}      [description]
-     */
-    function join(pros, args) {
-        var endP = new _Promise(),
-            res = [],
-            stack = [],
-            i = 0,
-            l = pros.length,
-            limit = l,
-            solved = function (remainder) {
-                !remainder && endP.done.apply(endP, res);
-            };
-
-        for (null; i < l; i++) {
-            (function (k) {
-                stack[k] = new _Promise();
-
-                // inside every join function the context is a Promise, and
-                // is possible to return it or not 
-                var _p = pros[k].apply(stack[k], [stack[k], args]);
-                (_p instanceof _Promise ? _p : stack[k])
-                .then(function (p, r) {
-                    res[k] = r;
-                    solved(--limit);
-                });
-            })(i);
-        }
-        return endP;
-    }
-
-    /* returning module
-    */
-    return {
-        create: function() {
-            return new _Promise();
-        },
-        chain: chain,
-        join: join
-    };
-    
-})();
-/*
-[MALTA] ../widgzard.js
-*/
-/**
-
-      _/          _/  _/_/_/  _/_/_/      _/_/_/  _/_/_/_/_/    _/_/    _/_/_/    _/_/_/    
-     _/          _/    _/    _/    _/  _/              _/    _/    _/  _/    _/  _/    _/   
-    _/    _/    _/    _/    _/    _/  _/  _/_/      _/      _/_/_/_/  _/_/_/    _/    _/    
-     _/  _/  _/      _/    _/    _/  _/    _/    _/        _/    _/  _/    _/  _/    _/     
-      _/  _/      _/_/_/  _/_/_/      _/_/_/  _/_/_/_/_/  _/    _/  _/    _/  _/_/_/   
-
-
- * Widgzard module
- * 
- * Create an arbitrary dom tree json based allowing for each node to 
- * specify a callback that will be called only when either
- *   > the node is appended (in case the node is a leaf)
- * ||
- *   > every child has finished (explicitly calling the done function on his context)
- *
- * @author Federico Ghedina <fedeghe@gmail.com>
- *
- *
- *
- * PLEASE read this : http://stackoverflow.com/questions/1915341/whats-wrong-with-adding-properties-to-dom-element-objects
- */
-
-
-(function (W){
-    
-    'use strict';    
-
-    // clearer class that should provide right
-    // css float clearing
-    // ex: TB uses `clearfix`, I don`t
-    // 
-    var clearerClassName = 'clearer', 
-        nodeIdentifier = 'wid',
-        autoclean = true,
-        debug = false,
-        Wproto = Wnode.prototype,
-        Promise = FG.Promise,
-        htmlspecialchars, delegate, eulerWalk,
-        noop = function () {},
-        time = 0,
-        renders = {};
-
-    /**
-     * Main object constructor represeting any node created
-     * @param {[type]} conf the object that has the information about the node
-     *                      that will be created
-     * @param {[type]} trg  the DomNODE where the element will be appended to
-     * @param {[type]} mapcnt an object used to allow the access from any node
-     *                        to every node that has the gindID attribute
-     */
-    function Wnode(conf, trg, mapcnt) {
-        
-        // save a reference to the instance
-        // 
-        var self = this,
-
-            // the tag used for that node can be specified in the conf
-            // otherwise will be a div (except for 'clearer') 
-            tag = conf.tag || "div";
-
-        // save a reference to the target parent for that node
-        // by means of the callback promise chain, in fact the 
-        // real parent for the node can even be different as 
-        // specified in the conf.target value
-        // 
-        this.target = trg;
-
-        // create the node
-        // 
-        this.node = document.createElement(tag);
-
-        // save a reference to the node configuration
-        // will be useful on append to append to conf.target
-        // if specified
-        //
-        this.conf = conf;
-
-        // save a reference to the node callback if speficied
-        // otherwise create a function that do nothing but
-        // freeing the parent promise from waiting
-        //
-        this.WIDGZARD_cb = conf.cb || function () {
-            debug && console.log('autoresolving  ', self.node);
-            // autoresolve
-            self.resolve();
-        };
-
-        // a reference the the root
-        //
-        this.root = mapcnt.root;
-
-        // save a reference to the parent
-        // 
-        this.parent = trg;
-
-        // save a reference to a brand new Promise
-        // the Promise.node() will be called as far as
-        // all the child elements cb have called 
-        // this.done OR this.resolve
-        // 
-        this.WIDGZARD_promise = Promise.create();
-
-        // When called Promise.done means that 
-        // the parent callback can be called
-        // delegating the parent context
-        //
-        this.WIDGZARD_promise.then(self.WIDGZARD_cb, self);
-
-        // as said at the beginning every node keeps a reference
-        // to a function that allow to get a reference to any
-        // node that in his configuration has a `nodeIdentifier` value
-        // specified
-        //
-        this.map = mapcnt.map;
-
-        //function to abort all
-        this.abort = mapcnt.abort;
-
-        // publish in the node the getNode fucntion that allows for
-        // getting any node produced from the same json having a 
-        // `nodeIdentifier` with a valid value
-        this.getNode = mapcnt.getNode;
-
-
-        // get all nodes mapped
-        this.getNodes = mapcnt.getNodes;
-
-        // how many elements are found in the content field?
-        // that counter is fundamental for calling this node
-        // callback only when every child callback has done
-        // 
-        this.WIDGZARD_len = conf.content ? conf.content.length : 0;
-
-        // through these two alias from within a callback
-        // (where the DOMnode is passed as context)
-        // the have to declare that has finished
-        // if the count is nulled it means that the promise 
-        // is done, thus it`s safe to call its callback
-        //
-        this.done = this.resolve = this.solve = function () {
-          
-            // if all the child has called done/resolve
-            // it`s time to honour the node promise,
-            // thus call the node callback
-            //
-            if (--self.target.WIDGZARD_len == 0) {
-                if (self.target.WIDGZARD_promise) {
-                    self.target.WIDGZARD_promise.done();
-                } else {
-                    self.target.WIDGZARD_cb();   
-                }
-            }
-
-        };
-
-        this.lateWid = mapcnt.lateWid;
-    }
-
-
-    /**
-     * save a function to climb up n-parent
-     * @param  {[type]} n [description]
-     * @return {[type]}   [description]
-     */
-    Wproto.climb = function (n) {
-        n = n || 1;
-        var ret = this;
-        while (n--) {
-            ret = ret.parent;
-        }
-        return ret;
-    };
-
-
-    /**
-     * and one to go down
-     * @return {[type]} [description]
-     */
-    Wproto.descendant = function () {
-        var self = this,
-            args = Array.prototype.slice.call(arguments, 0),
-            i = 0,
-            res = self,
-            l = args.length;
-        if (!l) return res;
-        while (i < l) {
-            res = res.childrens[~~args[i++]];
-        }
-        return res;
-    };
-
-    /**
-     * Set neo attributes
-     * @param {DOMnode} node  the node
-     * @param {Object} attrs  the hash of attributes->values
-     */
-    Wproto.setAttrs = function (node, attrs) {
-        // if set, append all attributes (*class)
-        // 
-        if (typeof attrs !== 'undefined') { 
-            for (var j in attrs) {
-                if (j !== 'class') {
-                    if (j !== 'style') {
-                        node.setAttribute(j, attrs[j]);
-                    } else {
-                        this.setStyle(node, attrs.style);
-                    }
-                } else {
-                    node.className = attrs[j];
-                }
-            }
-        }
-        return this;
-    };
-
-    /**
-     * Set node inline style
-     * @param {DOMnode} node  the node
-     * @param {Object} style  the hash of rules
-     */
-    Wproto.setStyle = function (node, style) {
-        // if set, append all styles (*class)
-        //
-        if (typeof style !== 'undefined') { 
-            for (var j in style) {
-                node.style[j.replace(/^float$/i, 'cssFloat')] = style[j];
-            }
-        }
-        return this;
-    };
-
-    /**
-     * Set node data
-     * @param {DOMnode} node  the node
-     * @param {Object} data   the hash of properties to be attached
-     */
-    Wproto.setData = function (el, data) {
-        el.data = data || {};
-        return this;
-    };
-
-    /**
-     * [checkInit description]
-     * @param  {[type]} el [description]
-     * @return {[type]}    [description]
-     */
-    Wproto.checkInit = function (el, conf) {
-        var keepRunning = true;
-        if ('init' in conf && typeof conf.init === 'function') {
-            keepRunning = conf.init.call(el);
-            !keepRunning && el.abort();
-        }
-        return this;
-    }
-
-    /**
-     * [checkInit description]
-     * @param  {[type]} el [description]
-     * @return {[type]}    [description]
-     */
-    Wproto.checkEnd = function (el, conf) {
-        if ('end' in conf && typeof conf.end === 'function') {
-            this.root.endFunctions.push(function () {conf.end.call(el);});
-        }
-        return this;
-    }
-    
-    /**
-     * add method for the Wnode
-     */
-    Wproto.add = function () {
-
-        var conf = this.conf,
-            node = this.node,
-            tmp;
-
-        // set attributes and styles
-        // 
-        this.setAttrs(node, conf.attrs)
-            .setStyle(node, conf.style)
-            .setData(this, conf.data)
-            .checkInit(this, conf)
-            .checkEnd(this, conf);
-
-        // if `html` key is found on node conf 
-        // inject its value
-        //
-        typeof conf.html !== 'undefined' && (node.innerHTML = conf.html);
-
-        // if `text` is found on node conf
-        // it will be appended
-        //  
-        if (typeof conf.text !== 'undefined') {
-            tmp = document.createTextNode("" + conf.text);
-            node.appendChild(tmp);
-        }
-
-        // if the node configuration has a `nodeIdentifier` key
-        // (and a String value), the node can be reached 
-        // from all others callback invoking
-        // this.getNode(keyValue)
-        //
-        
-        if (typeof conf[nodeIdentifier] !== 'undefined') {
-            this.map[conf[nodeIdentifier]] = this;
-        }
-        
-        // if the user specifies a node the is not the target 
-        // passed to the constructor we use it as destination node
-        // (node that in the constructor the node.target is always
-        // the target passed)
-        // 
-        (conf.target || this.target.node).appendChild(node);
-
-        if (!('childrens' in (conf.target || this.target))) {
-            (conf.target || this.target).childrens = [];
-        }
-        (conf.target || this.target).childrens.push(this);
-        this.WIDGZARD = true;
-
-        // if the node configuration do not declares content array
-        // then the callback is executed.
-        // in the callback the user is asked to explicitly declare
-        // that the function has finished the work invoking
-        // this.done() OR this.resolve()
-        // this is the node itself, those functions are attached
-        // 
-        (!conf.content || conf.content.length == 0) && this.WIDGZARD_cb.call(this);
-
-        // chain
-        return this;
-    };
-
-    function cleanupWnode(trg) {
-        var node = trg.node,
-            removeNode = function (t) {
-                t.parentNode.removeChild(t);
-                return true;
-            },
-            nodesToBeCleaned = [],
-            keys = [
-                'WIDGZARD', 'WIDGZARD_cb', 'WIDGZARD_promise', 'WIDGZARD_length',
-                'parent', 'getNode', 'climb', 'root', 'done', 'resolve', 'data'
-            ],
-            kL = keys.length,
-            i = 0, j = 0, k = 0,
-            n = null;
-        
-        // pick up postorder tree traversal
-        eulerWalk(node, function (n) {
-            //skip root & text nodes
-            n !== node && n.nodeType != 3 && nodesToBeCleaned.push(n) && k++;
-        }, 'post');
-        
-        while (j < k) {
-            n = nodesToBeCleaned[j++];
-            while (i < kL) n[keys[i++]] = null;
-            removeNode(n);
-        }
-
-        nodesToBeCleaned = null, keys = null;
-
-        return true;
-    }
-
-    /**
-     * PUBLIC function to render Dom from Json
-     * @param  {Object} params the configuration json that contains all the 
-     *                         information to build the dom :
-     *                         target : where to start the tree
-     *                         content : what to create
-     *                         {cb} : optional end callback
-     *                         {style} : optional styles for the target Node
-     *                         {attrs} : optionsl attributes to be added at the target Node
-     *                         
-     * @param  {boolean} clean whether or not the target node must be emptied before
-     *                         creating the tree inside it.
-     * @return {undefined}
-     */
-    function render (params, clean, name) {
-
-        var t1 = +new Date(),
-            target = {
-                node : params.target || document.body,
-                endFunctions : [],
-                reload : function () {
-                    render(params, true);
-                }
-            },
-            targetFragment = {
-                node : document.createDocumentFragment('div')
-            },
-            active = true,
-            originalHTML = target.node.innerHTML + "",
-            t2;
-        
-        // debug ? 
-        debug = !!params.debug;
-
-        // maybe cleanup previous
-        //
-        autoclean && target.WIDGZARD && cleanupWnode(target)
-
-        if (!params) {
-            throw new Exception('ERROR : Check parameters for render function');
-        }
-
-        // a literal used to save a reference 
-        // to all the elements that need to be 
-        // reached afterward calling this.getNode(id)
-        // from any callback
-        // 
-        var mapcnt = {
-            root : target,
-            map : {},
-            getNode : function (id) {
-                return mapcnt.map[id] || false;
-            },
-            getNodes : function () {
-                return mapcnt.map;
-            },
-            abort : function () {
-                
-                active = false;
-                target.node.innerHTML = originalHTML;
-                
-                'onAbort' in params &&
-                (typeof params.onAbort).match(/function/i) &&
-                params.onAbort.call(null, params);
-                
-                return false;
-            },
-            lateWid : function (wid) {
-                mapcnt.map[wid] = this;
-            }
-        };
-
-        // rape Node prototype funcs
-        // to set attributes & styles
-        // and check init function 
-        // 
-        Wproto
-            .setAttrs(target.node, params.attrs)
-            .setStyle(target.node, params.style)
-            .setData(target, params.data)
-            .setData(targetFragment, params.data);
-
-        target.descendant = Wproto.descendant;
-        targetFragment.descendant = Wproto.descendant;
-        
-        // maybe clean
-        // 
-        if (!!clean) target.node.innerHTML = '';
-
-        // maybe a raw html is requested before treating content
-        // 
-        if (typeof params.html !== 'undefined') {
-            target.node.innerHTML = params.html;
-        }
-        
-        // initialize the root node to respect what is needed
-        // by the childs node Promise 
-        // 
-        // - len : the lenght of the content array
-        // - cb : exactly the end callback
-        // 
-        target.WIDGZARD_len = params.content ? params.content.length : 0;
-        targetFragment.WIDGZARD_len = params.content ? params.content.length : 0;
-
-        targetFragment.WIDGZARD_cb = target.WIDGZARD_cb = function () {
-            active 
-            &&
-            target.node.appendChild(targetFragment.node)
-            &&
-            params.cb && params.cb.call(target);
-
-            //ending functions
-            //
-            if (target.endFunctions.length) {
-                for (var i = 0, l = target.endFunctions.length; i < l; i++) {
-                    target.endFunctions[i]();
-                }
-            }
-        };
-
-        // flag to enable cleaning
-        //
-        target.WIDGZARD = true;
-
-        // allow to use getNode & getNodes from root
-        // 
-        target.getNode = targetFragment.getNode = mapcnt.getNode;
-        target.getNodes = targetFragment.getNodes = mapcnt.getNodes;
-        target.abort = targetFragment.abort = mapcnt.abort;
-
-
-        // what about a init root function?
-        // 
-        Wproto.checkInit(targetFragment, params);
-        
-
-        // start recursion
-        //
-        (function recur(cnf, trg){
-            if (!active) {
-                return false;
-            }
-            // change the class if the element is simply a "clearer" String
-            // 
-            if (cnf.content) {
-                for (var i = 0, l = cnf.content.length; i < l; i++) {
-                    if (cnf.content[i] === clearerClassName) {
-                        cnf.content[i] = {
-                            tag : 'br',
-                            attrs : {'class' : clearerClassName}
-                        };
-                    }
-        
-                    recur(cnf.content[i], new Wnode(cnf.content[i], trg, mapcnt).add());
-                }
-            }
-            
-        })(params, targetFragment);
-
-        // if no content in the root there are no childs
-        // thus, let the cb execute
-        // 
-        if (!('content' in params)) {
-            targetFragment.WIDGZARD_cb();
-        }
-
-        // maybe save the reference
-        //
-        if (name && !(name in renders)) renders[name] = target;
-
-        t2 = +new Date();
-        
-        console.debug('Widgzard render time: ' + (t2-t1) + 'ms');
-        
-        return target;
-    }
-
- 
-
-    /**
-     * [get description]
-     * @param  {[type]} params [description]
-     * @return {[type]}        [description]
-     */
-    function get (params) {
-        var r = document.createElement('div');
-        params.target = r;
-        render(params);
-        return r;
-    }
-
-
-    function cleanup(trg, msg){
-        render({target : trg, content : [{html : msg || ""}]}, true);
-    }
-    
-    
-    function load (src) {
-        var s = document.createElement('script');
-        document.getElementsByTagName('head')[0].appendChild(s);
-        s.src = src;
-        
-        // when finished remove the script tag
-        s.onload = function () {
-            s.parentNode.removeChild(s);
-        }
-    };
-
-    /**
-     * [eulerWalk description]
-     * @param  {[type]} root [description]
-     * @param  {[type]} func [description]
-     * @param  {[type]} mode [description]
-     * @return {[type]}      [description]
-     */
-    eulerWalk = function (root, func, mode) {
-        mode = {pre : 'pre', post : 'post'}[mode] || 'post';
-        var nope = function () {},
-            pre = mode === 'pre' ? func : nope,
-            post = mode === 'post' ? func : nope,
-            walk = (function () {
-                return function (n_, _n) {
-                    pre(n_);
-                    _n = n_.firstChild;
-                    while (_n) {
-                        walk(_n);
-                        _n = _n.nextSibling;
-                    }
-                    post(n_);
-                };
-            })();
-        walk(root);
-    };
-
-    /**
-     * Dummy delegation function 
-     * @param  {[type]} func [description]
-     * @param  {[type]} ctx  [description]
-     * @return {[type]}      [description]
-     */
-    delegate = function (func, ctx) {
-    
-        // get relevant arguments
-        // 
-        var args = Array.prototype.slice.call(arguments, 2);
-        
-        // return the function
-        //
-        return function() {
-            return func.apply(
-                ctx || window,
-                [].concat(args, Array.prototype.slice.call(arguments))
-            );
-        };
-    };
-
-    /**
-     * [htmlspecialchars description]
-     * @param  {[type]} c [description]
-     * @return {[type]}   [description]
-     */
-    htmlspecialchars = function (c) {
-        return '<pre>' +
-            c.replace(/&(?![\w\#]+;)/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;') +
-        '</pre>';
-    };
-
-    // publish module
-    // 
-    FG.Widgzard = {
-        render : render,
-        cleanup : cleanup,
-        get : get,
-        load : load,
-        htmlspecialchars : htmlspecialchars,
-        // Promise : Promise,
-        
-        getElement : function(n) {
-            return n in renders ? renders[n] : false;
-        },
-        getElements : function () {
-            return renders;
-        }
-    };
-
-})(this);
-/*------------------------*/
-/*
-[MALTA] ../engy/engy2.js
-*/
-/**
-
-	      ..      .          ...     ...           ....        .                      
-	   x88f` `..x88. .>   .=*8888n.."%888:      .x88" `^x~  xH(`      .xnnx.  .xx.    
-	 :8888   xf`*8888%   X    ?8888f '8888     X888   x8 ` 8888h    .f``"888X< `888.  
-	:8888f .888  `"`     88x. '8888X  8888>   88888  888.  %8888    8L   8888X  8888  
-	88888' X8888. >"8x  '8888k 8888X  '"*8h. <8888X X8888   X8?    X88h. `8888  X888k 
-	88888  ?88888< 888>  "8888 X888X .xH8    X8888> 488888>"8888x  '8888 '8888  X8888 
-	88888   "88888 "8%     `8" X888!:888X    X8888>  888888 '8888L  `*88>'8888  X8888 
-	88888 '  `8888>       =~`  X888 X888X    ?8888X   ?8888>'8888X    `! X888~  X8888 
-	`8888> %  X88!         :h. X8*` !888X     8888X h  8888 '8888~   -`  X*"    X8888 
-	 `888X  `~""`   :     X888xX"   '8888..:   ?888  -:8*"  <888"     xH88hx  . X8888 
-	   "88k.      .~    :~`888f     '*888*"     `*88.      :88%     .*"*88888~  X888X 
-	     `""*==~~`          ""        `"`          ^"~====""`       `    "8%    X888> 
-	                                                                   .x..     888f  
-	                                                                  88888    :88f   
-	                                                                  "88*"  .x8*~   v.2.0
-
-	@author Federico Ghedina <fedeghe@gmail.com>
-	@date 22-04-2016
-	@version 2.0
-
-
-*/
-
-
-FG.makeNS('engy2', function () {
-
-	var components = {},
-		CONST = {
-			fileNameSeparator : "/",
-			ext : ".js"
+		load : function (dict) {
+			data = dict;
 		},
-		Engy = {
-			config : {
-			    componentsUrl : '/engy/components/'
-			}
-		};
 
-
-	function _overwrite(ns, path, o) {
-		var pathEls = path.split(/\.|\//),
-			i = 0, l = pathEls.length;
-
-		if (l > 1) 
-			for (null; i < l-1; i++)
-				ns = ns[pathEls[i]];
-		
-		ns[pathEls[l-1]] = o;
-	}
-
-	function _mergeComponent(ns, path, o) {
-
-		var componentPH = FG.checkNS(path, ns),
-			replacementOBJ = o,
-			merged = {}, i,
-			pathEls = path.split(/\.|\//),
-			i = 0, l = pathEls.length;
-
-		// start from the replacement
-		// 
-		for (i in replacementOBJ)
-			merged[i] = replacementOBJ[i];
-
-		// copy everything but 'component' & 'params', overriding
-		// 
-		for (i in componentPH) {
-			!(i.match(/component|params/))
-			&&
-			(merged[i] = componentPH[i]);
-		}
-		
-		_overwrite(ns, path, merged);
-	}
-
-
-	function Processor(config) {
-		this.retFuncs = [];
-		this.config = config;
-		this.endPromise = FG.Promise.create();
-	}
-	
-	Processor.prototype.run = function () {
-		var self = this,
-			foundComponents = FG.object.digForKey(self.config, 'component'),
-			myChain = [],
-			l = foundComponents.length,
-			i; 
-		
-		if (l) {
-
-			for (i = 0; i < l; i++)
-
-				(function (j) {
-					myChain.push(function (pro) {
-						
-						var componentName = Engy.config.componentsUrl  + foundComponents[j].value + CONST.ext,
-							cached = componentName in components;
-
-						function cback(xhrResponseText) {
-
-
-							var params = FG.checkNS(foundComponents[j].container + '/params', self.config),
-								obj,
-								usedParams, foundParam, foundParamValue, foundParamValueReplaced, i, l;
-
-							// maybe is not already cached
-							//
-							if (!cached) {
-								components[componentName] = xhrResponseText;
-							}
-
-							obj = eval('(' + xhrResponseText.replace(/\/n|\/r/g, '').replace(/^[^{]*/, '').replace(/;?$/, '') + ')');
-
-							// before merging the object I check for the presence of parameters
-							//
-							if (params) {
-
-								// check if into the component are used var placeholders
-								// 
-								usedParams = FG.object.digForValue(obj, /#PARAM{([^}|]*)?\|?([^}]*)}/);
-
-								l = usedParams.length;
-
-								if (l) {
-
-									for (i = 0; i < l; i++) {
-										
-										// check if the label of the placeholder is in the params
-										//
-										foundParam = FG.checkNS(usedParams[i].regexp[1], params);
-										
-										// in case use it otherwise, the fallback otherwise cleanup
-										//
-										foundParamValue = foundParam ? foundParam : (usedParams[i].regexp[2] || "");
-										
-										// string or an object?
-										//
-										if ((typeof foundParamValue).match(/string/i)){
-
-											foundParamValueReplaced = FG.checkNS(usedParams[i].path, obj)
-												.replace(usedParams[i].regexp[0],  foundParamValue);
-											
-											_overwrite(obj, usedParams[i].path, foundParamValueReplaced);
-										} else {
-											_overwrite(obj, usedParams[i].path, foundParamValue);
-										}
-									}
-								}
-							}
-
-
-							_mergeComponent(self.config, foundComponents[j].container, obj);
-
-							// file got, solve the promise
-							// 
-							pro.done();
-						}
-
-						
-						// maybe is cached
-						//
-						cached ?
-							cback (components[componentName])
-							:
-							FG.io.get(componentName, cback, true);	
-					});
-				})(i);
+		parse : function (obj) {
+			var self = this,
+				replacing = FG.object.digForValue(obj, /i18n\(([^}|]*)?\|?([^}]*)\)/);
 			
+			for (i = 0, l = replacing.length; i < l; i++) {
+				mayP = FG.i18n.check(replacing[i].regexp[0]);
+				if (mayP) {
+					ref = FG.checkNS(replacing[i].container, obj);	
+					// ref[replacing[i].key] = mayP;
+					ref[replacing[i].key] = FG.i18n.get(mayP[1], mayP[2]);
+				} 
+			}
+		},
 
-			// solve & recur
-			//
-			FG.Promise.chain(myChain).then(function () {
-				self.run();
-			});
-
-		// in that case everything is done since
-		// we have no more components in the object
-		// 
-		} else {
-			self.endPromise.done(self.config);
+		/**
+		 * receives a Literal like
+		 * {
+		 * 	"hello" : {
+		 * 		"de" : "hallo",
+		 * 		"it" : "ciao",
+		 * 		"fr" : "bonjour",
+		 * 	 	"en" : "hello"
+		 * 	 },
+		 * 	 "prova generale" : {
+		 * 	 	"de" : "Generalprobe",
+		 * 	  	"it" : "prova generale",
+		 * 	   	"fr" : "répétition générale",
+		 * 	   	"en" : "dress rehearsal"
+		 * 	 }
+		 * 	}
+		 * @return {[type]} [description]
+		 */
+		dynamicLoad : function (lo, _label) {
+			for (_label in lo) {
+				FG.lang in lo[_label] && (data[_label] = lo[_label][FG.lang]);
+			}
+		},
+		
+		check : function (lab) {
+			// return lab.match(/i18n\(([^)|]*)?\|?([^)|]*)\|?([^)]*)?\)/); 3???
+			return lab.match(/i18n\(([^}|]*)?\|?([^}]*)\)/);
+		},
+		
+		get : function (k, fallback) {
+			
+			var maybe = FG.checkNS(k, data);
+			// return data[k] || fallback || 'no Value';
+			return maybe || fallback || 'no Value';
+			// return maybe || fallback || false;
 		}
-		return self.endPromise;
-	};
-
-
-	Engy.process = function (c) {
-		// var config = [].slice.call(arguments, 0)[0];
-		// return (new Processor(config)).run();
-		return (new Processor(c)).run();
-	};
-
-	Engy.render = function (params, clean, name) {
-		var t = +new Date,
-			pRet = FG.Promise.create();
-
-		FG.engy2.process( params ).then(function(p, r) {
-		    var r = FG.Widgzard.render(r[0], clean, name);
-		    console.log('t: ' + (+new Date - t));
-		    pRet.done(r);
-		});
-		return pRet;
-	};
-
-	return Engy;
-
-}, FG);
+	}
+});

@@ -27,7 +27,6 @@
                 report();
             },
             style : {backgroundColor: "#555"},
-            
             content : [{
                 style : {
                     textAlign:'center',
@@ -38,26 +37,26 @@
                     attrs : {
                         src : widgzard.img,
                         "class" : "g14"
-                    }/*,
-                    style : {
-                        height:'10em'
-                        ,maxHeight:'12em'
-                    }  */  
+                    }
                 }]
             },{
-                attrs : {'class':'round8 respfixed pad1'},
+                attrs : {
+                    'class':'round8 respfixed pad1'
+                },
                 style : {
                     backgroundColor : color3
                 },
                 content : [{
-                    tag : 'h3',
-                    attrs : {"class" : "p100"},
-                    html : '... Father, I promise!'
-                },{
                     content : [{
                         tag : 'p',
-                        attrs : {"class" : "floatl p70"},
+                        attrs : {
+                            "class" : "floatl p50"
+                        },
                         content : [{
+                            tag : 'h2',
+                            attrs : {"class" : "p100"},
+                            html : '... Father, I promise!'
+                        },{
                             tag : 'p',
                             html : 'The main purpose of the <i><b>Widgzard</b></i> is to allow the creation of anything a webpage, or a subtree of it, can show, only using one or more <b>object literals</b>.'
                         },{
@@ -65,8 +64,12 @@
                             html : 'These elements can safely be considered <i><u>web components</u></i> honouring the <b>DRY</b> rule.'
                         }]
                     },{
-                        attrs : {"class" : "round8 floatl p30 pad1"},
-                        style : {backgroundColor: 'white'},
+                        attrs : {
+                            "class" : "round8 floatr p50 pad1"
+                        },
+                        style : {
+                            backgroundColor: 'white'
+                        },
                         content : [{
                             tag : 'h3',
                             html :'Key features'
@@ -74,7 +77,11 @@
                             tag : 'hr'
                         },{
                             tag : 'ul',
+                            wid : 'ul',
                             content : [{
+                                component : 'li',
+                                params : {content : "<a target='_blank' href='http://www.wtf.com'>wtf.com</a>"}
+                            },{
                                 tag : 'li',
                                 html : '&raquo; Builds markup at the speed of light.'
                             },{
@@ -85,7 +92,7 @@
                                 html : '&raquo; You can use your favourite libraries, or even go <b>vanilla</b>'
                             },{
                                 tag : 'li',
-                                html : '&raquo; It is components friendly'
+                                html : '&raquo; It is <i>components</i> friendly'
                             },{
                                 tag : 'li',
                                 html : '&raquo; Components can comunicate one with each other'
@@ -95,46 +102,19 @@
                             }]
                         }]
                     },'clearer']
-/*
-                    content : [{
-                        tag : 'p',
-                        html : 'The main purpose of the <i>Widgzard</i> is to allow the creation of anything a webpage, or a subtree of it, can show, only using one or more <b>object literals</b>, allowing to create some kind of <i>web components</i> to honour DRY.'
-                    },{
-                        tag : 'span',
-                        html : 'Now is possible to:'
-                    },{
-                        tag :'ul',
-                        data : {
-                            one : 'Fuck Your mom in the ass',
-                            two : 'Fuck Your sister`s throath'
-                        },
-                        cb : function () {
-                            var self = this,
-                                $elf = self.node,
-                                data = self.data,
-                                els = [],
-                                o = {
-                                    target : $elf,
-                                    cb : function () {
-                                        self.done();
-                                    }
-                                };
-                            for (var e in data) {
-                                
-                                els.push({tag : 'li', html : data[e]});
-                            }
-                            o.content = els;
-                            FG.Widgzard.render(o, true);
-                        }
-                    }]*/
                 }]
             },{
                 tag : 'h3',
-                style : {color:'white'},
-                html : 'This page and all related features and samples are created with one invokation of <pre>Widgzard.render</pre>',
+                style : {
+                    color:'white',
+                    textAlign:'center'
+                },
+                html : 'This page and all related features and samples are created just invoking the <pre>Widgzard.render</pre> function',
 
             },{
-                attrs : {'class':'round8 respfixed'},
+                attrs : {
+                    'class':'round8 respfixed'
+                },
                 style : {
                     textAlign:'center',
                     margin : '0 auto',
@@ -144,13 +124,21 @@
                     // border:'1em solid '+color1
                 },
                 content : [{
-                    style : {'float':'left', width : '30%', padding:padding + ' 0px'},
+                    style : {
+                        'float' : 'left',
+                        width : '30%',
+                        padding : padding + ' 0px'
+                    },
                     content : [{
                         tag : 'h3',
                         text : '{Object literal}'    
                     }]
                 },{
-                    style : {'float':'left', width : '5%', padding:padding + ' 0px'},
+                    style : {
+                        'float' : 'left',
+                        width : '5%',
+                        padding : padding + ' 0px'
+                    },
                     content : [{
                         tag : 'h3',
                         html : '<span class="mobi">&darr;</span><span class="dskt">&rarr;</span>'    
@@ -169,13 +157,21 @@
                         text : 'the Widgzard'
                     }]
                 },{
-                    style : {'float':'left', width : '5%', padding:padding + ' 0px'},
+                    style : {
+                        'float' : 'left',
+                        width : '5%',
+                        padding : padding + ' 0px'
+                    },
                     content : [{
                         tag : 'h3',
                         html : '<span class="mobi">&darr;</span><span class="dskt">&rarr;</span>'
                     }]
                 },{
-                    style : {'float':'left', width : '30%', padding:padding + ' 0px'},
+                    style : {
+                        'float' : 'left',
+                        width : '30%',
+                        padding : padding + ' 0px'
+                    },
                     content : [{
                         tag :'h3',
                         text : 'HTML & JS & CSS'    
@@ -186,20 +182,35 @@
                 attrs : {'class':'round8'},
                 style : {
                     margin : margin +' 0px',
-                    backgroundColor:color0,
-                    width:'100%'   
+                    backgroundColor : color0,
+                    width : '100%'
                 },
                 content : [{
-                    attrs : {'class':'respfixed'},
-                    style : {padding:spacing},
+                    attrs : {
+                        'class':'respfixed'
+                    },
+                    style : {
+                        padding : spacing
+                    },
                     content : [{
                         wid : 'n1',
-                        style : {width:'44%' ,'float':'left'},
+                        style : {
+                            width : '44%' ,
+                            'float' : 'left'
+                        },
                         content : [{
-                            attrs : {'class':'round8 respfixed'},
-                            style : {margin:spacing, backgroundColor:'black', color:color1},
+                            attrs : {
+                                'class' : 'round8 respfixed'
+                            },
+                            style : {
+                                margin : spacing,
+                                backgroundColor : 'black',
+                                color : color1
+                            },
                             content : [{
-                                style : {padding:padding},
+                                style : {
+                                    padding : padding
+                                },
                                 html : FG.Widgzard.htmlspecialchars(
                                     "FG.Widgzard.render({\n"+
                                     "   target : document.getElementById('cnt'),\n" +
@@ -219,45 +230,89 @@
                         }] 
                     },{
                         wid : 'n2',
-                        // attrs : {'class':'round8'},
                         style : {
-                            width:'4%' ,
-                            'float':'left',
-                            // fontSize:'30px',
-                            textAlign:'center',
-                            lineHeight:'40px'
+                            width : '4%' ,
+                            'float' : 'left',
+                            textAlign : 'center',
+                            lineHeight : '40px'
                         },
-                        html : '<h3 class="mobi">&darr;</h3><h3 class="dskt">&rarr;</h3>'
-                    },{
-                        style : {width:'4%' ,'float':'left', textAlign:'center',lineHeight:'40px'},
                         content : [{
-                            attrs : {'class':'round8 respfixed'},
-                            style : {
-                                margin:spacing,
-                                backgroundColor: color1,
-                                fontFamily: "'Luckiest Guy', cursive"
-                            },  
-                            html : '<h3 class="dskt">W</h3><h3 class="mobi">WIDGZARD</h3>'
+                            tag : 'h3',
+                            attrs : {"class":"mobi"},
+                            html : '&darr;'
+                        },{
+                            tag : 'h3',
+                            attrs : {"class":"dskt"},
+                            html : '&rarr;'
                         }]
                     },{
                         style : {
-                            width:'4%' ,
-                            'float':'left',
-                            // fontSize:'30px',
-                            textAlign:'center'
+                            width : '4%',
+                            'float' : 'left',
+                            textAlign : 'center',
+                            lineHeight : '40px'
                         },
-                        html : '<h3 class="mobi">&darr;</h3><h3 class="dskt">&rarr;</h3>'
-                    },{
-                        style : {width:'44%' ,'float':'left'},
                         content : [{
-                            attrs : {'class':'round8 respfixed'},
-                            style : {margin:spacing, color:color3, backgroundColor:color2a, padding:padding},
+                            attrs : {
+                                'class' : 'round8 respfixed'
+                            },
+                            style : {
+                                margin : spacing,
+                                backgroundColor : color1,
+                                fontFamily : "'Luckiest Guy', cursive"
+                            },  
+                            content : [{
+                                tag : 'h3',
+                                attrs : {"class":"dskt"},
+                                text : 'W'
+                            },{
+                                tag : 'h3',
+                                attrs : {"class":"mobi"},
+                                text : 'WIDGZARD'
+                            }]
+                        }]
+                    },{
+                        style : {
+                            width : '4%' ,
+                            'float' : 'left',
+                            textAlign : 'center'
+                        },
+                        content : [{
+                            tag : 'h3',
+                            attrs : {"class":"mobi"},
+                            html : '&darr;'
+                        },{
+                            tag : 'h3',
+                            attrs : {"class":"dskt"},
+                            html : '&rarr;'
+                        }]
+                        
+                    },{
+                        style : {
+                            width : '44%',
+                            'float' : 'left'
+                        },
+                        content : [{
+                            attrs : {
+                                'class' : 'round8 respfixed'
+                            },
+                            style : {
+                                margin : spacing,
+                                color : color3,
+                                backgroundColor : color2a,
+                                padding : padding
+                            },
                             content : [{
                                 content : [{
                                     html : FG.Widgzard.htmlspecialchars('<div id="cnt">')
                                 },{
-                                    attrs : {'class':'round8'},
-                                    style : { backgroundColor:color2a, color:color0},
+                                    attrs : {
+                                        'class' : 'round8'
+                                    },
+                                    style : {
+                                        backgroundColor : color2a,
+                                        color : color0
+                                    },
                                     html : FG.Widgzard.htmlspecialchars(
                                         " <div class='first'>hello</div>\n" + 
                                         " <div class='second'><u>world</u></div>"
@@ -268,61 +323,70 @@
                             }]
                         }]
                     },
-                    'clearer',{
-                        tag:'hr',
-                        style : {margin : padding + ' ' + spacing}
+                    'clearer', {
+                        tag : 'hr',
+                        style : {
+                            margin : padding + ' ' + spacing
+                        }
                     },{
                         tag : "h4",
-                        html:"Isn`t it going to be crazy huge as far as my document grows?",
+                        html :"Isn`t it going to be crazy huge as far as my document grows?",
                         attrs : {
                             "class" : "round4 floatl"
                         },
                         style : {
-                            backgroundColor: color1,
+                            backgroundColor : color1,
                             margin : spacing,
-                            padding:padding,
+                            padding : padding,
                             color : color0
                         }
                     },{
-                        attrs : {'class':'round4 floatr'},
+                        attrs : {
+                            'class' : 'round4 floatr'
+                        },
                         style : {
-                            backgroundColor: color2a,
+                            backgroundColor : color2a,
                             margin : spacing,
-                            padding:padding,
+                            padding : padding,
                             color : color0,
                             marginTop : '2em'
                         },
-                            tag : 'h4',
-                            text : "... yes, but components clearly solve this"
-                        
+                        tag : 'h4',
+                        text : "... maybe, but the `components` solve this"
                     },'clearer']
                 }]
             },{
                 tag : 'h2',
-                attrs : {'class' : 'round8 respfixed'},
+                attrs : {
+                    'class' : 'round8 respfixed'
+                },
                 html : "Before showing how <i>components</i> works ..."
             },{
-                attrs : {'class' : 'round8 respfixed'},
+                attrs : {
+                    'class' : 'round8 respfixed'
+                },
                 html : 'WTF licence ~ Federico Ghedina ~ ' + (new Date).getFullYear() ,
                 style : {
                     backgroundColor : 'white',
                     padding : padding,
                     margin : margin + ' 0px'
-                },
+                }/*,
                 end : function () {
                     console.log(this.node);
-                }
+                }*/
             }]
         };
     
 
-    window.t = FG.Widgzard.render(conf, true, 'tony');
-
+    // window.t = FG.Widgzard.render(conf, true, 'tony');
+    window.t = FG.engy3.render(conf, true, 'tony');
+    // window.t = FG.engy3.load('http://www.widgzard.dev/json/index.js');
+    /*FG.engy3.get(conf).then(function (p, r) {
+        document.body.appendChild(r[0]);
+    });
+    */
     function report () {
         window.JSON && console.log('json size : ' + JSON.stringify(conf).length);
         console.log('html size : ' + document.documentElement.innerHTML.length);
     }
-
-
-
 })();

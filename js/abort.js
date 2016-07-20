@@ -110,7 +110,7 @@
             },{
                 attrs : {'class':'round'},
                 style : {'float':'left', width : '30%',backgroundColor : color2, color : color0, height : '52px', padding:padding + ' 0px', fontFamily: "'Luckiest Guy', cursive", fontSize:'45px'},
-                html : 'Widgzard'
+                html : 'FG.Widgzard'
             },{
                 style : {'float':'left', width : '5%', padding:padding + ' 0px'},
                 html : '<span class="mobi">&darr;</span><span class="dskt">&rarr;</span>'
@@ -141,7 +141,7 @@
                             html : 'load some samples',
                             cb : function () {
                                 FG.events.on(this.node, 'click', function (){
-                                    Widgzard.load('js/samples.js');
+                                    FG.Widgzard.load('js/samples.js');
                                 });
                                 this.done();
                             },
@@ -156,7 +156,7 @@
                         style : {padding:padding, fontSize:'25px', margin : spacing + ' 0px'},
                         attrs : {'class':'respfixed'},
                         tag : 'h3',
-                        html : 'Widgzard javascript module allows to'
+                        html : 'FG.Widgzard javascript module allows to'
                     }, {
                         attrs : {'class':'round respfixed'},
                         style : {margin:spacing, backgroundColor: color1a, padding:padding, lineHeight:'1.6em'},
@@ -193,8 +193,8 @@
                         style : {margin:spacing, backgroundColor:'black', color:color1},
                         content : [{
                             style : {padding:padding},
-                            html : Widgzard.htmlspecialchars(
-                                "Widgzard.render({\n"+
+                            html : FG.Widgzard.htmlspecialchars(
+                                "FG.Widgzard.render({\n"+
                                 "   target : document.getElementById('cnt'),\n" +
                                 "   cb : function() {\n"+
                                 "       console.log('all done');\n"+
@@ -237,16 +237,16 @@
                         style : {margin:spacing, color:color3, backgroundColor:color2a, padding:padding},
                         content : [{
                             content : [{
-                                html : Widgzard.htmlspecialchars('<div id="cnt">')
+                                html : FG.Widgzard.htmlspecialchars('<div id="cnt">')
                             },{
                                 attrs : {'class':'round'},
                                 style : { backgroundColor:color2a, color:color0},
-                                html : Widgzard.htmlspecialchars(
+                                html : FG.Widgzard.htmlspecialchars(
                                     "  <div style='color:red'>hello</div>\n" + 
                                     "  <div style='color:green'>world</div>"
                                 ) 
                             },{
-                                html : Widgzard.htmlspecialchars('</div>')
+                                html : FG.Widgzard.htmlspecialchars('</div>')
                             }]
                         }]
                     }]
@@ -305,7 +305,7 @@
     
     //conf.target = document.getElementById('jochen');
 
-    Widgzard.render(conf, true);
+    FG.Widgzard.render(conf, true);
 
     function report () {
         window.JSON && console.log('json size : ' + JSON.stringify(conf).length);

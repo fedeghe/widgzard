@@ -7,7 +7,7 @@
 		content : [{
 			component : 'test/base',
 			params : {
-				a:"Vicente goes to hollywood",
+				a:"Gabri goes to hollywood",
 				b:2,
 				one : {
 					two : {
@@ -46,5 +46,5 @@
 		}]
 	};
 
-	FG.engy2.render(o, true);
+	FG.engy3.render(o, true);
 })();

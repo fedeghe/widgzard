@@ -1,4 +1,4 @@
-$ns$.dom = {
+$NS$.dom = {
 
 	addClass : function (elem, addingClass) {
 	    var cls = !!(elem.className) ? elem.className : '',

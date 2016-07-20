@@ -67,7 +67,7 @@ var start = +new Date,
         },
         
         render = function () {
-            Widgzard.render(conf[index], true);
+            FG.Widgzard.render(conf[index], true);
         },
         
         stats = function (){

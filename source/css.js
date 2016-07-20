@@ -1,6 +1,6 @@
-$ns$.makeNS('$ns$/css');
+$NS$.makeNS('$NS$/css');
 
-$ns$.css.style = function (el, prop, val ) {
+$NS$.css.style = function (el, prop, val ) {
 
     var prop_is_obj = (typeof prop === 'object' && typeof val === 'undefined'),
         ret = false,

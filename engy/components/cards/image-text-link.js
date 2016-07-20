@@ -1,4 +1,4 @@
-{
+XXX = {
     tag : "li",
     style : {
         height:"inherit",

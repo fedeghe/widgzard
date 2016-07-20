@@ -1,4 +1,4 @@
-$ns$.object = (function (){
+$NS$.object = (function (){
 
     /**
      * maps an object literal to a string according using the map function  passed
@@ -14,11 +14,19 @@ $ns$.object = (function (){
         return ret;
     }
 
+    // 
+    // 
     function jCompare(obj1, obj2) {
-        return typeof JSON !== 'undefined' ? JSON.stringify(obj1) === JSON.stringify(obj2) : obj1 == obj2;
+        // avoid tags
+        return  !isNode(obj1)
+                && typeof JSON !== 'undefined' ?
+            JSON.stringify(obj1) === JSON.stringify(obj2)
+            :
+            obj1 == obj2;
     }
 
-    //Returns true if it is a DOM node
+    // Returns true if it is a DOM node
+    //
     function isNode(o){
         return (
             typeof Node === "object" ? o instanceof Node : 
@@ -26,7 +34,8 @@ $ns$.object = (function (){
         );
     }
 
-    //Returns true if it is a DOM element    
+    // Returns true if it is a DOM element
+    // 
     function isElement(o){
         return (
             typeof HTMLElement === "object" ?
@@ -36,23 +45,29 @@ $ns$.object = (function (){
         );
     }
 
-    function digFor(what, obj, target) {
+    function digFor(what, obj, target, limit) {
 
         if(!what.match(/key|value/)) {
             throw new Error('Bad param for object.digFor');
         }
-        var matches = {
+        limit = ~~limit;
+        
+        var found = 0,
+            matches = {
                 key : function (k1, k2, key) {
-                    return ($ns$.object.isString(k1) && key instanceof RegExp) ?
+                    return ($NS$.object.isString(k1) && key instanceof RegExp) ?
                         k1.match(key)
                         :
                         jCompare(k1, key);
                 },
                 value : function (k1, k2, val) {
-                    return ($ns$.object.isString(k2) && val instanceof RegExp) ?
+                    
+                    var v =  ($NS$.object.isString(k2) && val instanceof RegExp) ?
                         k2.match(val)
                         :
                         jCompare(k2, val);
+                    
+                    return v;
                 }
             }[what],
             res = [],
@@ -60,6 +75,7 @@ $ns$.object = (function (){
 
                 var p = [].concat.call(path, [index]),
                     tmp = matches(index, obj[index], key);
+
                 if (tmp) {
                     res.push({
                         value: obj[index],
@@ -71,6 +87,7 @@ $ns$.object = (function (){
                         regexp : tmp,
                         level : level
                     });
+                    found++;
                 }
                 dig(obj[index], key, p, level+1);
             },
@@ -78,13 +95,16 @@ $ns$.object = (function (){
                 // if is a domnode must be avoided
                 if (isNode(o) || isElement(o)) return;
                 var i, l, p, tmp;
+                
                 if (o instanceof Array) {                
                     for (i = 0, l = o.length; i < l; i++) {
                         maybeDoPush(path, i, k, o, level);
+                        if (limit && limit == found) break;
                     }
                 } else if (typeof o === 'object') {
                     for (i in o) {
                         maybeDoPush(path, i, k, o, level);
+                        if (limit && limit == found) break;
                     }
                 } else {
                     return;
@@ -109,8 +129,8 @@ $ns$.object = (function (){
 
         jCompare: jCompare,
         
-        digForKey : function (o, k) {
-            return digFor('key', o, k);
+        digForKey : function (o, k, lim) {
+            return digFor('key', o, k, lim);
         },
 
         /**
@@ -119,8 +139,8 @@ $ns$.object = (function (){
          * @param  {[type]} k [description]
          * @return {[type]}   [description]
          */
-        digForValue : function (o, k) {
-            return digFor('value', o, k);
+        digForValue : function (o, k, lim) {
+            return digFor('value', o, k, lim);
         },
 
 
@@ -129,7 +149,7 @@ $ns$.object = (function (){
         },
 
         extend: function(o, ext, force) {
-            var obj = $ns$.object.clone(o),
+            var obj = $NS$.object.clone(o),
                 j;
             for (j in ext) {
                 if (ext.hasOwnProperty(j) && (!(j in obj) || force)) {
@@ -140,7 +160,7 @@ $ns$.object = (function (){
         },
 
         clone: function(obj) {
-            var self = $ns$.object,
+            var self = $NS$.object,
                 copy,
                 i, l;
             // Handle the 3 simple types, and null or undefined

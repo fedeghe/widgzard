@@ -1,5 +1,5 @@
-$ns$.makeNS('$ns$/io');
-$ns$.io = (function (){
+$NS$.makeNS('$NS$/io');
+$NS$.io = (function (){
 
     var W = window,
         _ = {
@@ -44,7 +44,7 @@ $ns$.io = (function (){
                 state = false;
             //prepare data, caring of cache
             if (!cache) {data.C = +new Date; }
-            data = $ns$.object.toQs(data).substr(1);
+            data = $NS$.object.toQs(data).substr(1);
             xhr.onreadystatechange = function () {
                 var tmp;
                 if (state === xhr.readyState) {

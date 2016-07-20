@@ -1,6 +1,6 @@
-$ns$.makeNS('$ns$/events');
+$NS$.makeNS('$NS$/events');
 
-$ns$.events.on = (function(W) {
+$NS$.events.on = (function(W) {
     var fn;
 
     if ('addEventListener' in W) {
@@ -19,7 +19,7 @@ $ns$.events.on = (function(W) {
     return fn;
 })(this);
 
-$ns$.events.eventTarget = function(e) {
+$NS$.events.eventTarget = function(e) {
     e = e ? e : window.event;
     var targetElement = e.currentTarget || (typeof e.target !== 'undefined') ? e.target : e.srcElement;
     if (!targetElement) {
@@ -31,7 +31,7 @@ $ns$.events.eventTarget = function(e) {
     return targetElement;
 };
 
-$ns$.events.kill = function(e) {
+$NS$.events.kill = function(e) {
     if (!e) {
         e = W.event;
         e.cancelBubble = true;
@@ -41,7 +41,7 @@ $ns$.events.kill = function(e) {
     return false;
 };
 
-$ns$.events.ready = (function () {
+$NS$.events.ready = (function () {
     var cb = [],
         readyStateCheckInterval = setInterval(function() {
             if (document.readyState === "complete") {
@@ -61,7 +61,7 @@ $ns$.events.ready = (function () {
 })();
 
 /* From Modernizr */
-$ns$.events.transitionEnd = (function () {
+$NS$.events.transitionEnd = (function () {
     var n = document.createElement('fake'),
         k,
         trans = {

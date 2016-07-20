@@ -1,4 +1,4 @@
-{
+XXX = {
     tag: "li",
     style : {
         backgroundColor : "#PARAM{bgcolor|white}",

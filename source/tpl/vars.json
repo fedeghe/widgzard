@@ -1,5 +1,9 @@
 {
-	"ns" : "FG",
-	"COMPONENTS_URL" : "/engy/components/",
-	"CARD_EXT" : ".js"
+	"NS" : "FG",
+	"COMPONENTS" : {
+		"EXT" : ".js",
+		"URL" : "/engy/components/",
+		"NAME_PREPEND" : ""
+	},
+	"DEFAULT_LANG" : "en"
 }

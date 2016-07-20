@@ -39,17 +39,22 @@
      *     
      */
     function makens(str, obj, ctx) {
+        str = str.replace(/^\//, '');
         var els = str.split(/\.|\//),
             l = els.length,
             _u_ = 'undefined',
             ret;
+
         // default context window
+        // 
         (typeof ctx === _u_) && (ctx = window);
 
         // default object empty
+        // 
         (typeof obj === _u_) && (obj = {});
 
         // if function
+        // 
         (typeof obj === 'function') && (obj = obj());        
 
         //
@@ -62,6 +67,8 @@
 
 
     function checkns(ns, ctx) {
+
+        ns = ns.replace(/^\//, '');
         var els = ns.split(/\.|\//),
             i = 0,
             l = els.length;
@@ -118,6 +125,6 @@
     });
 
 // base ns 
-})('$ns$');
+})('$NS$');
 
 
