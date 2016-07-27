@@ -874,7 +874,11 @@ FG.makeNS('FG/i18n', function () {
 				replacing = FG.object.digForValue(obj, /i18n\(([^}|]*)?\|?([^}]*)\)/);
 			
 			for (i = 0, l = replacing.length; i < l; i++) {
+				
+				if ((typeof replacing[i].regexp).match(/boolean/i)) continue;
+
 				mayP = FG.i18n.check(replacing[i].regexp[0]);
+				
 				if (mayP) {
 					ref = FG.checkNS(replacing[i].container, obj);	
 					// ref[replacing[i].key] = mayP;

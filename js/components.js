@@ -42,6 +42,7 @@
 				component : 'test/base',
 				params : {
 					a : "Gabri goes to hollywood",
+					bddd : {a:function () {}},
 					doList : true,
 					arr : [1, 2, 3, 4, 5],
 					b : 2,
