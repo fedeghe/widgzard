@@ -175,7 +175,7 @@ FG.object = (function (){
      * @param  {Function} fn  the map function
      * @return {String}       the resulting string
      */
-    function map(o, fn) {
+    function str_map(o, fn) {
         var ret = '', j;
         for (j in o) {
             o.hasOwnProperty(j) && (ret += fn(o, j, ret));
@@ -286,12 +286,12 @@ FG.object = (function (){
 
     return {
         /**
-         * uses map private function to map an onject literal to a querystring ready for url
+         * uses str_map private function to map an onject literal to a querystring ready for url
          * @param  {Literal} obj    the object literal
          * @return {String}         the mapped object
          */
         toQs : function (obj) {
-            return map(obj, function (o, i, r) {
+            return str_map(obj, function (o, i, r) {
                 return ((r ? '&' : '?') + encodeURIComponent(i) + '=' + encodeURIComponent(o[i])).replace(/\'/g, '%27');
             });
         },
