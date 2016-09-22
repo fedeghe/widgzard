@@ -129,7 +129,8 @@ $NS$.makeNS('engy3', function () {
 			countPromise = $NS$.Promise.create(),
 			solveTime = $NS$.Promise.create(),
 			start = +new Date(), end,
-			xhrTot = 0;
+			xhrTot = 0,
+			cback;
 
 
 		(function solve() {
@@ -155,7 +156,7 @@ $NS$.makeNS('engy3', function () {
 				componentName = self.getFileName(component.value);
 				cached = componentName in components;
 
-				function cback(xhrResponseText) {
+				cback = function (xhrResponseText) {
 					xhrEnd = +new Date;
 					xhrTot += xhrEnd - xhrStart;
 
@@ -217,7 +218,7 @@ $NS$.makeNS('engy3', function () {
 					}
 
 					innerPromise.done();
-				}
+				};
 				
 
 				// maybe is cached
