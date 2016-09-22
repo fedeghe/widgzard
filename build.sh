@@ -1,2 +1,2 @@
 #!/bin/bash
-malta _buildall.json
+malta buildall.json
