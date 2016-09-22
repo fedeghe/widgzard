@@ -1051,7 +1051,8 @@ FG.makeNS('engy3', function () {
 			countPromise = FG.Promise.create(),
 			solveTime = FG.Promise.create(),
 			start = +new Date(), end,
-			xhrTot = 0;
+			xhrTot = 0,
+			cback;
 
 
 		(function solve() {
@@ -1077,7 +1078,7 @@ FG.makeNS('engy3', function () {
 				componentName = self.getFileName(component.value);
 				cached = componentName in components;
 
-				function cback(xhrResponseText) {
+				cback = function (xhrResponseText) {
 					xhrEnd = +new Date;
 					xhrTot += xhrEnd - xhrStart;
 
@@ -1139,7 +1140,7 @@ FG.makeNS('engy3', function () {
 					}
 
 					innerPromise.done();
-				}
+				};
 				
 
 				// maybe is cached
