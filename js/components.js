@@ -74,7 +74,7 @@
 		}
 	};
 
-	FG.lang = 'en';
+	FG.lang = 'de';
 
 	FG.io.getJson('/source/i18n/' + FG.lang + '.json', function (lang) {
         FG.i18n.load(lang);
