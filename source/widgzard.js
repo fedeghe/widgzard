@@ -789,7 +789,8 @@ console.log("\n\n WIDGZARD \n\n")
 		},
 		getElements : function () {
 			return renders;
-		}
+		},
+		Promise : Promise
 	};
 
 })(this);

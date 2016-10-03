@@ -222,7 +222,7 @@ SM = {
             var carouselListWrap = self.getNode('carouselListWrap').node,
                 childs = self.getNode('carouselList').childrens,
                 l = childs.length;
-            Widgzard.render({
+            FG.Widgzard.render({
                 target : carouselListWrap,
                 content : [{
                     style : {

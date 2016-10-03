@@ -257,6 +257,8 @@ $NS$.makeNS('engy3', function () {
 
 	return {
 
+		process : process,
+
 		get  : function (params, clean, name) {
 			var pRet = $NS$.Promise.create();
 			process(params).then(function(p, r) {

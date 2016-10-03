@@ -83,7 +83,7 @@ XXX = {
                 onend.cb = function () {
                     FG.Channel(cid).unsub('moved', moved);
                 };
-                Widgzard.render(onend, replace);
+                FG.Widgzard.render(onend, replace);
             });
         }
 

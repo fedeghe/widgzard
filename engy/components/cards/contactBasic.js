@@ -93,7 +93,7 @@ XXX = {
                     &&
                     FG.io.post(self.parent.data.submitUrl, function (r) {
 
-                            Widgzard.render({
+                            FG.Widgzard.render({
                                 target : self.parent.node,
                                 content : [{
                                     html : r,

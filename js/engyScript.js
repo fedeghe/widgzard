@@ -4,7 +4,7 @@ var timeStart = +new Date,
 window.onload = function () {
 
     -function() {
-        FG.engy.process({
+        FG.engy3.process({
             component: "carousel",
             params: {
                 id: "d23q2qdd2q243",

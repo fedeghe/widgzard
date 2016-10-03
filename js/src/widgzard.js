@@ -912,7 +912,8 @@ console.log("\n\n WIDGZARD \n\n")
 		},
 		getElements : function () {
 			return renders;
-		}
+		},
+		Promise : Promise
 	};
 
 })(this);
@@ -1178,6 +1179,8 @@ FG.makeNS('engy3', function () {
 
 
 	return {
+
+		process : process,
 
 		get  : function (params, clean, name) {
 			var pRet = FG.Promise.create();
