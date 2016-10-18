@@ -11,7 +11,8 @@ $NS$.makeNS('$NS$/i18n', function () {
 
 		parse : function (obj) {
 			var self = this,
-				replacing = $NS$.object.digForValue(obj, /i18n\(([^}|]*)?\|?([^}]*)\)/);
+				replacing = $NS$.object.digForValue(obj, /i18n\(([^}|]*)?\|?([^}]*)\)/),
+				i, l;
 			
 			for (i = 0, l = replacing.length; i < l; i++) {
 				
