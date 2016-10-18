@@ -871,7 +871,8 @@ FG.makeNS('FG/i18n', function () {
 
 		parse : function (obj) {
 			var self = this,
-				replacing = FG.object.digForValue(obj, /i18n\(([^}|]*)?\|?([^}]*)\)/);
+				replacing = FG.object.digForValue(obj, /i18n\(([^}|]*)?\|?([^}]*)\)/),
+				i, l;
 			
 			for (i = 0, l = replacing.length; i < l; i++) {
 				
