@@ -1,6 +1,0 @@
-{
-    "source/tpl/lib.js" : "js/src/",
-    "source/tpl/widgzard.js" : "js/src/",
-    "source/css/widgzard.less" : "css/",
-    "source/tpl/engy.less" : "engy/css/"
-}
