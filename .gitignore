@@ -1,6 +1,9 @@
 widgzard.sublime-project
 widgzard.sublime-workspace
-lib/tpl/engy2js.buildNum
-lib/tpl/engyjs.buildNum
-lib/tpl/engyless.buildNum
-/nbproject/private/
+4carousel
+components
+i18n
+lib
+media
+samples
+.printVersion
