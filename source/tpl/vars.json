@@ -1,9 +1,0 @@
-{
-	"NS" : "FG",
-	"COMPONENTS" : {
-		"EXT" : ".js",
-		"URL" : "/engy/components/",
-		"NAME_PREPEND" : ""
-	},
-	"DEFAULT_LANG" : "en"
-}
