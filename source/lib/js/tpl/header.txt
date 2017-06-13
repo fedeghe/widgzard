@@ -1,0 +1,32 @@
+
+
+
+
+		 ...    .     ...         .       ..                                                          ..       
+	  .~`"888x.!**h.-``888h.     @88>   dF                                                          dF         
+	 dX   `8888   :X   48888>    %8P   '88bu.                       ..                   .u    .   '88bu.      
+	'888x  8888  X88.  '8888>     .    '*88888bu        uL        .@88i         u      .d88B :@8c  '*88888bu   
+	'88888 8888X:8888:   )?""`  .@88u    ^"*8888N   .ue888Nc..   ""%888>     us888u.  ="8888f8888r   ^"*8888N  
+	 `8888>8888 '88888>.88h.   ''888E`  beWE "888L d88E`"888E`     '88%   .@88 "8888"   4888>'88"   beWE "888L 
+	   `8" 888f  `8888>X88888.   888E   888E  888E 888E  888E    ..dILr~` 9888  9888    4888> '     888E  888E 
+	  -~` '8%"     88" `88888X   888E   888E  888E 888E  888E   '".-%88b  9888  9888    4888>       888E  888E 
+	  .H888n.      XHn.  `*88!   888E   888E  888F 888E  888E    @  '888k 9888  9888   .d888L .+    888E  888F 
+	 :88888888x..x88888X.  `!    888&  .888N..888  888& .888E   8F   8888 9888  9888   ^"8888*"    .888N..888  
+	 f  ^%888888% `*88888nx"     R888"  `"888*""   *888" 888&  '8    8888 "888*""888"     "Y"       `"888*""   
+		  `"**"`    `"**""        ""       ""       `"   "888E '8    888F  ^Y"   ^Y'                   ""      
+												   .dWi   `88E  %k  <88F                                       
+												   4888~  J8%    "+:*%`                                        
+													^"===*"`                              v.$VERSION.WIDGZARD$
+
+
+ * Widgzard module
+ * 
+ * Create an arbitrary dom tree json based allowing for each node to 
+ * specify a callback that will be called only when either
+ *   > the node is appended (in case the node is a leaf)
+ * ||
+ *   > every child has finished (explicitly calling the done function on his context)
+ *
+ * @author $AUTHOR$ <__YEAR__>
+ *
+ *

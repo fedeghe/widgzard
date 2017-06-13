@@ -1,0 +1,14 @@
+{
+	"NS" : "FG",
+	"COMPONENTS" : {
+		"EXT" : ".js",
+		"URL" : "/components/",
+		"NAME_PREPEND" : ""
+	},
+	"VERSION" : {
+		"WIDGZARD" : 0.2,
+		"ENGY" : 0.3
+	},
+	"AUTHOR" : "Federico Ghedina <federico.ghedina@gmail.com>",
+	"DEFAULT_LANG" : "en"
+}

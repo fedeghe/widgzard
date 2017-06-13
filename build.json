@@ -26,8 +26,8 @@
 
     // 4Carousel
     //
-    "source/4carousel/index.html" : "4carousel",
+    "!source/4carousel/index.html" : "4carousel",
     //"!source/4carousel/4carousel.js" : "4carousel/js/ -plugins=malta-js-obfuscator[compact:true,controlFlowFlattening:true,controlFlowFlatteningThreshold:0.75,debugProtection:false,debugProtectionInterval:false,disableConsoleOutput:true,rotateStringArray:true,selfDefending:true,stringArray:true,stringArrayEncoding:'base64',stringArrayThreshold:0.75,unicodeEscapeSequence:false]",
-    "source/4carousel/4carousel.js" : "4carousel/js", 
-    "source/4carousel/components/*.js" : "4carousel/js/components -plugins=malta-js-uglify"
+    "!source/4carousel/4carousel.js" : "4carousel/js", 
+    "!source/4carousel/components/*.js" : "4carousel/js/components -plugins=malta-js-uglify"
 }
