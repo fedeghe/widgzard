@@ -19,7 +19,7 @@
     //
     // SAMPLES
     //
-    "source/index.html" : ".",
+    "source/front.html" : ".",
     "source/samples/*.html" : "samples",
     "source/samples/js/*.js" : "samples/js",
     "source/samples/css/*.css" : "samples/css",

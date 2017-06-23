@@ -7,5 +7,4 @@ $$../dom.js$$
 $$../events.js$$
 $$../string.js$$
 $$../channel.js$$
-$$../lstorage.js$$
 $$../i18n.js$$
