@@ -47,7 +47,7 @@ $NS$.object = (function (){
 
     function digFor(what, obj, target, limit) {
 
-        if(!what.match(/key|value/)) {
+        if(!what.match(/key|value|keyvalue/)) {
             throw new Error('Bad param for object.digFor');
         }
         limit = ~~limit;
@@ -68,6 +68,20 @@ $NS$.object = (function (){
                         jCompare(k2, val);
                     
                     return v;
+                },
+                keyvalue : function (k1, k2, keyval) {
+                    return (
+                        ($NS$.object.isString(k1) && keyval.key instanceof RegExp) ?
+                        k1.match(keyval.key)
+                        :
+                        jCompare(k1, keyval.key)
+                    ) && (
+
+                        ($NS$.object.isString(k2) && keyval.value instanceof RegExp) ?
+                        k2.match(keyval.value)
+                        :
+                        jCompare(k2, keyval.value)
+                    );
                 }
             }[what],
             res = [],
@@ -78,6 +92,7 @@ $NS$.object = (function (){
 
                 if (tmp) {
                     res.push({
+                        obj : obj,
                         value: obj[index],
                         key : p[p.length - 1],
                         parentKey : p[p.length - 2],
@@ -129,6 +144,14 @@ $NS$.object = (function (){
 
         jCompare: jCompare,
         
+        /**
+         * { function_description }
+         *
+         * @param      {<type>}  o       { parameter_description }
+         * @param      {<type>}  k       { parameter_description }
+         * @param      {<type>}  lim     The limit
+         * @return     {<type>}  { description_of_the_return_value }
+         */
         digForKey : function (o, k, lim) {
             return digFor('key', o, k, lim);
         },
@@ -143,6 +166,17 @@ $NS$.object = (function (){
             return digFor('value', o, k, lim);
         },
 
+        /**
+         * { function_description }
+         *
+         * @param      {<type>}  o       { parameter_description }
+         * @param      {<type>}  kv      { parameter_description }
+         * @param      {<type>}  lim     The limit
+         * @return     {<type>}  { description_of_the_return_value }
+         */
+        digForKeyValue : function (o, kv, lim) {
+            return digFor('value', o, kv, lim);
+        },
 
         isString : function(o) {
             return typeof o === 'string' || o instanceof String;
