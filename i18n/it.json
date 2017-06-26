@@ -1,0 +1,25 @@
+{
+	"submit" : "Invia",
+	"firstName" : "Nome",
+	"lastName" : "Cognome",
+	"email" : "Email",
+	"thankYou" : "Grazie",
+	"submissionError" : "Un errore inaspettato , per cortesia prova piú tardi",
+	"swipe" : "swipa qui",
+	"selectStore" : "Seleziona un negozio",
+	"replay" : "Replay",	
+	"moreInfo" : "Piú info",
+	"survey" : {
+		"tellMeYourAge" : "Quanti anni hai?",
+		"tellMeYourGender" : "Sei maschio o femmina?",
+		"maleGender" : "maschio",
+		"femaleGender" : "femmmina",
+		"proceed" : "procedi",
+		"accept" : "accetta",
+		"privacy" : "privacy",
+		"userinfo" : "ENGLISH VERSION: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem quibusdam molestiae beatae modi necessitatibus sapiente fugit repellat, maiores facere sint exercitationem, aut mollitia expedita consectetur doloribus, consequatur temporibus animi dicta.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque tempore fugit, reprehenderit facere nostrum laborum porro aliquam soluta, minus! Odio obcaecati in facilis reiciendis ipsam mollitia sapiente a ut repellendus.",
+		"yes" : "si",
+		"no" : "no"
+	}
+}
+
