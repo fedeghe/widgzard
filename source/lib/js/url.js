@@ -1,5 +1,4 @@
 $NS$.url = (function () {
-
 	var _hash = [],
 		_urlHash = {
 			get : function () {
@@ -10,16 +9,25 @@ $NS$.url = (function () {
 				document.location.hash = '#/' + _hash.join('/');
 			}
 		};
-
+	/**
+	 * Gets the hash.
+	 *
+	 * @return     {Array}  The hash elements / separated.
+	 */
 	function getHash() {
 		var h = _urlHash.get().replace(/^\#\/?/, '');
-		if (h.length)
-			return _hash = h.split(/\//);
-		return false;
+		return _hash = h.split(/\//);
 	}
 
-	function setHash() {
-		var arg = [].slice.call(arguments, 0).filter(function (el) {return el.length;});
+	/**
+	 * Sets the hash.
+	 *
+	 * @param      all the elements comma separated that has to be in the hash
+	 */
+	function setHash(a) {
+		var arg = [].slice.call(arguments, 0).filter(
+			function (el) {return el.length;}
+		);
 		_urlHash.set.apply(null, arg);
 	}
 
@@ -27,5 +35,5 @@ $NS$.url = (function () {
 		hash : _hash,
 		getHash : getHash,
 		setHash : setHash
-	}
+	};
 }());
