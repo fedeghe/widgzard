@@ -1,4 +1,5 @@
 $$../core.js$$
+$$../url.js$$
 $$../util.js$$
 $$../object.js$$
 $$../io.js$$
