@@ -9,17 +9,17 @@ Widgzard is a simple module, part of my [jmvc project][1], which allows to build
 
 The **problem** that originally led me to that solution was to: 
 
-**1**) build up an arbitrary dom tree from json (with attributes) and attach it somewhere (preorder, the only possibility) 
+**1**) build up an arbitrary dom tree from json (turned out I use a literal object) and attach it somewhere (preorder, the only possibility) 
 
-**2**) having the possibility to specify a function for every Node 
+**2**) having the possibility to specify a some functions for every Node 
 
-**3**) in case of a leaf node execute the callback immediately after node creation 
+**3**) in case of a leaf node execute the creation callback immediately after node creation 
 
-**4**) all other nodes callback had to be executed only when all node childs having a callback declared claim they got their work done (postorder) 
+**4**) all other nodes creation callback had to be executed only when all childs node creation callback has finished (postorder) 
 
 ---
 
-The _Widgzard_ aims to solve the problem in a clear way, receiving a json containing all is needed to build up and to manage the callbacks executions.  
+The _Widgzard_ aims to solve the problem in a clear way, receiving a object literal containing all is needed to build up and to manage the callbacks executions.  
 Every node has basically the following structure  
 
 	{
