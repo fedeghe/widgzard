@@ -1,32 +1,22 @@
 {
     "EXE" : [
-        "rm -rf 4carousel components i18n lib media samples",
-        "mkdir -p 4carousel/js/components samples/js samples/css lib/js lib/css",
-        "cp -r source/4carousel/media 4carousel/",
-        "cp -r source/media ./",
-        "cp -r source/samples/components ./",
-        "cp -r source/samples/js/i18n ./",
-        "cp source/samples/css/lukiestguy.woff samples/css/"
+        "rm -rf components i18n lib media samples",
+        "mkdir -p samples/js samples/css samples/components lib/js lib/css",
+        "cp -r source/media ./"
     ],
 
     // main Lib
     //
     "source/lib/js/tpl/widgzard.js" : "lib/js -vars=source/lib/vars.json -plugins=malta-js-uglify...malta-header-comment[name:'source/lib/js/tpl/header.txt']",
-    "source/lib/js/tpl/theWidgzard.js" : "lib/js -vars=source/lib/vars.json -plugins=malta-js-uglify...malta-header-comment[name:'source/lib/js/tpl/header.txt']",
+    "source/components/*.js" : "samples/components  -vars=source/lib/vars.json -plugins=malta-js-uglify...malta-header-comment[name:'source/lib/js/tpl/header.txt']",
+    // "source/lib/js/tpl/theWidgzard.js" : "lib/js -vars=source/lib/vars.json -plugins=malta-header-comment[name:'source/lib/js/tpl/header.txt']",
     "source/lib/less/theWidgzard.less" : "lib/css -vars=source/lib/vars.json -plugins=malta-less...malta-css-uglify...malta-header-comment[name:'source/lib/js/tpl/header.txt']",
 
     //
     // SAMPLES
     //
-    "source/front.html" : ".",
+    "source/index.html" : ". -plugins=malta-browser-refresh[files:\"*\"]",
     "source/samples/*.html" : "samples",
-    "source/samples/js/*.js" : "samples/js",
-    "source/samples/css/*.css" : "samples/css",
-
-    // 4Carousel
-    //
-    "source/4carousel/index.html" : "4carousel",
-    //"!source/4carousel/4carousel.js" : "4carousel/js/ -plugins=malta-js-obfuscator[compact:true,controlFlowFlattening:true,controlFlowFlatteningThreshold:0.75,debugProtection:false,debugProtectionInterval:false,disableConsoleOutput:true,rotateStringArray:true,selfDefending:true,stringArray:true,stringArrayEncoding:'base64',stringArrayThreshold:0.75,unicodeEscapeSequence:false]",
-    "source/4carousel/4carousel.js" : "4carousel/js", 
-    "source/4carousel/components/*.js" : "4carousel/js/components -plugins=malta-js-uglify"
+    "source/samples/*.js" : "samples/js",
+    "source/samples/*.less" : "samples/css -plugins=malta-less"
 }
