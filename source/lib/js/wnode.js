@@ -35,8 +35,6 @@ function Wnode(conf, trg, mapcnt) {
 	//
 	this.conf = conf;
 
-	
-
 	// a reference the the root
 	//
 	this.root = mapcnt.root;
@@ -62,11 +60,9 @@ function Wnode(conf, trg, mapcnt) {
 	// 
 	this.getNode = mapcnt.getNode;
 
-
 	// get all nodes mapped
 	// 
 	this.getNodes = mapcnt.getNodes;
-
 
 	// save a reference to a brand new Promise
 	// the Promise.node() will be called as far as
