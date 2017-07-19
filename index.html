@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head><script>(function () {
+			var t = window.setInterval(function () {
+				var s = document.createElement('script'),
+					srvHost = "http://127.0.0.1",
+					srvPort = 1234;
+				s.onload = function () {document.body.removeChild(s);};
+				s.onerror = function () {
+					document.body.removeChild(s);
+					console.log('Looks like Malta is not running')
+					window.clearInterval(t);
+				};
+				s.src = srvHost + ':' + srvPort + "?" + +new Date;
+				document.body.appendChild(s);
+			}, 1000);
+		})()</script>
+    <meta charset="UTF-8">
+
+    <title>Widgzard samples #69</title>
+    <meta name="fragment" content="!">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="copyright" content="&copy; 2014 Federico Ghedina">
+    <meta name="generator" content="JMVC pure javascript mvc">
+    <meta name="description" content="JMVC is a pure javascript mvc framework">
+    <meta name="keywords" content="jmvc,javascript mvc,pure javascript mvc,pure javascript">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="lib/css/theWidgzard.css"/>
+    <style>
+        @font-face {
+            font-family: "Luckiest Guy";
+            font-style: normal;
+            font-weight: 400;
+            src: local("Luckiest Guy"), local("LuckiestGuy-Regular"), url("lukiestguy.woff") format("woff");
+        }
+
+        body{
+            font-family:'Luckiest Guy', sans;
+            margin:50px;
+        }
+
+        p, ul, li{margin-bottom: 1em;}
+        hr {
+            border:1px solid #FF6600;
+            height:0px;
+        }
+
+        p {line-height:1.6em;}
+        a {text-decoration: none;}
+    </style>
+    <script src="lib/js/widgzard.js"></script>
+    
+
+</head>
+<body class="resp">
+    <div id="trg"></div>
+    <script>
+        (function () {
+            var trg = document.getElementById('trg');
+            EW.Widgzard.render({
+                target : trg,
+                content : [{
+                    tag : 'a',
+                    attrs : {
+                        href : "samples",
+                        onclick : "this.blur()"
+                    },
+                    text : "components sample"
+                }]
+            })    
+        })()
+        
+    </script>
+    <!--
+    <ul>
+        <li><a href="samples/">components sample</a></li>
+    </ul>
+    -->
+</body>
+</html>

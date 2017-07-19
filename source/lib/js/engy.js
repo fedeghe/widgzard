@@ -23,7 +23,7 @@
 	@version 0.3
 
 */
-$NS$.makeNS('engy', function () {
+$NS$.makeNs('Engy', function () {
 
 	console.log("\n\n ENGY v.$VERSION.ENGY$\n\n");
 
@@ -91,7 +91,7 @@ $NS$.makeNS('engy', function () {
 	 */
 	function _mergeComponent(ns, path, o) {
 		
-		var componentPH = $NS$.checkNS(path, ns),
+		var componentPH = $NS$.checkNs(path, ns),
 			replacementOBJ = o,
 			merged = {}, i,
 			pathEls = path.split(/\.|\//),
@@ -129,7 +129,9 @@ $NS$.makeNS('engy', function () {
 		els[l-1] = config.fileNamePrepend + els[l-1];
 		res = els.join(config.fileNameSeparator);
 
-		return config.componentsUrl  + res + config.ext;
+		return config.componentsUrl +
+			(config.componentsUrl.match(/\/$/) ? '' : '/')  +
+			res + config.ext;
 	};
 
 	
@@ -175,16 +177,12 @@ $NS$.makeNS('engy', function () {
 				cached = componentName in components;
 				preLoaded = componentName in preloadedComponents;
 
-				// console.log(componentName, preLoaded)
-
 				cback = function (cntORobj) {
 					xhrEnd = +new Date;
 					xhrTot += xhrEnd - xhrStart;
-
- 					var params = $NS$.checkNS(component.container + '/params', self.config),
+ 					var params = $NS$.checkNs(component.container + '/params', self.config),
 						obj,
 						usedParams, foundParam, foundParamValue, foundParamValueReplaced, i, l;
-
 					if (preLoaded) {
 						obj = _clone(cntORobj);
 					} else {
@@ -195,50 +193,22 @@ $NS$.makeNS('engy', function () {
 						obj = eval('(' + cntORobj + ')');
 					}
 
-
-//
-//
-//					if (!cached) {
-//						components[componentName] = xhrResponseText;
-//					}
-//					
-//					xhrResponseText = xhrResponseText.replace(/^[^{]*/, '')
-//									.replace(/;?$/, '');
-//
-//					obj = eval('(' + xhrResponseText + ')');
-
-
-
-
 					// before merging the object I check for the presence of parameters
-					//
 					if (params) {
-
 						// check if into the component are used var placeholders
-						// 
 						usedParams = $NS$.object.digForValue(obj, /#PARAM{([^}|]*)?\|?([^}]*)}/);
-
-
 						l = usedParams.length;
 
 						if (l) {
-
 							for (i = 0; i < l; i++) {
-								
 								// check if the label of the placeholder is in the params
-								//
-								foundParam = $NS$.checkNS(usedParams[i].regexp[1], params);
-								
+								foundParam = $NS$.checkNs(usedParams[i].regexp[1], params);
 								// in case use it otherwise, the fallback otherwise cleanup
-								//
 								foundParamValue = typeof foundParam !== 'undefined' ? foundParam : (usedParams[i].regexp[2] || "");
-								
 								// string or an object?
-								//
-
 								if ((typeof foundParamValue).match(/string/i)){
 
-									foundParamValueReplaced = $NS$.checkNS(usedParams[i].path, obj)
+									foundParamValueReplaced = $NS$.checkNs(usedParams[i].path, obj)
 										.replace(usedParams[i].regexp[0],  foundParamValue);
 									
 									_overwrite(obj, usedParams[i].path, foundParamValueReplaced);
@@ -254,14 +224,10 @@ $NS$.makeNS('engy', function () {
 					} else {
 						self.config = obj;
 					}
-
 					innerPromise.done();
 				};
-
-				// maybe is cached
-				//
 				xhrStart = +new Date;
-
+				// cached?
 				if (preLoaded) {
 					cback (preloadedComponents[componentName]);
 				} else if (cached) {
@@ -276,15 +242,20 @@ $NS$.makeNS('engy', function () {
 		//
 		langFunc && langFunc(self.config);
 		
-
 		countPromise.then(function (pro ,par){
-			console.log("Engy components used: " + par[0]);
+			console.log("Engy used " + par[0] + " component" + (par[0]==1 ? "" : "s"));
 		});
 
 		solveTime.then(function (pro ,par){
-			console.log("Engy time for getting components via xhr: " + xhrTot);
-			console.log("      \"       unfolding : " + (par[0] - xhrTot));
-			console.log("      \"       solving (xhr included): " + par[0]);
+
+			console.log("Engy total time: " + par[0] + 'ms');
+			console.log("      \"       unfolding : " + (par[0] - xhrTot) + 'ms');
+			console.log("      \"       xhr : " + xhrTot + 'ms');
+
+			// console.log("Engy time for getting components via xhr: " + xhrTot + 'ms');
+			// console.log("      \"       unfolding : " + (par[0] - xhrTot) + 'ms');
+			// console.log("      \"       solving (xhr included): " + par[0] + 'ms');
+
 		});
 
 		return self.endPromise;
@@ -313,6 +284,9 @@ $NS$.makeNS('engy', function () {
 		return copy;
 	}
 
+	function _define(name, cnt) {
+
+	}
 
 	return {
 		configSet : _configSet,
@@ -329,6 +303,7 @@ $NS$.makeNS('engy', function () {
 		load : function (src) {
 			return $NS$.Widgzard.load(src);	
 		},
+		define : _define,
 		getElement : function(n) {
 			return $NS$.Widgzard.getElement(n);
 		},

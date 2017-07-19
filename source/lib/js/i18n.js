@@ -1,4 +1,4 @@
-$NS$.makeNS('$NS$/i18n', function () {
+$NS$.makeNs('$NS$/i18n', function () {
 	var data = {};
 
 	$NS$.lang = typeof sm_lang !== 'undefined' ? sm_lang : 'en';
@@ -21,7 +21,7 @@ $NS$.makeNS('$NS$/i18n', function () {
 				mayP = $NS$.i18n.check(replacing[i].regexp[0]);
 				
 				if (mayP) {
-					ref = $NS$.checkNS(replacing[i].container, obj);	
+					ref = $NS$.checkNs(replacing[i].container, obj);	
 					// ref[replacing[i].key] = mayP;
 					ref[replacing[i].key] = $NS$.i18n.get(mayP[1], mayP[2]);
 				} 
@@ -59,7 +59,7 @@ $NS$.makeNS('$NS$/i18n', function () {
 		
 		get : function (k, fallback) {
 			
-			var maybe = $NS$.checkNS(k, data);
+			var maybe = $NS$.checkNs(k, data);
 			// return data[k] || fallback || 'no Value';
 			return maybe || fallback || 'no Value';
 			// return maybe || fallback || false;

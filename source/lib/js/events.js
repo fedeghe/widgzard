@@ -1,5 +1,4 @@
-$NS$.makeNS('$NS$/events');
-
+$NS$.makeNs('$NS$/events');
 
 (function () {
 
@@ -54,19 +53,6 @@ $NS$.makeNS('$NS$/events');
         return false;
     };
 
-    $NS$.events.onNoEvent = function (el, f, t) {
-        t = t || 3000;
-        var to,
-            self = $NS$.events;
-        function inner(e) {
-            to && window.clearTimeout(to);
-            to = window.setTimeout(function () { f(e); }, t);
-        }
-        self.on(el, 'mousemove', inner);
-        self.on(el, 'click', inner);
-        self.on(el, 'touchstart', inner);
-    };
-
     $NS$.events.ready = (function () {
         var cb = [],
             readyStateCheckInterval = setInterval(function() {
@@ -84,23 +70,6 @@ $NS$.makeNS('$NS$/events');
                 cb.push(c);
             }
         };
-    })();
-
-    /* From Modernizr */
-    $NS$.events.transitionEnd = (function () {
-        var n = document.createElement('fake'),
-            k,
-            trans = {
-              'transition':'transitionend',
-              'OTransition':'oTransitionEnd',
-              'MozTransition':'transitionend',
-              'WebkitTransition':'webkitTransitionEnd'
-            };
-        for(k in trans){
-            if (n.style[k] !== undefined ){
-                return trans[k];
-            }
-        }
     })();
 
     /**
@@ -138,7 +107,7 @@ $NS$.makeNS('$NS$/events');
             $NS$.events.on(el, 'keyup', function () {
                 if (elLock) return;
                 lock(true);
-                if (this[elDet] != obj[field]) {
+                if (this[elDet] !== obj[field]) {
                     obj[field] = this[elDet];
                     elOldVal = this[elDet];
                     objOldVal = this[elDet];
@@ -156,6 +125,4 @@ $NS$.makeNS('$NS$/events');
             }
         }
     };
-
 })();
-

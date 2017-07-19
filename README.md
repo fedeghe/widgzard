@@ -3,7 +3,7 @@
 ![postoreder walk](http://www.freakstyle.it/wp-content/uploads/2015/02/2000px-Sorted_binary_tree_postorder.svg_-1024x874.png "postorder walk")
 
 
-Widgzard is a simple module, part of my [jmvc project][1], which allows to build a DOM section while resolving a tree callback using implicit promises. 
+Widgzard is a simple module, part of my [jmvc project][1], which allows to build a DOM tree while resolving a tree callback using implicit promises. 
 
 ---
 

@@ -1,4 +1,4 @@
-$NS$.makeNS('$NS$/io');
+$NS$.makeNs('$NS$/io');
 $NS$.io = (function (){
 
     var W = window,
@@ -119,20 +119,8 @@ $NS$.io = (function (){
         }
     };
 
-
     // return module
     return {
-        getxhr : _.getxhr,
-        post : function (uri, cback, async, data, cache, err) {
-            return _.ajcall(uri, {
-                cback : cback,
-                method : 'POST',
-                async : !!async,
-                data : data,
-                cache : cache,
-                error: err
-            });
-        },
         get : function (uri, cback, async, data, cache, err) {
             return _.ajcall(uri, {
                 cback : cback || function () {},
@@ -141,23 +129,6 @@ $NS$.io = (function (){
                 data : data,
                 cache : cache,
                 error : err
-            });
-        },
-        getJson : function (uri, cback, data) {
-            return _.ajcall(uri, {
-                type : 'json',
-                method: 'GET',
-                cback : function (r) {
-                    cback( (W.JSON && W.JSON.parse) ? JSON.parse(r) : eval('(' + r + ')') );
-                },
-                data : data
-            });
-        },
-        getXML : function (uri, cback) {
-            return _.ajcall(uri, {
-                method : 'GET',
-                type : 'xml',
-                cback : cback || function () {}
             });
         }
     };

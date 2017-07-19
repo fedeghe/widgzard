@@ -1,5 +1,5 @@
 {
-	"NS" : "FG",
+	"NS" : "EW",
 	"COMPONENTS" : {
 		"EXT" : ".js",
 		"URL" : "/components/",
@@ -9,6 +9,11 @@
 		"WIDGZARD" : 0.2,
 		"ENGY" : 0.3
 	},
-	"AUTHOR" : "Federico Ghedina <federico.ghedina@gmail.com>",
+	"AUTHOR" : {
+		"name" : "Federico",
+		"surname" : "Ghedina",
+		"email" : "<federico.ghedina@gmail.com>",
+		"full" : "$AUTHOR.name$ $AUTHOR.surname$ $AUTHOR.email$"
+	},
 	"DEFAULT_LANG" : "en"
 }

@@ -9,9 +9,6 @@
     // (the ga=false params inhibits google analytics tracking)
     "use strict";
 
-
-    var debugActive = false;
-
     /**
      * Creates a namespace
      * @param  {String} str     dot or slash separated path for the namespace
@@ -88,23 +85,23 @@
         return ctx;
     }
 
+    function extendns(ns, objfn) {
+        var i,
+            obj = typeof objfn === 'function' ? objfn() : objfn;
+        for (i in obj) {
+            if (typeof ns[i] == 'undefined') {
+                ns[i] = obj[i];
+            }
+        }
+    }
+
 
     // use makens to publish itself and something more
     //
     makens(ns, {
-
-        makeNS : makens,
-        checkNS : checkns,
-
-        debug : function (f) {
-            debugActive = !!f;
-        },
-
-        dbg : function (m) {
-            // maybe shut up
-            if (!debugActive) {return void 0;}
-            try {console.log(m);} catch(e1) {try {opera.postError(m);} catch(e2){alert(m);}}
-        }
+        makeNs : makens,
+        checkNs : checkns,
+        extendNs : extendns
     });
     
     // use it again to define a function to get
