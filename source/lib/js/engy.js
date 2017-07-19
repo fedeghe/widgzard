@@ -243,13 +243,19 @@ $NS$.makeNs('Engy', function () {
 		langFunc && langFunc(self.config);
 		
 		countPromise.then(function (pro ,par){
-			console.log("Engy components used: " + par[0]);
+			console.log("Engy used " + par[0] + " component" + (par[0]==1 ? "" : "s"));
 		});
 
 		solveTime.then(function (pro ,par){
-			console.log("Engy time for getting components via xhr: " + xhrTot);
-			console.log("      \"       unfolding : " + (par[0] - xhrTot));
-			console.log("      \"       solving (xhr included): " + par[0]);
+
+			console.log("Engy total time: " + par[0] + 'ms');
+			console.log("      \"       unfolding : " + (par[0] - xhrTot) + 'ms');
+			console.log("      \"       xhr : " + xhrTot + 'ms');
+
+			// console.log("Engy time for getting components via xhr: " + xhrTot + 'ms');
+			// console.log("      \"       unfolding : " + (par[0] - xhrTot) + 'ms');
+			// console.log("      \"       solving (xhr included): " + par[0] + 'ms');
+
 		});
 
 		return self.endPromise;

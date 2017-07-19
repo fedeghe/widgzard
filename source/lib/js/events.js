@@ -1,6 +1,5 @@
 $NS$.makeNs('$NS$/events');
 
-
 (function () {
 
     var _ = {
@@ -108,7 +107,7 @@ $NS$.makeNs('$NS$/events');
             $NS$.events.on(el, 'keyup', function () {
                 if (elLock) return;
                 lock(true);
-                if (this[elDet] != obj[field]) {
+                if (this[elDet] !== obj[field]) {
                     obj[field] = this[elDet];
                     elOldVal = this[elDet];
                     objOldVal = this[elDet];
@@ -126,6 +125,4 @@ $NS$.makeNs('$NS$/events');
             }
         }
     };
-
 })();
-

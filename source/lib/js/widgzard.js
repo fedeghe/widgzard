@@ -48,8 +48,6 @@
 		__autoclean = true,
 		__debug = false,
 		__promise = $NS$.Promise,
-		// noop = function () {},
-		// time = 0,
 		__renders = {};
 
 	$$../wnode.js$$
