@@ -52,7 +52,7 @@
 		// time = 0,
 		__renders = {};
 
-	$$../core/wnode.js$$
+	$$../wnode.js$$
 
 	function cleanupWnode(trg) {
 		var node = trg.node,

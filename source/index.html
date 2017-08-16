@@ -47,17 +47,12 @@
             EW.Widgzard.render({
                 target : trg,
                 content : [{
-                    tag : 'ul',
-                    content : [{
-                        tag : 'li',
-                        content : [{
-                            tag : 'a',
-                            attrs : {
-                                href : "samples"
-                            },
-                            text : "components sample"
-                        }]
-                    }]
+                    tag : 'a',
+                    attrs : {
+                        href : "samples",
+                        onclick : "this.blur()"
+                    },
+                    text : "components sample"
                 }]
             })    
         })()
