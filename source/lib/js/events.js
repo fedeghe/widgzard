@@ -1,4 +1,8 @@
 $NS$.makeNs('$NS$/events');
+<<<<<<< HEAD
+=======
+
+>>>>>>> development
 
 (function () {
 
