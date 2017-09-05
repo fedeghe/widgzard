@@ -17,7 +17,7 @@
 		})()</script>
     <meta charset="UTF-8">
 
-    <title>Widgzard samples #74</title>
+    <title>Widgzard samples #91</title>
     <meta name="fragment" content="!">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -34,10 +34,10 @@
             font-weight: 400;
             src: local("Luckiest Guy"), local("LuckiestGuy-Regular"), url("lukiestguy.woff") format("woff");
         }
-
         body{
             font-family:'Luckiest Guy', sans;
             margin:50px;
+            color:green;
         }
 
         p, ul, li{margin-bottom: 1em;}
@@ -47,11 +47,13 @@
         }
 
         p {line-height:1.6em;}
-        a {text-decoration: none;}
+        a {
+            text-decoration: none;
+            color:orange;
+            font-size: 2em;
+        }
     </style>
     <script src="lib/js/widgzard.js"></script>
-    
-
 </head>
 <body class="resp">
     <div id="trg"></div>
@@ -68,7 +70,7 @@
                     },
                     text : "components sample"
                 }]
-            })    
+            });   
         })()
         
     </script>

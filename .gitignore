@@ -10,3 +10,4 @@ source/media/video
 widgzard.sublime-project
 widgzard.sublime-workspace
 *.mp4
+*.buildNum.json

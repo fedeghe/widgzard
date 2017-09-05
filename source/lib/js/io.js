@@ -3,27 +3,6 @@ $NS$.io = (function (){
 
     var W = window,
         _ = {
-        /**
-         * Façade for getting the xhr object
-         * @return {object} the xhr
-         */
-        getxhr : function () {
-            var xhr,
-                IEfuckIds = ['Msxml2.XMLHTTP', 'Msxml3.XMLHTTP', 'Microsoft.XMLHTTP'],
-                len = IEfuckIds.length,
-                i = 0;
-            try {
-                xhr = new W.XMLHttpRequest();
-            } catch (e1) {
-                for (null; i < len; i += 1) {
-                    try {
-                        xhr = new W.ActiveXObject(IEfuckIds[i]);
-                    } catch (e2) {continue; }
-                }
-                !xhr && alert('No way to initialize XHR');
-            }
-            return xhr;
-        },
         ajcall : function (uri, options) {
             var xhr = _.getxhr(),
                 method = (options && options.method) || 'POST',
@@ -42,6 +21,7 @@ $NS$.io = (function (){
                 res = false,
                 ret = false,
                 state = false;
+
             //prepare data, caring of cache
             if (!cache) {data.C = +new Date; }
             data = $NS$.object.toQs(data).substr(1);
@@ -116,6 +96,28 @@ $NS$.io = (function (){
                 return (targetType === 'responseXML') ? xhr[targetType].childNodes[0] : xhr[targetType];
             } catch (e3) {}
             return true;
+        },
+
+        /**
+         * Façade for getting the xhr object
+         * @return {object} the xhr
+         */
+        getxhr : function () {
+            var xhr,
+                IEfuckIds = ['Msxml2.XMLHTTP', 'Msxml3.XMLHTTP', 'Microsoft.XMLHTTP'],
+                len = IEfuckIds.length,
+                i = 0;
+            try {
+                xhr = new W.XMLHttpRequest();
+            } catch (e1) {
+                for (null; i < len; i += 1) {
+                    try {
+                        xhr = new W.ActiveXObject(IEfuckIds[i]);
+                    } catch (e2) {continue; }
+                }
+                !xhr && alert('No way to initialize XHR');
+            }
+            return xhr;
         }
     };
 

@@ -109,6 +109,7 @@ $NS$.object = (function (){
             dig = function (o, k, path, level) {
                 // if is a domnode must be avoided
                 if (isNode(o) || isElement(o)) return;
+                
                 var i, l, p, tmp;
                 
                 if (o instanceof Array) {                
@@ -129,69 +130,11 @@ $NS$.object = (function (){
         return res;
     }
 
-
+    /**
+     * returning module
+     */
     return {
-        /**
-         * uses str_map private function to map an onject literal to a querystring ready for url
-         * @param  {Literal} obj    the object literal
-         * @return {String}         the mapped object
-         */
-        toQs : function (obj) {
-            return str_map(obj, function (o, i, r) {
-                return ((r ? '&' : '?') + encodeURIComponent(i) + '=' + encodeURIComponent(o[i])).replace(/\'/g, '%27');
-            });
-        },
-
-        jCompare: jCompare,
         
-        /**
-         * { function_description }
-         *
-         * @param      {<type>}  o       { parameter_description }
-         * @param      {<type>}  k       { parameter_description }
-         * @param      {<type>}  lim     The limit
-         * @return     {<type>}  { description_of_the_return_value }
-         */
-        digForKey : function (o, k, lim) {
-            return digFor('key', o, k, lim);
-        },
-
-        /**
-         * [digForValues description]
-         * @param  {[type]} o [description]
-         * @param  {[type]} k [description]
-         * @return {[type]}   [description]
-         */
-        digForValue : function (o, k, lim) {
-            return digFor('value', o, k, lim);
-        },
-
-        /**
-         * { function_description }
-         *
-         * @param      {<type>}  o       { parameter_description }
-         * @param      {<type>}  kv      { parameter_description }
-         * @param      {<type>}  lim     The limit
-         * @return     {<type>}  { description_of_the_return_value }
-         */
-        digForKeyValue : function (o, kv, lim) {
-            return digFor('value', o, kv, lim);
-        },
-
-        isString : function(o) {
-            return typeof o === 'string' || o instanceof String;
-        },
-
-        extend: function(o, ext, force) {
-            var obj = $NS$.object.clone(o),
-                j;
-            for (j in ext) {
-                if (ext.hasOwnProperty(j) && (!(j in obj) || force)) {
-                    obj[j] = ext[j];
-                }
-            }
-            return obj;
-        },
 
         clone: function(obj) {
             var self = $NS$.object,
@@ -229,6 +172,68 @@ $NS$.object = (function (){
                 return copy;
             }
             throw new Error("Unable to copy obj! Its type isn't supported.");
+        },
+
+        /**
+         * { function_description }
+         *
+         * @param      {<type>}  o       { parameter_description }
+         * @param      {<type>}  k       { parameter_description }
+         * @param      {<type>}  lim     The limit
+         * @return     {<type>}  { description_of_the_return_value }
+         */
+        digForKey : function (o, k, lim) {
+            return digFor('key', o, k, lim);
+        },
+
+        /**
+         * [digForValues description]
+         * @param  {[type]} o [description]
+         * @param  {[type]} k [description]
+         * @return {[type]}   [description]
+         */
+        digForValue : function (o, k, lim) {
+            return digFor('value', o, k, lim);
+        },
+
+        /**
+         * { function_description }
+         *
+         * @param      {<type>}  o       { parameter_description }
+         * @param      {<type>}  kv      { parameter_description }
+         * @param      {<type>}  lim     The limit
+         * @return     {<type>}  { description_of_the_return_value }
+         */
+        digForKeyValue : function (o, kv, lim) {
+            return digFor('keyvalue', o, kv, lim);
+        },
+
+        extend: function(o, ext, force) {
+            var obj = $NS$.object.clone(o),
+                j;
+            for (j in ext) {
+                if (ext.hasOwnProperty(j) && (!(j in obj) || force)) {
+                    obj[j] = ext[j];
+                }
+            }
+            return obj;
+        },
+
+        isString : function(o) {
+            return typeof o === 'string' || o instanceof String;
+        },
+
+        jCompare: jCompare,
+        
+        /**
+         * uses str_map private function to map an onject literal to a querystring ready for url
+         * @param  {Literal} obj    the object literal
+         * @return {String}         the mapped object
+         */
+        toQs : function (obj) {
+            return str_map(obj, function (o, i, r) {
+                return ((r ? '&' : '?') + encodeURIComponent(i) + '=' + encodeURIComponent(o[i])).replace(/\'/g, '%27');
+            });
         }
     };
 })();

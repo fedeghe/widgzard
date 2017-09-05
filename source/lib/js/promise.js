@@ -4,9 +4,8 @@
  */
 $NS$.Promise = (function () {
 
-    // MY WONDERFUL Promise Implementation
+    // MY WONDERFUL Promise Implementation .... that's shit
     // 
-    
     var _Promise = function() {
             this.cbacks = [];
             this.solved = false;

@@ -20,10 +20,10 @@
             font-weight: 400;
             src: local("Luckiest Guy"), local("LuckiestGuy-Regular"), url("lukiestguy.woff") format("woff");
         }
-
         body{
             font-family:'Luckiest Guy', sans;
             margin:50px;
+            color:green;
         }
 
         p, ul, li{margin-bottom: 1em;}
@@ -33,11 +33,13 @@
         }
 
         p {line-height:1.6em;}
-        a {text-decoration: none;}
+        a {
+            text-decoration: none;
+            color:orange;
+            font-size: 2em;
+        }
     </style>
     <script src="lib/js/widgzard.js"></script>
-    
-
 </head>
 <body class="resp">
     <div id="trg"></div>
@@ -54,7 +56,7 @@
                     },
                     text : "components sample"
                 }]
-            })    
+            });   
         })()
         
     </script>

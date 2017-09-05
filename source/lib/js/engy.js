@@ -31,7 +31,6 @@ $NS$.makeNs('Engy', function () {
 	// 
 	var components = {},
 		preloadedComponents = {},
-
 		config = {
 			fileNameSeparator: 	"/",
 			fileNamePrepend: 	"$COMPONENTS.NAME_PREPEND$",
@@ -39,7 +38,6 @@ $NS$.makeNs('Engy', function () {
 			componentsUrl: 		"$COMPONENTS.URL$"
 		},
 		num = 0;
-
 
 	function _configSet(cnf) {
 		var j;
@@ -111,7 +109,6 @@ $NS$.makeNs('Engy', function () {
 	}
 
 	function Processor(config) {
-		// console.log(config)
 		this.config = config;
 		this.endPromise = $NS$.Promise.create();
 	}
@@ -149,13 +146,10 @@ $NS$.makeNs('Engy', function () {
 			xhrTot = 0,
 			cback;
 
-
 		(function solve() {
 			var component = $NS$.object.digForKey(self.config, 'component', 1),
 				componentName,
-				
 				cached, preLoaded,
-
 				innerPromise = $NS$.Promise.create(),
 				xhrStart = 0,
 				xhrEnd = 0;
@@ -247,15 +241,9 @@ $NS$.makeNs('Engy', function () {
 		});
 
 		solveTime.then(function (pro ,par){
-
 			console.log("Engy total time: " + par[0] + 'ms');
 			console.log("      \"       unfolding : " + (par[0] - xhrTot) + 'ms');
 			console.log("      \"       xhr : " + xhrTot + 'ms');
-
-			// console.log("Engy time for getting components via xhr: " + xhrTot + 'ms');
-			// console.log("      \"       unfolding : " + (par[0] - xhrTot) + 'ms');
-			// console.log("      \"       solving (xhr included): " + par[0] + 'ms');
-
 		});
 
 		return self.endPromise;
@@ -284,15 +272,12 @@ $NS$.makeNs('Engy', function () {
 		return copy;
 	}
 
-	function _define(name, cnt) {
-
-	}
 
 	return {
-		configSet : _configSet,
-		process : _process,
 		component : _component,
 		components : _components,
+		configSet : _configSet,
+		define : _component,
 		get  : function (params, clean, name) {
 			var pRet = $NS$.Promise.create();
 			_process(params).then(function(p, r) {
@@ -303,13 +288,13 @@ $NS$.makeNs('Engy', function () {
 		load : function (src) {
 			return $NS$.Widgzard.load(src);	
 		},
-		define : _define,
 		getElement : function(n) {
 			return $NS$.Widgzard.getElement(n);
 		},
 		getElements : function () {
 			return $NS$.Widgzard.getElements();
 		},
+		process : _process,
 		render : function (params, clean, name) {
 			var self = this,
 				t = +new Date,

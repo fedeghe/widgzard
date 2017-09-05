@@ -128,9 +128,7 @@ function Wnode(conf, trg, mapcnt) {
 Wnode.prototype.climb = function (n) {
 	n = n || 1;
 	var ret = this;
-	while (n--) {
-		ret = ret.parent;
-	}
+	while (n--) ret = ret.parent;
 	return ret;
 };
 
@@ -145,9 +143,7 @@ Wnode.prototype.descendant = function () {
 		res = self,
 		l = args.length;
 	if (!l) return res;
-	while (i < l) {
-		res = res.childrens[~~args[i++]];
-	}
+	while (i < l) res = res.childrens[~~args[i++]];
 	return res;
 };
 
@@ -221,9 +217,9 @@ Wnode.prototype.checkInit = function (el, conf) {
  * @return {[type]}    [description]
  */
 Wnode.prototype.checkEnd = function (el, conf) {
-	if ('end' in conf && typeof conf.end === 'function') {
-		this.root.endFunctions.push(function () {conf.end.call(el);});
-	}
+	'end' in conf &&
+	typeof conf.end === 'function' &&
+	this.root.endFunctions.push(function () {conf.end.call(el);});
 	return this;
 }
 
@@ -234,7 +230,7 @@ Wnode.prototype.add = function () {
 
 	var conf = this.conf,
 		node = this.node,
-		tmp,i,j,k;
+		tmp, i, j, k;
 
 	// set attributes and styles
 	// 
@@ -250,7 +246,6 @@ Wnode.prototype.add = function () {
 	if (typeof conf.html !== 'undefined') {
 		node.innerHTML = conf.html;
 
-
 		/**
 		 * ABSOLUTELY EXPERIMENTAL 2WDB
 		 */
@@ -261,16 +256,11 @@ Wnode.prototype.add = function () {
 			if (i !== undefined) {
 				j = ('this.' + tmp[1]).split('.');
 				k = j.pop();
-				// console.log(j, k)
 				i = eval(j.join('.'));
-				// console.log(i)
 				k in i && $NS$.events.ww.on(i, k, node);
 			}
-			
 		}
 		// 2WDB end
-
-
 	}
 
 	// if `text` is found on node conf
