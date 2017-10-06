@@ -15,5 +15,6 @@
 		"email" : "<federico.ghedina@gmail.com>",
 		"full" : "$AUTHOR.name$ $AUTHOR.surname$ $AUTHOR.email$"
 	},
-	"DEFAULT_LANG" : "en"
+	"DEFAULT_LANG" : "en",
+	"DEBUG" : true
 }

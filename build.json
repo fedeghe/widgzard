@@ -12,10 +12,15 @@
     "source/lib/less/theWidgzard.less" : "lib/css -vars=source/lib/vars.json -plugins=malta-less",
     
     //
+    // MEDIA
+    //
+    "source/media/img/*.svg" : "media/img",
+
+    //
     // SAMPLES
     //
     "source/index.html" : ". -plugins=malta-browser-refresh[files:\"*\"]",
-    "source/samples/*.html" : "samples -vars=source/lib/vars.json",
+    "source/samples/*.html" : "samples -plugins=malta-browser-refresh[files:\"*\"] -vars=source/lib/vars.json",
     "source/samples/*.js" : "samples/js -vars=source/lib/vars.json",
     "source/samples/components/*.js" : "samples/components  -vars=source/lib/vars.json",
     "source/samples/*.less" : "samples/css -plugins=malta-less"

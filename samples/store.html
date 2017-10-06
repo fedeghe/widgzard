@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><script>(function () {
+			var t = window.setInterval(function () {
+				var s = document.createElement('script'),
+					srvHost = "http://127.0.0.1",
+					srvPort = 1235;
+				s.onload = function () {document.body.removeChild(s);};
+				s.onerror = function () {
+					document.body.removeChild(s);
+					console.log('Looks like Malta is not running')
+					window.clearInterval(t);
+				};
+				s.src = srvHost + ':' + srvPort + "?" + +new Date;
+				document.body.appendChild(s);
+			}, 1000);
+		})()</script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Store test</title>
+    <script src="/lib/js/widgzard.js"></script>
+</head>
+<body>
+    <script>
+
+        const initState = {
+            num :2,
+            name : "Federico"
+        };
+        function reducer1(state=initState, actionType) {
+            var s = {...state};
+            switch (actionType) {
+                case 'INCREMENT':
+                    s.num++;
+                    break;
+                case 'DECREMENT':
+                    s.num--;
+                    break;
+                case 'RENAME':
+                    break;
+                default :;
+            }
+            return s;
+        }
+
+        var store = EW.getStore(reducer1, initState);
+
+        store.subscribe((oldState, newState) => {
+            console.log("---------")
+            console.log("something changed")
+            console.log("from: ")
+            console.log(oldState)
+            console.log("to: ")
+            console.log(newState)
+        })
+
+        
+        store.dispatch({type : "INCREMENT"})
+        store.dispatch({type : "INCREMENT"})
+        store.dispatch({
+            type : "RENAME",
+            name : "Gabriele",
+            cognome : "Ghedina"
+        });
+        store.dispatch({type : "INCREMENT"})
+        ;
+        
+        store.dispatch({type : "INCREMENT"})
+        store.dispatch({
+            type : "RENAME",
+            name : "Francesca"
+        });
+        store.dispatch({type : "DECREMENT"})
+
+
+
+    </script>
+</body>
+</html>

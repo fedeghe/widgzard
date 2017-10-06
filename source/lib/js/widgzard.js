@@ -33,8 +33,6 @@
  */
 
 (function (W){
-	
-
 	console.log("\n\n WIDGZARD v.$VERSION.WIDGZARD$\n\n")
 
 	'use strict';    
@@ -118,7 +116,7 @@
 
 		// maybe cleanup previous
 		//
-		__autoclean && target.WIDGZARD && cleanupWnode(target)
+		__autoclean && target.WIDGZARD && cleanupWnode(target);
 
 		if (!params) {
 			throw new Exception('ERROR : Check parameters for render function');
@@ -132,14 +130,9 @@
 		mapcnt = {
 			root : target,
 			map : {},
-			getNode : function (id) {
-				return mapcnt.map[id] || false;
-			},
-			getNodes : function () {
-				return mapcnt.map;
-			},
+			getNode : function (id) {return mapcnt.map[id] || false;},
+			getNodes : function () {return mapcnt.map;},
 			abort : function () {
-				
 				active = false;
 				target.node.innerHTML = originalHTML;
 				
@@ -174,7 +167,7 @@
 		// maybe a raw html is requested before treating content
 		// 
 		if (typeof params.html !== 'undefined') {
-			target.node.innerHTML = params.html;
+			target.node.innerHTML = replaceDataInHTML(params.html, params.html);
 		}
 		
 		// initialize the root node to respect what is needed
@@ -222,7 +215,7 @@
 		target.report = function  () {
 	        window.JSON && console.log('json size : ' + JSON.stringify(params).length);
 	        console.log('html size : ' + target.node.innerHTML.length);
-	    }
+	    };
 
 		// what about a init root function?
 		// 
@@ -264,9 +257,16 @@
 
 		t2 = +new Date();
 		
-		console.debug('Widgzard render time: ' + (t2-t1) + 'ms');
+		console.log('Widgzard render time: ' + (t2-t1) + 'ms');
 		
 		return target;
+	}
+
+	function replaceDataInHTML(str, data) {
+		return str.replace(/\$([A-z]*)\$/g, function (str, $1) {
+			var out  = $1.replace(/\$/g, '');
+			return (out in data) ? data[out] : $1;
+		});
 	}
 
 	/**
@@ -288,14 +288,16 @@
 	function load (src) {
 		var s = document.createElement('script');
 		document.getElementsByTagName('head')[0].appendChild(s);
-		s.src = src;
 		
 		// when finished remove the script tag
 		// 
 		s.onload = function () {
 			s.parentNode.removeChild(s);
-		}
-	};
+		};
+
+		// 
+		s.src = src;
+	}
 
 	/**
 	 * [eulerWalk description]
@@ -329,7 +331,7 @@
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#039;') +
         '</pre>';
-    };
+    }
 
 	// publish module
 	// 

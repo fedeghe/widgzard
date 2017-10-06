@@ -21,11 +21,14 @@
             src: local("Luckiest Guy"), local("LuckiestGuy-Regular"), url("lukiestguy.woff") format("woff");
         }
         body{
-            font-family:'Luckiest Guy', sans;
+            font-family: verdana, sans;
             margin:50px;
+            color:#333;
+        }
+        .logo {
+            font-family:'Luckiest Guy', sans;
             color:green;
         }
-
         p, ul, li{margin-bottom: 1em;}
         hr {
             border:1px solid #FF6600;
@@ -45,18 +48,45 @@
     <div id="trg"></div>
     <script>
         (function () {
-            var trg = document.getElementById('trg');
-            EW.Widgzard.render({
-                target : trg,
-                content : [{
-                    tag : 'a',
-                    attrs : {
-                        href : "samples",
-                        onclick : "this.blur()"
+            var trg = document.getElementById('trg'),
+                App = {
+                    target : trg,
+                    data : {
+                        name : 'federico'
                     },
-                    text : "components sample"
-                }]
-            });   
+                    content : [{
+                        content : [{
+                            tag : 'h1',
+                            text : 'Widgzard',
+                            attrs : {
+                                'class' : 'logo'
+                            },
+                            style : {
+                                'line-height' : '260px'
+                            },
+                            content : [{
+                                tag : 'img',
+                                style : {
+                                    'float' : 'left'
+                                },
+                                attrs : {
+                                    src : "media/img/logoXS.svg",
+                                }
+                            }]
+                        },{
+                            tag : 'p',
+                            data : {
+                                name : "Widgzard"
+                            },
+                            html : `<h4>Hello there</h4>
+                                <p>I\`m "$name$", a <i>small</i> engine to render anything on a  webpage</p> 
+
+                            `
+                        }]
+                    }]
+                };
+
+            EW.Widgzard.render(App);   
         })()
         
     </script>

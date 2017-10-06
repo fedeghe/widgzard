@@ -1,9 +1,23 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head><script>(function () {
+			var t = window.setInterval(function () {
+				var s = document.createElement('script'),
+					srvHost = "http://127.0.0.1",
+					srvPort = 1235;
+				s.onload = function () {document.body.removeChild(s);};
+				s.onerror = function () {
+					document.body.removeChild(s);
+					console.log('Looks like Malta is not running')
+					window.clearInterval(t);
+				};
+				s.src = srvHost + ':' + srvPort + "?" + +new Date;
+				document.body.appendChild(s);
+			}, 1000);
+		})()</script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>22:19:55</title>
+    <title>0:29:10</title>
     <link rel="stylesheet" href="css/index.css">
     <script src="/lib/js/widgzard.js"></script>
 </head>

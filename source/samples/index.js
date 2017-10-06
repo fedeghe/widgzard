@@ -1,7 +1,7 @@
 var trg = document.getElementById('target');
 
 $NS$.Engy.configSet({
-	componentsUrl : "/samples/components"
+	componentsUrl: "/samples/components"
 });
 
 /**
@@ -10,7 +10,7 @@ $NS$.Engy.configSet({
  * as /samples/components/h2.js
  */
 $NS$.Engy.component('h2', {
-	tag : 'h2',
+	tag: 'h2',
 	html : "#PARAM{html} <i style='color:#ddd;font-size:0.5em'>preloaded</i>",
 	data : {
 		times : 0

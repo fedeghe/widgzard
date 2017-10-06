@@ -8,7 +8,7 @@
  */
 function Wnode(conf, trg, mapcnt) {
 	
-	"use strict"
+	"use strict";
 
 	// save a reference to the instance
 	// 
@@ -114,11 +114,8 @@ function Wnode(conf, trg, mapcnt) {
 		}
 
 	};
-
 	this.lateWid = mapcnt.lateWid;
 }
-
-
 
 /**
  * save a function to climb up n-parent
@@ -209,7 +206,7 @@ Wnode.prototype.checkInit = function (el, conf) {
 		!keepRunning && el.abort();
 	}
 	return this;
-}
+};
 
 /**
  * [checkInit description]
@@ -221,7 +218,7 @@ Wnode.prototype.checkEnd = function (el, conf) {
 	typeof conf.end === 'function' &&
 	this.root.endFunctions.push(function () {conf.end.call(el);});
 	return this;
-}
+};
 
 /**
  * add method for the Wnode
@@ -244,7 +241,7 @@ Wnode.prototype.add = function () {
 	// inject its value
 	//
 	if (typeof conf.html !== 'undefined') {
-		node.innerHTML = conf.html;
+		node.innerHTML = replaceDataInHTML(conf.html, conf.data);
 
 		/**
 		 * ABSOLUTELY EXPERIMENTAL 2WDB
@@ -276,7 +273,6 @@ Wnode.prototype.add = function () {
 	// from all others callback invoking
 	// this.getNode(keyValue)
 	//
-	
 	if (typeof conf[__nodeIdentifier] !== 'undefined') {
 		this.map[conf[__nodeIdentifier]] = this;
 	}

@@ -6,5 +6,6 @@
 	$$../object.js$$
 	$$../promise.js$$
 	$$../widgzard.js$$
+	$$../store.js$$
 	$$../engy.js$$
 })();

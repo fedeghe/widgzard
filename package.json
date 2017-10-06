@@ -1,0 +1,8 @@
+{
+  "name": "widgzard",
+  "version": "0.0.2",
+  "main": "lib/js/widgzard.js",
+  "repository": "https://github.com/fedeghe/widgzard",
+  "author": "Federico Ghedina <fedeghe@gmail.com>",
+  "license": "MIT"
+}
