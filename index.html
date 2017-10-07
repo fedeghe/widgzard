@@ -17,7 +17,7 @@
 		})()</script>
     <meta charset="UTF-8">
 
-    <title>Widgzard samples #202</title>
+    <title>Widgzard samples #235</title>
     <meta name="fragment" content="!">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
@@ -43,17 +43,13 @@
             font-family:'Luckiest Guy', sans;
             color:green;
         }
-        p, ul, li{margin-bottom: 1em;}
-        hr {
-            border:1px solid #FF6600;
-            height:0px;
+        p {
+            line-height: 1.4em;
+            padding:1em 0;
         }
-
-        p {line-height:1.6em;}
-        a {
-            text-decoration: none;
-            color:orange;
-            font-size: 2em;
+        button {
+            padding:10px;
+            font-size: 1em
         }
     </style>
     <script src="lib/js/widgzard.js"></script>
@@ -85,6 +81,18 @@
                                 },
                                 attrs : {
                                     src : "media/img/logoXS.svg",
+                                },
+                                cb : function () {
+                                    var self = this,
+                                        $elf = self.node,
+                                        counter = 0;
+                                    EW.Channel('ev').sub('CLICKED', function (action, e) {
+                                        EW.events.eventTarget(e).innerText =
+                                            'ouch ... You clicked me ' +
+                                            ++counter + ' time' +
+                                            (counter > 1 ? 's' : '') ;
+                                    });
+                                    self.done();
                                 }
                             }]
                         },{
@@ -97,10 +105,33 @@
 
                             `
                         }]
+                    },{
+                        attrs : {
+                            id : 'container'
+                        }
                     }]
-                };
+                },
 
-            EW.Widgzard.render(App);   
+                subApp = {
+                    target : App.node,
+                    content : [{
+                        html : 'click me please!',
+                        cb : function () {
+                            var self = this,
+                                $elf = self.node;
+                            EW.events.on($elf, 'click', function (e) {
+                                EW.Channel('ev').pub('CLICKED', e);
+                            });
+                            self.done();
+                        },
+                        style : {
+                            cursor : 'pointer'
+                        }
+                    }]
+                }
+
+            EW.Widgzard.render(App);
+            EW.Widgzard.render(subApp);
         })()
         
     </script>
