@@ -1,13 +1,4 @@
-./components
-./i18n
-./lib
-./media
-./samples
-.printVersion
-./index.html
-source/4carousel
-source/media/video
 widgzard.sublime-project
 widgzard.sublime-workspace
-*.mp4
+*.printVersion
 *.buildNum.json
