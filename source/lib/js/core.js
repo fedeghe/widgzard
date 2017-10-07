@@ -9,33 +9,48 @@
     // (the ga=false params inhibits google analytics tracking)
     "use strict";
 
+    var allowLog = true,
+        allowDebug = true;
+
     /**
      * Creates a namespace
      * @param  {String} str     dot or slash separated path for the namespace
-     * @param  {Object literal} [{}]obj optional: the object to be inserted in the ns
+     * @param  {Object literal} [{}]obj optional: the object to be inserted in the ns, or a function that returns the desired object
      * @param  {[type]} ctx     [window] the context object where the namespace will be created
      * @return {[type]}         the brand new ns
      *
      * @hint This method is DESTRUCTIVE if the obj param is passed,
      *       a conservative version is straight-forward
      * @sample
-     *     makens('FG', {hello: ...});
-     *     makens('FG', {hi: ...}); // now hello exists no more
+     *     makens('SM', {hello: ...});
+     *     makens('SM', {hi: ...}); // now hello exists no more
      *
      *     //use
-     *     makens('FG', {hello: ..., hi: })
+     *     makens('SM', {hello: ..., hi: })
      
      *     // or if in different files
      *     // file1     
-     *     makens('FG')
-     *     FG.hello = ...
+     *     makens('SM')
+     *     SM.hello = ...
      *     //
      *     // file2
-     *     makens('FG')
-     *     FG.hi = ...
+     *     makens('SM')
+     *     SM.hi = ...
+     *
+     *     makens('SM/proto', function () {
+     *
+     *          // some private stuff
+     *          //
+     *          
+     *          return {
+     *              foo0 : function () {...},
+     *              foo1 : function () {...}
+     *          }
+     *     })
      *     
      */
     function makens(str, obj, ctx) {
+
         str = str.replace(/^\//, '');
         var els = str.split(/\.|\//),
             l = els.length,
@@ -101,7 +116,21 @@
     makens(ns, {
         makeNs : makens,
         checkNs : checkns,
-        extendNs : extendns
+        extendNs : extendns,
+        debug : function () {
+            var args = Array.prototype.slice.call(arguments, 0);
+            allowDebug && 'debug' in console && console.debug.apply(console, args);
+        },
+        log : function () {
+            var args = Array.prototype.slice.call(arguments, 0);
+            allowLog && 'log' in console && console.log.apply(console, args);
+        },
+
+        dbg : function (m) {
+            // maybe shut up
+            if (!allowDebug) {return void 0;}
+            try {console.log(m);} catch(e1) {try {opera.postError(m);} catch(e2){alert(m);}}
+        }
     });
     
     // use it again to define a function to get
