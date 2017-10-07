@@ -14,8 +14,6 @@ $NS$.object = (function (){
         return ret;
     }
 
-    // 
-    // 
     function jCompare(obj1, obj2) {
         // avoid tags
         return  !isNode(obj1)
@@ -134,7 +132,19 @@ $NS$.object = (function (){
      * returning module
      */
     return {
-        
+        fromQs : function () {
+            var els = document.location.search.substr(1).split('&'),
+                i, len, tmp, out = [];
+
+            for (i = 0, len = els.length; i < len; i += 1) {
+                tmp = els[i].split('=');
+
+                // do not override extra path out
+                // 
+                !out[tmp[0]] && (out[tmp[0]] = decodeURIComponent(tmp[1]));
+            }
+            return out;
+        },
 
         clone: function(obj) {
             var self = $NS$.object,
