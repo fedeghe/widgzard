@@ -5,6 +5,7 @@
 	$$../io.js$$
 	$$../object.js$$
 	$$../promise.js$$
+	$$../channel.js$$
 	$$../widgzard.js$$
 	$$../store.js$$
 	$$../engy.js$$
