@@ -1,8 +1,9 @@
-{
+(function () {
+
     function none(){return {};}
     
-    function Store(reducer = none, state){
-        this.reducer = reducer;
+    function Store(reducer, state){
+        this.reducer = reducer || none;
         this.state = state || reducer();
         this.states = [this.state];
         this.listeners = [];
@@ -11,8 +12,8 @@
     function pushState(instance, newState) {
         const len = instance.states.length,
             oldState = instance.states[len - 1];
-        instance.listeners.forEach((sub) => {
-            sub({...oldState}, {...newState});
+        instance.listeners.forEach(function (sub) {
+            sub(oldState, newState);
         })
         instance.states[len] = newState;
     }
@@ -24,12 +25,12 @@
     Store.prototype.dispatch = function (a) {
         if (!('type' in a)) throw new Error('Actions needs a type');
         const actionType = a.type;
-        delete a.type;
         var oldState = this.states[this.states.length - 1],
-            newState = {
-                ...this.reducer(oldState, actionType),
-                ...a
-            };
+            newState = this.reducer(oldState, actionType),
+            i;
+        for (i in a) {
+            if (i !== 'type') newState[i] = a[i];
+        }
 
         pushState(this, newState);
     };
@@ -39,16 +40,13 @@
         this.listeners.push(s);
         const p = this.listeners.length - 1;
         
-        return () => {
-            self.listeners = [
-                ...self.listeners.slice(0, p), 
-                ...self.listeners.slice(p + 1)
-            ];
+        return function () {
+            self.listeners = self.listeners.slice(0, p).concat(self.listeners.slice(p + 1));
         }
     };
 
     Store.prototype.all = function () {
-        return [...this.states];
+        return this.states.concat();
     }
 
     Store.prototype.back = function (n) {
@@ -63,4 +61,4 @@
     $NS$.getStore = function (reducer, initState) {
         return new Store(reducer, initState);
     };
-}
+})();
