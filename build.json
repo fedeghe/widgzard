@@ -8,8 +8,8 @@
     //
     // Main Lib
     //
-    "source/lib/js/tpl/widgzard.js" : "lib/js -vars=source/lib/vars.json",
-    "source/lib/less/theWidgzard.less" : "lib/css -vars=source/lib/vars.json -plugins=malta-less",
+    "source/lib/js/tpl/widgzard.js" : "lib/js -plugins=malta-js-uglify -vars=source/lib/vars.json",
+    "source/lib/less/theWidgzard.less" : "lib/css  -plugins=malta-less...malta-css-uglify -vars=source/lib/vars.json",
     
     //
     // MEDIA
