@@ -33,29 +33,32 @@ EW.Engy.component('h2', {
 });
 
 EW.Engy.render({
-	target : trg,
-	style : {
-		"font-family" : "Verdana,sans"
+	target: trg,
+	data: {
+		prova: ""
 	},
-	content : [{
-		tag : "h1",
-		html : "Hello world"
+	style: {
+		"font-family": "Verdana,sans"
+	},
+	content: [{
+		tag: "h1",
+		html: "Hello world"
 	},{
-		component : 'h2',
-		params : {
-			html : "I`m Federico"
+		component: "h2",
+		params: {
+			html: "I`m Federico"
 		}
 	},{
-		tag : 'a',
-		attrs : {
-			onclick : "history.back();"
+		tag: "a",
+		attrs: {
+			onclick: "history.back();"
 		},
-		style : {
-			"cursor" : "pointer"
+		style: {
+			cursor: "pointer"
 		},
-		text : 'back'
+		text: "back"
 	},{
-		tag : 'p',
+		tag : "p",
 		init : function () {
 			var self = this;
 			self.data.time = new Date().toLocaleString();
@@ -70,6 +73,24 @@ EW.Engy.render({
 				$elf.innerHTML = self.data.time;
 			}, 1000);
 			this.done();
+		}
+	},{
+		tag: "span",
+		html: "Try out the wwdb: "
+	},{
+		tag: "input",
+		attrs: {
+			"type": "text",
+			"wwdb": "parent.data.prova"
+		}
+	},{
+		tag: "p",
+		style: {
+			color: "red",
+			fontWeight: "bold"
+		},
+		attrs: {
+			"wwdb": "parent.data.prova"
 		}
 	}]
 });
