@@ -76,7 +76,7 @@ function Wnode(conf, trg, mapcnt) {
 	// freeing the parent promise from waiting
 	//
 	this.WIDGZARD_cb = conf.cb || function () {
-		__debug && console.log('autoresolving  ', self.node);
+		__debug && console.log("autoresolving  ", self.node);
 		// autoresolve
 		self.resolve();
 	};
@@ -105,7 +105,7 @@ function Wnode(conf, trg, mapcnt) {
 		// it`s time to honour the node promise,
 		// thus call the node callback
 		//
-		if (--self.target.WIDGZARD_len == 0) {
+		if (--self.target.WIDGZARD_len === 0) {
 			if (self.target.WIDGZARD_promise) {
 				self.target.WIDGZARD_promise.done();
 			} else {
@@ -123,6 +123,7 @@ function Wnode(conf, trg, mapcnt) {
  * @return {[type]}   [description]
  */
 Wnode.prototype.climb = function (n) {
+	"use strict";
 	n = n || 1;
 	var ret = this;
 	while (n--) ret = ret.parent;
@@ -134,13 +135,16 @@ Wnode.prototype.climb = function (n) {
  * @return {[type]} [description]
  */
 Wnode.prototype.descendant = function () {
+	"use strict";
 	var self = this,
 		args = Array.prototype.slice.call(arguments, 0),
 		i = 0,
 		res = self,
 		l = args.length;
 	if (!l) return res;
-	while (i < l) res = res.childrens[~~args[i++]];
+	while (i < l) {
+		res = res.childrens[~~args[i++]];
+	}
 	return res;
 };
 
@@ -150,12 +154,13 @@ Wnode.prototype.descendant = function () {
  * @param {Object} attrs  the hash of attributes->values
  */
 Wnode.prototype.setAttrs = function (node, attrs) {
+	"use strict";
 	// if set, append all attributes (*class)
 	// 
-	if (typeof attrs !== 'undefined') { 
+	if (typeof attrs !== "undefined") { 
 		for (var j in attrs) {
-			if (j !== 'class') {
-				if (j !== 'style') {
+			if (j !== "class") {
+				if (j !== "style") {
 					node.setAttribute(j, attrs[j]);
 				} else {
 					this.setStyle(node, attrs.style);
@@ -173,12 +178,13 @@ Wnode.prototype.setAttrs = function (node, attrs) {
  * @param {DOMnode} node  the node
  * @param {Object} style  the hash of rules
  */
-Wnode.prototype.setStyle = function (node, style) {
+Wnode.prototype.setStyle = function (node, style, j) {
+	"use strict";
 	// if set, append all styles (*class)
 	//
-	if (typeof style !== 'undefined') { 
-		for (var j in style) {
-			node.style[j.replace(/^float$/i, 'cssFloat')] = style[j];
+	if (typeof style !== "undefined") { 
+		for (j in style) {
+			node.style[j.replace(/^float$/i, "cssFloat")] = style[j];
 		}
 	}
 	return this;
@@ -190,6 +196,7 @@ Wnode.prototype.setStyle = function (node, style) {
  * @param {Object} data   the hash of properties to be attached
  */
 Wnode.prototype.setData = function (el, data) {
+	"use strict";
 	el.data = data || {};
 	return this;
 };
@@ -200,8 +207,9 @@ Wnode.prototype.setData = function (el, data) {
  * @return {[type]}    [description]
  */
 Wnode.prototype.checkInit = function (el, conf) {
+	"use strict";
 	var keepRunning = true;
-	if ('init' in conf && typeof conf.init === 'function') {
+	if ("init" in conf && typeof conf.init === "function") {
 		keepRunning = conf.init.call(el);
 		!keepRunning && el.abort();
 	}
@@ -214,17 +222,18 @@ Wnode.prototype.checkInit = function (el, conf) {
  * @return {[type]}    [description]
  */
 Wnode.prototype.checkEnd = function (el, conf) {
-	'end' in conf &&
-	typeof conf.end === 'function' &&
+	"use strict";
+	"end" in conf &&
+	typeof conf.end === "function" &&
 	this.root.endFunctions.push(function () {conf.end.call(el);});
 	return this;
 };
 
 /**
- * add method for the Wnode
+ * render method for the Wnode
  */
-Wnode.prototype.add = function () {
-
+Wnode.prototype.render = function () {
+	"use strict";
 	var conf = this.conf,
 		node = this.node,
 		tmp, i, j, k;
@@ -240,30 +249,30 @@ Wnode.prototype.add = function () {
 	// if `html` key is found on node conf 
 	// inject its value
 	//
-	if (typeof conf.html !== 'undefined') {
+	if (typeof conf.html !== "undefined") {
 		node.innerHTML = replaceDataInHTML(conf.html, conf.data);
-
-		/**
-		 * ABSOLUTELY EXPERIMENTAL 2WDB
-		 */
-		tmp = node.innerHTML.match(/2wdb\((.*)\)/);
-		if (tmp) {
-			
-			i = $NS$.checkNs(tmp[1], this);
-			if (i !== undefined) {
-				j = ('this.' + tmp[1]).split('.');
-				k = j.pop();
-				i = eval(j.join('.'));
-				k in i && $NS$.events.ww.on(i, k, node);
-			}
-		}
-		// 2WDB end
 	}
+
+	/**
+	 * ABSOLUTELY EXPERIMENTAL 2WDB
+	 */
+	tmp = node.getAttribute('wwdb');
+	if (tmp) {
+		node.removeAttribute('wwdb');
+		i = $NS$.checkNs(tmp, this);
+		if (i !== undefined) {
+			j = ("this." + tmp).split(".");
+			k = j.pop();
+			i = eval(j.join("."));
+			k in i && $NS$.events.ww.on(i, k, node);
+		}	
+	}
+	// 2WDB end
 
 	// if `text` is found on node conf
 	// it will be appended
 	//  
-	if (typeof conf.text !== 'undefined') {
+	if (typeof conf.text !== "undefined") {
 		tmp = document.createTextNode("" + conf.text);
 		node.appendChild(tmp);
 	}
@@ -273,7 +282,7 @@ Wnode.prototype.add = function () {
 	// from all others callback invoking
 	// this.getNode(keyValue)
 	//
-	if (typeof conf[__nodeIdentifier] !== 'undefined') {
+	if (typeof conf[__nodeIdentifier] !== "undefined") {
 		this.map[conf[__nodeIdentifier]] = this;
 	}
 	
@@ -284,7 +293,7 @@ Wnode.prototype.add = function () {
 	// 
 	(conf.target || this.target.node).appendChild(node);
 
-	if (!('childrens' in (conf.target || this.target))) {
+	if (!("childrens" in (conf.target || this.target))) {
 		(conf.target || this.target).childrens = [];
 	}
 	(conf.target || this.target).childrens.push(this);
