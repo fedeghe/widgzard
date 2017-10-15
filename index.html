@@ -1,20 +1,6 @@
 <!DOCTYPE html>
 <html>
-<head><script>(function () {
-			var t = window.setInterval(function () {
-				var s = document.createElement('script'),
-					srvHost = "http://127.0.0.1",
-					srvPort = 1234;
-				s.onload = function () {document.body.removeChild(s);};
-				s.onerror = function () {
-					document.body.removeChild(s);
-					console.log('Looks like Malta is not running')
-					window.clearInterval(t);
-				};
-				s.src = srvHost + ':' + srvPort + "?" + +new Date;
-				document.body.appendChild(s);
-			}, 1000);
-		})()</script>
+<head>
     <meta charset="UTF-8">
 
     <title>the Widgzard</title>
@@ -86,8 +72,8 @@
                                     var self = this,
                                         $elf = self.node,
                                         counter = 0;
-                                    EW.Channel('ev').sub('CLICKED', function (action, e) {
-                                        EW.events.eventTarget(e).innerText =
+                                    $NS$.Channel('ev').sub('CLICKED', function (action, e) {
+                                        $NS$.events.eventTarget(e).innerText =
                                             'ouch ... You clicked me ' +
                                             ++counter + ' time' +
                                             (counter > 1 ? 's' : '') ;
@@ -119,8 +105,8 @@
                         cb : function () {
                             var self = this,
                                 $elf = self.node;
-                            EW.events.on($elf, 'click', function (e) {
-                                EW.Channel('ev').pub('CLICKED', e);
+                            $NS$.events.on($elf, 'click', function (e) {
+                                $NS$.Channel('ev').pub('CLICKED', e);
                             });
                             self.done();
                         },
@@ -128,10 +114,9 @@
                             cursor : 'pointer'
                         }
                     }]
-                }
-
-            EW.Widgzard.render(App);
-            EW.Widgzard.render(subApp);
+                };
+            $NS$.Widgzard.render(App);
+            $NS$.Widgzard.render(subApp);
         })()
         
     </script>

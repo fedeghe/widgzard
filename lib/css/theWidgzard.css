@@ -1,3 +1,15 @@
+/*
+ _ _ _ _____ ____  _____ _____ _____ _____ ____  
+| | | |     |    \|   __|__   |  _  | __  |    \ 
+| | | |-   -|  |  |  |  |   __|     |    -|  |  |
+|_____|_____|____/|_____|_____|__|__|__|__|____/
+												v.0.2
+*
+* @build 15/10/2017
+* @author Federico Ghedina <federico.ghedina@gmail.com>
+* Y 2017
+* ~8KB
+*/
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video{margin:0;padding:0;border:0;font-size:100%;font:inherit;vertical-align:baseline}article,aside,details,figcaption,figure,footer,header,hgroup,menu,nav,section{display:block}
 body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}table{border-collapse:collapse;border-spacing:0}*:-webkit-full-screen{width:100%}*:-moz-full-screen{width:100%}*:-ms-full-screen{width:100%}*:-o-full-screen{width:100%}*:full-screen{width:100%}*:-webkit-full-screen img{width:100%}*:-moz-full-screen img{width:100%}*:-ms-full-screen img{width:100%}*:-o-full-screen img{width:100%}*:full-screen img{width:100%}
 .roundtop{-moz-border-radius-bottomleft:0 !important;-moz-border-radius-bottomright:0 !important;-webkit-border-bottom-left-radius:0 !important;-webkit-border-bottom-right-radius:0 !important;border-bottom-left-radius:0 !important;border-bottom-right-radius:0 !important}.roundbottom{-moz-border-radius-topleft:0 !important;-moz-border-radius-topright:0 !important;-webkit-border-top-left-radius:0 !important;-webkit-border-top-right-radius:0 !important;border-top-left-radius:0 !important;border-top-right-radius:0 !important}
