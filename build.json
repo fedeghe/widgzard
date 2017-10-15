@@ -1,27 +1,17 @@
 {
-    "EXE" : [
-        "rm -rf media samples lib",
+    "EXE": [
+        "rm -rf media samples lib index.html",
         "mkdir -p samples/js samples/css samples/components lib/js lib/css",
         "cp -r source/media ./"
     ],
+    "#source/lib/js/tpl/widgzard.js": "lib/js -plugins=malta-js-uglify...malta-header-comment[name:'source/lib/js/tpl/header.txt'] -vars=source/lib/vars.json",
+    "#source/lib/less/theWidgzard.less": "lib/css  -plugins=malta-less...malta-css-uglify...malta-header-comment[name:'source/lib/js/tpl/header.txt'] -vars=source/lib/vars.json",
 
-    //
-    // Main Lib
-    //
-    "source/lib/js/tpl/widgzard.js" : "lib/js -plugins=malta-js-uglify -vars=source/lib/vars.json",
-    "source/lib/less/theWidgzard.less" : "lib/css  -plugins=malta-less...malta-css-uglify -vars=source/lib/vars.json",
-    
-    //
-    // MEDIA
-    //
-    "source/media/img/*.svg" : "media/img",
+    "#source/media/img/*.svg": "media/img",
 
-    //
-    // SAMPLES
-    //
-    "source/index.html" : ". -plugins=malta-browser-refresh[files:\"*\"]",
-    "source/samples/*.html" : "samples -plugins=malta-browser-refresh[files:\"*\"] -vars=source/lib/vars.json",
-    "source/samples/*.js" : "samples/js -vars=source/lib/vars.json",
-    "source/samples/components/*.js" : "samples/components  -vars=source/lib/vars.json",
-    "source/samples/*.less" : "samples/css -plugins=malta-less"
+    "#source/index.html": ".",
+    "#source/samples/*.html": "samples -vars=source/lib/vars.json",
+    "#source/samples/*.js": "samples/js -vars=source/lib/vars.json",
+    "#source/samples/components/*.js": "samples/components -vars=source/lib/vars.json",
+    "#source/samples/*.less": "samples/css -plugins=malta-less"
 }
