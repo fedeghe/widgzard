@@ -31,12 +31,9 @@
  *
  * PLEASE read this : http://stackoverflow.com/questions/1915341/whats-wrong-with-adding-properties-to-dom-element-objects
  */
-
-(function (W){
-	console.log("\n\n WIDGZARD v.$VERSION.WIDGZARD$\n\n")
-
-	'use strict';    
-
+(function (){
+	"use strict";
+	console.log("\n\n WIDGZARD v.$VERSION.WIDGZARD$\n\n");
 	// clearer class that should provide right
 	// css float clearing
 	// ex: TB uses `clearfix`, I don`t
@@ -47,9 +44,9 @@
 		__debug = false,
 		__promise = $NS$.Promise,
 		__renders = {};
-
+/** */
 	$$../wnode.js$$
-
+/** */
 	function cleanupWnode(trg) {
 		var node = trg.node,
 			removeNode = function (t) {
@@ -57,7 +54,7 @@
 				return true;
 			},
 			nodesToBeCleaned = [],
-			keys = ['WIDGZARD', 'WIDGZARD_cb', 'WIDGZARD_promise', 'WIDGZARD_length', 'parent', 'getNode', 'climb', 'root', 'done', 'resolve', 'data'],
+			keys = ["WIDGZARD", "WIDGZARD_cb", "WIDGZARD_promise", "WIDGZARD_length", "parent", "getNode", "climb", "root", "done", "resolve", "data"],
 			kL = keys.length,
 			i = 0, j = 0, k = 0,
 			n = null;
@@ -93,7 +90,6 @@
 	 * @return {undefined}
 	 */
 	function render (params, clean, name) {
-
 		var t1 = +new Date(),
 			target = {
 				node : params.target || document.body,
@@ -104,7 +100,7 @@
 				}
 			},
 			targetFragment = {
-				node : document.createDocumentFragment('div')
+				node : document.createDocumentFragment("div")
 			},
 			active = true,
 			originalHTML = target.node.innerHTML + "",
@@ -119,7 +115,7 @@
 		__autoclean && target.WIDGZARD && cleanupWnode(target);
 
 		if (!params) {
-			throw new Exception('ERROR : Check parameters for render function');
+			throw new Exception("ERROR : Check parameters for render function");
 		}
 
 		// a literal used to save a reference 
@@ -162,7 +158,9 @@
 		
 		// maybe clean
 		// 
-		if (!!clean) target.node.innerHTML = '';
+		if (!!clean) {
+			target.node.innerHTML = '';
+		}
 
 		// maybe a raw html is requested before treating content
 		// 
@@ -181,11 +179,12 @@
 		targetFragment.WIDGZARD_len = params.content ? params.content.length : 0;
 
 		targetFragment.WIDGZARD_cb = target.WIDGZARD_cb = function () {
-			active 
-			&&
-			target.node.appendChild(targetFragment.node)
-			&&
-			params.cb && params.cb.call(target);
+			if (active &&
+				target.node.appendChild(targetFragment.node) &&
+				params.cb
+			){
+				params.cb.call(target);
+			}
 
 			//ending functions
 			//
@@ -239,7 +238,7 @@
 					}
 					// in case a ns is specified, use it through all the subtree automatically
 					if ('ns' in cnf) cnf.content[i].ns = cnf.ns;
-					recur(cnf.content[i], new Wnode(cnf.content[i], trg, mapcnt).add());
+					recur(cnf.content[i], new Wnode(cnf.content[i], trg, mapcnt).render());
 				}
 			}
 		})(params, targetFragment);
@@ -350,5 +349,5 @@
 		Promise : __promise
 	};
 
-})(this);
+}(this));
 /*------------------------*/

@@ -1,8 +1,8 @@
-$NS$.makeNs('$NS$/io');
+$NS$.makeNs("$NS$/io");
 $NS$.io = (function (){
-
+    "use strict";
     var W = window,
-        xdr = typeof W.XDomainRequest !== 'undefined' && document.all && !(navigator.userAgent.match(/opera/i)),
+        xdr = typeof W.XDomainRequest !== "undefined" && document.all && !(navigator.userAgent.match(/opera/i)),
         _ = {
             /**
              * Façade for getting the xhr object
@@ -10,7 +10,7 @@ $NS$.io = (function (){
              */
             getxhr : function (o) {
                 var xhr,
-                    IEfuckIds = ['Msxml2.XMLHTTP', 'Msxml3.XMLHTTP', 'Microsoft.XMLHTTP'],
+                    IEfuckIds = ["Msxml2.XMLHTTP", "Msxml3.XMLHTTP", "Microsoft.XMLHTTP"],
                     len = IEfuckIds.length,
                     i = 0;
 
@@ -25,21 +25,19 @@ $NS$.io = (function (){
                                 xhr = new W.ActiveXObject(IEfuckIds[i]);
                             } catch (e2) {continue; }
                         }
-                        !xhr && alert('No way to initialize XHR');
+                        !xhr && alert("No way to initialize XHR");
                     }
                 }
                 return xhr;
             },
 
             setHeaders : function (xhr, type) {
-            
                 var tmp = {
-                    xml : 'text/xml',
-                    html : 'text/html',
-                    json : 'application/json'
-                }[type] || 'text/html';
-
-                xhr.setRequestHeader('Accept', tmp + '; charset=utf-8');
+                    xml : "text/xml",
+                    html : "text/html",
+                    json : "application/json"
+                }[type] || "text/html";
+                xhr.setRequestHeader("Accept", tmp + "; charset=utf-8");
             },
 
             setMultipartHeader : function (xhr) {
@@ -57,9 +55,8 @@ $NS$.io = (function (){
             },
 
             ajcall : function (uri, options) {
-
                 var xhr = _.getxhr(options),
-                    method = (options && options.method) || 'POST',
+                    method = (options && options.method) || "POST",
                     cback = options && options.cback,
                     cb_opened = (options && options.opened) || function () {},
                     cb_loading = (options && options.loading) || function () {},
@@ -67,9 +64,9 @@ $NS$.io = (function (){
                     cb_abort = (options && options.abort) || function () {},
                     sync = options && options.sync,
                     data = (options && options.data) || {},
-                    type = (options && options.type) || 'text/html',
+                    type = (options && options.type) || "text/html",
                     cache = (options && options.cache !== undefined) ? options.cache : true,
-                    targetType = type === 'xml' ?  'responseXML' : 'responseText',
+                    targetType = type === "xml" ?  "responseXML" : "responseText",
                     timeout = options && options.timeout || 10000,
                     hasFiles = options && options.hasFiles,
                     formData,
@@ -77,9 +74,8 @@ $NS$.io = (function (){
                     res = false,
                     ret = false,
                     state = false,
-                    cookies,
                     tmp,
-                    i,l;
+                    i, l;
 
                 //prepare data, caring of cache
                 //
@@ -182,50 +178,36 @@ $NS$.io = (function (){
                             //
                             cb_opened(xhr);
                         } else if (state === 1) {
-                            // in every case add cookies
-                            //
-                            
-
                             // only if no file upload is required
                             // add the header
                             // 
                             if (!hasFiles) {
-                                
                                 _.setHeaders(xhr, type);
-
-
-
                                 // NOOOOOOO
                                 // _.setCookiesHeaders(xhr);
-                                
                             } else {
                                 _.setHeaders(xhr, 'json');
-
-
-
                                 // NO HEADERS AT ALL!!!!!!
                                 // othewise no up
                                 //                                
                                 // _.setMultipartHeader(xhr);
                             }
-
                             switch (method) {
-                            case 'POST':
-                            case 'PUT':
-                                try {
-                                    xhr.send(data || true);
-                                } catch (e1) {}
-                                break;
-                            
-                            case 'GET':
-                                try {
+                                case 'POST':
+                                case 'PUT':
+                                    try {
+                                        xhr.send(data || true);
+                                    } catch (e1) {}
+                                    break;
+                                case 'GET':
+                                    try {
+                                        xhr.send(null);
+                                    } catch (e2) {}
+                                    break;
+                                default :
+                                    alert(method);
                                     xhr.send(null);
-                                } catch (e2) {}
-                                break;
-                            default :
-                                alert(method);
-                                xhr.send(null);
-                                break;
+                                    break;
                             }
                         }
                         return true;
@@ -245,7 +227,7 @@ $NS$.io = (function (){
 
                     // open request
                     //
-                    xhr.open(method, method === 'GET' ? uri + (data ? '?' + data: '') : uri, sync);
+                    xhr.open(method, method === "GET" ? uri + (data ? "?" + data: "") : uri, sync);
 
                     // thread abortion
                     //
@@ -255,13 +237,10 @@ $NS$.io = (function (){
                             xhr.abort();
                         }
                     }, timeout);
-
                     try {
-                        return (targetType === 'responseXML') ? xhr[targetType].childNodes[0] : xhr[targetType];
+                        return (targetType === "responseXML") ? xhr[targetType].childNodes[0] : xhr[targetType];
                     } catch (e3) {}
-
                 }
-
                 return true;
             }
         };
@@ -281,7 +260,7 @@ $NS$.io = (function (){
                         cback(r);
                     }
                 },
-                method : 'POST',
+                method: 'POST',
                 sync : sync,
                 data : data,
                 cache : cache,

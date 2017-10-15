@@ -1,21 +1,21 @@
-(function () {
-
-    function none(){return {};}
+(function (){
+    "use strict";
+    function _emptyObjFun(){return {};}
     
-    function Store(reducer, state){
-        this.reducer = reducer || none;
-        this.state = state || reducer();
-        this.states = [this.state];
-        this.listeners = [];
-    }
-
-    function pushState(instance, newState) {
-        const len = instance.states.length,
+    function _pushState(instance, newState) {
+        var len = instance.states.length,
             oldState = instance.states[len - 1];
         instance.listeners.forEach(function (sub) {
             sub(oldState, newState);
-        })
+        });
         instance.states[len] = newState;
+    }
+    
+    function Store(reducer, state){
+        this.reducer = reducer || _emptyObjFun;
+        this.state = state || reducer();
+        this.states = [this.state];
+        this.listeners = [];
     }
 
     Store.prototype.getState = function () {
@@ -23,42 +23,44 @@
     };
 
     Store.prototype.dispatch = function (a) {
-        if (!('type' in a)) throw new Error('Actions needs a type');
-        const actionType = a.type;
-        var oldState = this.states[this.states.length - 1],
+        if (!("type" in a)) {throw new Error("Actions needs a type");}
+        var actionType = a.type,
+            oldState = this.states[this.states.length - 1],
             newState = this.reducer(oldState, actionType),
             i;
         for (i in a) {
-            if (i !== 'type') newState[i] = a[i];
+            if (i !== "type") {
+                newState[i] = a[i];
+            }
         }
-
-        pushState(this, newState);
+        _pushState(this, newState);
     };
 
     Store.prototype.subscribe = function (s) {
-        var self = this;
+        var self = this,
+            p;
         this.listeners.push(s);
-        const p = this.listeners.length - 1;
-        
+        p = this.listeners.length - 1;
+        // return the unsubcribe
+        //
         return function () {
             self.listeners = self.listeners.slice(0, p).concat(self.listeners.slice(p + 1));
-        }
+        };
     };
 
     Store.prototype.all = function () {
         return this.states.concat();
-    }
+    };
 
     Store.prototype.back = function (n) {
-        const topIndex = this.states.length - 1,
+        var topIndex = this.states.length - 1,
             validIndex = topIndex - n,
             targetIndex = validIndex > -1 ? validIndex : 0,
-            newState = this.states[targetIndex],
-            oldState = this.states[topIndex];
+            newState = this.states[targetIndex];
         pushState(this, newState);
-    }
+    };
 
     $NS$.getStore = function (reducer, initState) {
         return new Store(reducer, initState);
     };
-})();
+}());
