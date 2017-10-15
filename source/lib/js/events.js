@@ -86,7 +86,7 @@ $NS$.makeNs('$NS$/events');
                     objLock = elLock = !!m;
                 };
 
-            el.wwdbID = "_" + $NS$.util.uniqueid;
+            el.wwdbID = "_" + $NS$.utils.uniqueid;
 
             // obj
             // when object changes -> element changes
