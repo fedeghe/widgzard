@@ -16,5 +16,10 @@
 		"full" : "$AUTHOR.name$ $AUTHOR.surname$ $AUTHOR.email$"
 	},
 	"DEFAULT_LANG" : "en",
-	"DEBUG" : true
+	"DEBUG" : true,
+	"settings" : {
+		"server" : {
+			"port" : 3000
+		}
+	}
 }
