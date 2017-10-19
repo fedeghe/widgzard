@@ -72,8 +72,8 @@
                                     var self = this,
                                         $elf = self.node,
                                         counter = 0;
-                                    $NS$.Channel('ev').sub('CLICKED', function (action, e) {
-                                        $NS$.events.eventTarget(e).innerText =
+                                    EW.Channel('ev').sub('CLICKED', function (action, e) {
+                                        EW.events.eventTarget(e).innerText =
                                             'ouch ... You clicked me ' +
                                             ++counter + ' time' +
                                             (counter > 1 ? 's' : '') ;
@@ -105,8 +105,8 @@
                         cb : function () {
                             var self = this,
                                 $elf = self.node;
-                            $NS$.events.on($elf, 'click', function (e) {
-                                $NS$.Channel('ev').pub('CLICKED', e);
+                            EW.events.on($elf, 'click', function (e) {
+                                EW.Channel('ev').pub('CLICKED', e);
                             });
                             self.done();
                         },
@@ -115,8 +115,8 @@
                         }
                     }]
                 };
-            $NS$.Widgzard.render(App);
-            $NS$.Widgzard.render(subApp);
+            EW.Widgzard.render(App);
+            EW.Widgzard.render(subApp);
         })()
         
     </script>

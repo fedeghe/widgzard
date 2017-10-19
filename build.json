@@ -9,7 +9,7 @@
 
     "#source/media/img/*.svg": "media/img",
 
-    "#source/index.html": ".",
+    "#source/index.html": ". -vars=source/lib/vars.json",
     "#source/samples/*.html": "samples -vars=source/lib/vars.json",
     "#source/samples/*.js": "samples/js -vars=source/lib/vars.json",
     "#source/samples/components/*.js": "samples/components -vars=source/lib/vars.json",
