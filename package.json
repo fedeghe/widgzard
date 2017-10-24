@@ -4,8 +4,9 @@
   "main": "lib/js/widgzard.js",
   "scripts": {
     "start": "node srv.js",
-    "build": "malta build.json",
-    "build:dev": "malta buildev.json"
+    "build": "malta malta.json",
+    "build:dev": "malta maltadev.json",
+    "clean": "malta maltaclean.json"
   },
   "repository": "https://github.com/fedeghe/widgzard",
   "description": "A simple engine to build webapps",

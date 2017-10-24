@@ -1,6 +1,6 @@
 {
     "EXE": [
-        "rm -rf media samples lib",
+        "rm -rf media samples lib index.html",
         "mkdir -p samples/js samples/css samples/components lib/js lib/css",
         "cp -r source/media ./"
     ],

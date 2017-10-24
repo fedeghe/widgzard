@@ -1,0 +1,5 @@
+{
+    "EXE": [
+        "rm -rf media samples lib index.html"
+    ]
+}
