@@ -20,7 +20,7 @@
     //
     // SAMPLES
     //
-    "source/index.html": ". -plugins=malta-browser-refresh[files:\"*\"]",
+    "source/index.html": ". -plugins=malta-browser-refresh[files:\"*\"] -vars=source/lib/vars.json",
     "source/samples/*.html": "samples -plugins=malta-browser-refresh[files:\"*\"] -vars=source/lib/vars.json",
     "source/samples/*.js": "samples/js -vars=source/lib/vars.json",
     "source/samples/components/*.js": "samples/components -vars=source/lib/vars.json",
