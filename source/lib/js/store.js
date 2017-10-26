@@ -57,7 +57,7 @@
             validIndex = topIndex - n,
             targetIndex = validIndex > -1 ? validIndex : 0,
             newState = this.states[targetIndex];
-        pushState(this, newState);
+        _pushState(this, newState);
     };
 
     $NS$.getStore = function (reducer, initState) {
