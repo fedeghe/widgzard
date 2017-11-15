@@ -44,9 +44,9 @@
 		__debug = false,
 		__promise = $NS$.Promise,
 		__renders = {};
-/** */
+/* */
 	$$../wnode.js$$
-/** */
+/*  */
 	function cleanupWnode(trg) {
 		var node = trg.node,
 			removeNode = function (t) {
@@ -150,6 +150,7 @@
 		Wnode.prototype
 			.setAttrs(target.node, params.attrs)
 			.setStyle(target.node, params.style)
+			.setEvents(target.node, params)
 			.setData(target, params.data)
 			.setData(targetFragment, params.data);
 
@@ -330,8 +331,8 @@
             .replace(/"/g, '&quot;')
             .replace(/'/g, '&#039;') +
         '</pre>';
-    }
-
+	}
+	
 	// publish module
 	// 
 	$NS$.Widgzard = {

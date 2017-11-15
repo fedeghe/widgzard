@@ -2,7 +2,7 @@
 	"NS" : "EW",
 	"COMPONENTS" : {
 		"EXT" : ".js",
-		"URL" : "/components/",
+		"URL" : "/samples/components/",
 		"NAME_PREPEND" : ""
 	},
 	"VERSION" : {

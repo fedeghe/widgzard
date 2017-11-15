@@ -46,7 +46,7 @@ $NS$.io = (function (){
 
             setCookiesHeaders : function (xhr) {
                 var cookies, i, l;
-                cookies = SB.cookie.getall();
+                cookies = $NS$.cookie.getall();
                 i = 0, l = cookies.length;
                 while (i < l) {
                     xhr.setRequestHeader("Cookie", cookies[i].name + "=" + cookies[i].value);
@@ -86,7 +86,7 @@ $NS$.io = (function (){
                 
                 if (method === 'GET') {
 
-                    data = SB.object.toQs(data).substr(1);
+                    data = $NS$.object.toQs(data).substr(1);
 
                 } else {
                     // wrap data into a FromData object

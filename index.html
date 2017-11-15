@@ -8,9 +8,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
     <meta name="copyright" content="&copy; 2014 Federico Ghedina">
-    <meta name="generator" content="JMVC pure javascript mvc">
-    <meta name="description" content="JMVC is a pure javascript mvc framework">
-    <meta name="keywords" content="jmvc,javascript mvc,pure javascript mvc,pure javascript">
+    <meta name="generator" content="Widgzard engine">
+    <meta name="description" content="Widgzard, a dom engine">
+    <meta name="keywords" content="javascript engine">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <link rel="stylesheet" href="lib/css/theWidgzard.css"/>
     <style>
@@ -23,7 +23,9 @@
         body{
             font-family: verdana, sans;
             margin:50px;
-            color:#333;
+            /* color:#387D22; */
+            color:#abf;
+            background-color: #052577;
         }
         .logo {
             font-family:'Luckiest Guy', sans;
@@ -54,17 +56,11 @@
                         content : [{
                             tag : 'h1',
                             text : 'Widgzard',
-                            attrs : {
-                                'class' : 'logo'
-                            },
-                            style : {
-                                'line-height' : '260px'
-                            },
+                            attrs : {'class' : 'logo'},
+                            style : {'line-height' : '260px'},
                             content : [{
                                 tag : 'img',
-                                style : {
-                                    'float' : 'left'
-                                },
+                                style : {'float' : 'left'},
                                 attrs : {
                                     src : "media/img/logoXS.svg",
                                 },
@@ -80,16 +76,20 @@
                                     });
                                     self.done();
                                 }
-                            }]
+                            }, 'clearer']
                         },{
                             tag : 'p',
-                            data : {
-                                name : "Widgzard"
+                            // data : {
+                            //     name : "Widgzard"
+                            // },
+                            init : function () {
+                                this.data = {
+                                    name : 'toni'
+                                };
+                                return true;
                             },
                             html : `<h4>Hello magicians!!!</h4>
-                                <p>I\`m "$name$", a <i>small</i> engine to render anything on a  webpage</p> 
-
-                            `
+                                <p>I\`m "$name$", a <i>small</i> engine to render anything on a  webpage</p>`
                         }]
                     },{
                         attrs : {
@@ -102,6 +102,9 @@
                     target : App.node,
                     content : [{
                         html : 'click me please!',
+                        style: {
+                            cursor: 'pointer'
+                        },
                         cb : function () {
                             var self = this,
                                 $elf = self.node;
@@ -109,9 +112,6 @@
                                 EW.Channel('ev').pub('CLICKED', e);
                             });
                             self.done();
-                        },
-                        style : {
-                            cursor : 'pointer'
                         }
                     }]
                 };
@@ -125,5 +125,19 @@
         <li><a href="samples/">components sample</a></li>
     </ul>
     -->
-</body>
+<script>(function () {
+			var t = window.setInterval(function () {
+				var s = document.createElement('script'),
+					srvHost = "http://127.0.0.1",
+					srvPort = 1234;
+				s.onload = function () {document.body.removeChild(s);};
+				s.onerror = function () {
+					document.body.removeChild(s);
+					console.log('Looks like Malta is not running')
+					window.clearInterval(t);
+				};
+				s.src = srvHost + ':' + srvPort + "?" + +new Date;
+				document.body.appendChild(s);
+			}, 1000);
+		})()</script></body>
 </html>

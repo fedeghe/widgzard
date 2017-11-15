@@ -1,4 +1,6 @@
-widgzard.sublime-project
-widgzard.sublime-workspace
 *.printVersion
 *.buildNum.json
+lib
+media
+samples
+index.html

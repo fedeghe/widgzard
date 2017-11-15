@@ -55,10 +55,12 @@ $NS$.makeNs('$NS$/events');
 
     $NS$.events.ready = (function () {
         var cb = [],
+            i,
+            l,
             readyStateCheckInterval = setInterval(function() {
                 if (document.readyState === "complete") {
                     clearInterval(readyStateCheckInterval);
-                    for (var i = 0, l = cb.length; i < l; i++) {
+                    for (i = 0, l = cb.length; i < l; i++) {
                         cb[i].call(this);
                     }
                 }

@@ -17,7 +17,7 @@ function Wnode(conf, trg, mapcnt) {
 		// the tag used for that node can be specified in the conf
 		// otherwise will be a div (except for 'clearer') 
 		tag = conf.tag || "div";
-
+	
 	// save a reference to the target parent for that node
 	// by means of the callback promise chain, in fact the 
 	// real parent for the node can even be different as 
@@ -42,6 +42,9 @@ function Wnode(conf, trg, mapcnt) {
 	// save a reference to the parent
 	// 
 	this.parent = trg;
+
+	//
+	this.data = {};
 
 	// as said at the beginning every node keeps a reference
 	// to a function that allow to get a reference to any
@@ -115,6 +118,21 @@ function Wnode(conf, trg, mapcnt) {
 
 	};
 	this.lateWid = mapcnt.lateWid;
+
+	this.events = {
+		onChange : true,
+		onClick : true,
+		onMouseover : true,
+		onMouseout : true,
+		onMouseout : true,
+		onDblclick : true,
+		onFocus : true,
+		onChange : true,
+		onSelect : true,
+		onKeyup : true,
+		onSubmit : true,
+		onBlur : true
+	};
 }
 
 /**
@@ -197,7 +215,7 @@ Wnode.prototype.setStyle = function (node, style, j) {
  */
 Wnode.prototype.setData = function (el, data) {
 	"use strict";
-	el.data = data || {};
+	if (data) el.data = data || {};
 	return this;
 };
 
@@ -229,6 +247,23 @@ Wnode.prototype.checkEnd = function (el, conf) {
 	return this;
 };
 
+Wnode.prototype.setEvents = function (el, conf) {
+	"use strict";
+	var i, 
+		self = this;
+	for (i in this.events) (function (name) {
+		var j;
+		if (name in conf) {
+			j = name.match(/on(.*)/)[1].toLowerCase();
+			$NS$.events.on(el, j, function (e) {
+				conf[name].call(self, e);
+			});
+		}
+	})(i);
+		
+	return this;
+};
+
 /**
  * render method for the Wnode
  */
@@ -242,6 +277,7 @@ Wnode.prototype.render = function () {
 	// 
 	this.setAttrs(node, conf.attrs)
 		.setStyle(node, conf.style)
+		.setEvents(node, conf)
 		.setData(this, conf.data)
 		.checkInit(this, conf)
 		.checkEnd(this, conf);
@@ -250,7 +286,7 @@ Wnode.prototype.render = function () {
 	// inject its value
 	//
 	if (typeof conf.html !== "undefined") {
-		node.innerHTML = replaceDataInHTML(conf.html, conf.data);
+		node.innerHTML = replaceDataInHTML(conf.html, this.data);
 	}
 
 	/**
