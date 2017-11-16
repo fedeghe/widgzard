@@ -11,10 +11,11 @@ $NS$.engy.bag = {
      * @param {Object Literal} props    properties that should be associated with the node
      */
     set : function (node, props) {
+        'use strict';
         var j;
         if (node in this.bag) {
             for (j in props) {
-                this.bag[node][j] = typeof props[j] == 'function' ?
+                this.bag[node][j] = typeof props[j] === 'function' ?
                     $NS$.util.delegate(props[j], node)
                     :
                     props[j];
@@ -31,13 +32,14 @@ $NS$.engy.bag = {
      * @return {[type]}      [description]
      */
     get : function (node, prop) {
+        'use strict';
         return (node in this.bag && prop in this.bag[node]) ?
             this.bag[node][prop]
             :
             undefined;
     },
     del : function (node, prop) {
-
+        'use strict';
         if (!(node in this.bag)) throw new Error('Node not in bag');
         if (prop) {
             if (prop in this.bag[node]) {
@@ -53,6 +55,7 @@ $NS$.engy.bag = {
      * @return {[type]}      [description]
      */
     cleanup : function (node) {
+        'use strict';
         if (node) {
             if (node in this.bag) {
                 this.bag[node] = {};
