@@ -1,0 +1,7 @@
+{
+    "EXE": [
+        "rm -rf media samples lib index.html srv.js",
+        "mkdir -p samples/components lib/js lib/css",
+        "cp -r source/media ./"
+    ]
+}

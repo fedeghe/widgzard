@@ -1,8 +1,8 @@
 {
     "EXE": [
-        "rm -rf media samples lib index.html",
+        "rm -rf media samples lib index.html srv.js",
         "mkdir -p samples/components lib/js lib/css",
-        "cp -r source/media ./"
+        "cp -r source/media ./",
     ],
 
     // Main Lib
@@ -11,10 +11,6 @@
     "source/lib/js/tpl/widgzard.js": "lib/js -plugins=malta-js-uglify...malta-header-comment[name:\"source/lib/js/tpl/header.txt\"] -vars=source/lib/vars.json",
     "source/base/base.js": "lib/js -plugins=malta-js-uglify...malta-header-comment[name:\"source/lib/js/tpl/header.txt\"]",
     "source/lib/less/theWidgzard.less": "lib/css -vars=source/lib/vars.json -plugins=malta-less",
-
-    // MEDIA
-    //
-    "source/media/img/*.svg": "media/img",
 
     // SAMPLES
     //
