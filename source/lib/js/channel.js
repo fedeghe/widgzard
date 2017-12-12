@@ -3,6 +3,7 @@
  * @param {[type]} n [description]
  */
 $NS$.Channel = (function () {
+    'use strict';
     var channels = {},
 
         // function added to free completely
