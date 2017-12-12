@@ -7,7 +7,7 @@
     // this is due, to test all implications see
     // http://www.jmvc.org/test_strict?ga=false
     // (the ga=false params inhibits google analytics tracking)
-    "use strict";
+    'use strict';
 
     var allowLog = true,
         allowDebug = true;
@@ -86,7 +86,9 @@
             l = els.length;
         ctx = (ctx !== undefined) ? ctx : window;
 
-        if (!ns) return ctx;
+        if (!ns) {
+            return ctx;
+        }
 
         for (null; i < l; i += 1) {
 
@@ -104,7 +106,7 @@
         var i,
             obj = typeof objfn === 'function' ? objfn() : objfn;
         for (i in obj) {
-            if (typeof ns[i] == 'undefined') {
+            if (typeof ns[i] === 'undefined') {
                 ns[i] = obj[i];
             }
         }
@@ -145,8 +147,9 @@
                 self = this;
             this.prefix = ns + '_';
             this.toString = function () {
-                return  self.prefix + ++count;
-            }
+                count += 1;
+                return self.prefix + count;
+            };
         }
     });
 
