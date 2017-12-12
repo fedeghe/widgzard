@@ -1,7 +1,7 @@
 *.printVersion
 *.buildNum.json
 lib
-media
+media/
 samples
 index.html
 srv.js
