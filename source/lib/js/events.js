@@ -31,6 +31,26 @@ $NS$.makeNs('$NS$/events');
         return fn;
     })(this);
 
+    $NS$.events.off = (function (W){
+        var fn;
+
+        if ('removeEventListener' in W) {
+            fn = function (el, evnt, cb) {
+                el.removeEventListener(evnt, cb, false);
+            };
+        } else if ('detachEvent' in W) {
+            fn = function (el, evnt, cb) {
+                el.detachEvent.apply(el, ['on' + evnt, cb]);
+            };
+        } else {
+            fn = function () {
+                throw new Error('No straight way to unbind an event');
+            };
+        }
+        return fn;
+        
+    })(this);
+
     $NS$.events.eventTarget = function(e) {
         e = e ? e : window.event;
         var targetElement = e.currentTarget || (typeof e.target !== 'undefined') ? e.target : e.srcElement;
