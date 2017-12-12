@@ -40,7 +40,9 @@ $NS$.engy.bag = {
     },
     del : function (node, prop) {
         'use strict';
-        if (!(node in this.bag)) throw new Error('Node not in bag');
+        if (!(node in this.bag)) {
+            throw new Error('Node not in bag');
+        }
         if (prop) {
             if (prop in this.bag[node]) {
                 this.bag[node][prop] = null;

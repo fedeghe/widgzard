@@ -272,7 +272,6 @@ Wnode.prototype.render = function () {
 	var conf = this.conf,
 		node = this.node,
 		tmp, i, j, k;
-
 	// set attributes and styles
 	// 
 	this.setAttrs(node, conf.attrs)
@@ -343,6 +342,7 @@ Wnode.prototype.render = function () {
 	// this.done() OR this.resolve()
 	// this is the node itself, those functions are attached
 	// 
+	
 	(!conf.content || conf.content.length == 0) && this.WIDGZARD_cb.call(this);
 
 	// chain
