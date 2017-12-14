@@ -68,6 +68,7 @@
                                     var self = this,
                                         $elf = self.node,
                                         counter = 0;
+                                    
                                     $NS$.Channel('ev').sub('CLICKED', function (action, e) {
                                         $NS$.events.eventTarget(e).innerText =
                                             'ouch ... You clicked me ' +
@@ -79,13 +80,8 @@
                             }, 'clearer']
                         },{
                             tag : 'p',
-                            // data : {
-                            //     name : "Widgzard"
-                            // },
                             init : function () {
-                                this.data = {
-                                    name : 'Widgzard'
-                                };
+                                this.data = {name : 'Widgzard'};
                                 return true;
                             },
                             html : `<h4>Hello magicians!!!</h4>
@@ -110,7 +106,7 @@
                         }
                     }]
                 };
-                
+
             $NS$.Widgzard.render(App);
             $NS$.Widgzard.render(subApp);
         })()
