@@ -105,16 +105,12 @@
                         style: {
                             cursor: 'pointer'
                         },
-                        cb : function () {
-                            var self = this,
-                                $elf = self.node;
-                            $NS$.events.on($elf, 'click', function (e) {
-                                $NS$.Channel('ev').pub('CLICKED', e);
-                            });
-                            self.done();
+                        onClick : function (e) {
+                            $NS$.Channel('ev').pub('CLICKED', e);
                         }
                     }]
                 };
+                
             $NS$.Widgzard.render(App);
             $NS$.Widgzard.render(subApp);
         })()
