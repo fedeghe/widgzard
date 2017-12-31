@@ -1,4 +1,4 @@
-(function () {
+(function (mainNS) {
 	$$../core.js$$
 	$$../events.js$$
 
@@ -11,4 +11,4 @@
 	$$../widgzard.js$$
 	$$../store.js$$
 	$$../engy.js$$
-})();
+})(window);

@@ -59,7 +59,7 @@
 
         // default context window
         // 
-        (typeof ctx === _u_) && (ctx = window);
+        (typeof ctx === _u_) && (ctx = mainNS);
 
         // default object empty
         // 
