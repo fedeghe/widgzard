@@ -1,4 +1,4 @@
-# WIDGZARD
+# WIDGZARD  
 
 ![postoreder walk](http://www.freakstyle.it/wp-content/uploads/2015/02/2000px-Sorted_binary_tree_postorder.svg_-1024x874.png "postorder walk")
 
@@ -96,7 +96,8 @@ Every node has basically the following structure
 ---
 
 
-#Api  
+# Api  
+
 <hr>
 ###render(Object Literal [,Boolean])
 
@@ -110,11 +111,11 @@ Where
 
 <hr>
 
-###load(String)
+###load(String)  
 
 	Widgzard.load(scriptUrl)
 
-##### Injects a script
+##### Injects a script  
 	
 Where the only parameter is a script Url that is requested and eveluated via script injection (and removal after evaluation).  
 This function allows to easily get SPA using it to load scripts that uses the Widgzard to create/substitute part of the page or its whole content.
@@ -122,7 +123,7 @@ This function allows to easily get SPA using it to load scripts that uses the Wi
 <hr>
 
 
-###get(Object literal)
+### get(Object literal)  
 
 	Widgzard.get(cnf)
 	
@@ -130,7 +131,7 @@ Returns the Domtree that would be obtained running the _render_ function.
 
 <hr>
 
-###cleanup(DOMnode [,String])
+### cleanup(DOMnode [,String])  
 
 	Widgzard.cleanup(trg [,msg])
 	
@@ -142,7 +143,7 @@ Where
 
 <hr>
 
-###htmlspecialchars()
+### htmlspecialchars()  
 
 	Widgzard.htmlspecialchars(str)
 	
@@ -150,14 +151,15 @@ This is a dummy function that through some RegExps substitute &, <, >, " and ' w
 
 ---
 
-#ENGY
+# ENGY  
 
 The configuration _object literal_ passed as first parameter to the `Widgzard.render` function could quickly become too big. Moreover if somewhere is needed a component which has to be used in more places, there would be a big source of repetitions and many problems. In the end a huge mess.
 The `Engy.process` function will create the configuration object literal allowing us to employ _components_ which can receive parameters, recursively, allowing to solve many problems. A sample will clarify:
 
 ---
 
-###Something more to say 
+### Something more to say  
+
 The Widgzard is shipped with a _minimal_ stylesheet that allows to easily create **responsive layouts**. [Here][2] is a complete responsive sample, try to dig a bit at what happens when You click 'LOAD SOME SAMPLES'.
 
 ---  
