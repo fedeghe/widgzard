@@ -10,7 +10,9 @@
     'use strict';
 
     var allowLog = true,
-        allowDebug = true;
+        allowDebug = true,
+        _u_ = 'undefined',
+        _context_ = window;
 
     /**
      * Creates a namespace
@@ -54,12 +56,11 @@
         str = str.replace(/^\//, '');
         var els = str.split(/\.|\//),
             l = els.length,
-            _u_ = 'undefined',
             ret;
 
         // default context window
         // 
-        (typeof ctx === _u_) && (ctx = window);
+        (typeof ctx === _u_) && (ctx = _context_);
 
         // default object empty
         // 
@@ -84,7 +85,7 @@
         var els = ns.split(/\.|\//),
             i = 0,
             l = els.length;
-        ctx = (ctx !== undefined) ? ctx : window;
+        ctx = (typeof ctx !== _u_) ? ctx : _context_;
 
         if (!ns) {
             return ctx;
@@ -92,7 +93,7 @@
 
         for (null; i < l; i += 1) {
 
-            if (typeof ctx[els[i]] !== 'undefined') {
+            if (typeof ctx[els[i]] !== _u_) {
                 ctx = ctx[els[i]];
             } else {
                 // break it
