@@ -9,7 +9,6 @@
     //
     "source/srv.js": ". -vars=source/lib/vars.json",
     "source/lib/js/tpl/widgzard.js": "lib/js -vars=source/lib/vars.json",
-    "source/lib/js/tpl/widgzardf.js": "lib/js -vars=source/lib/vars.json",
     "source/base/base.js": "lib/js",
     "source/lib/less/theWidgzard.less": "lib/css -vars=source/lib/vars.json -plugins=malta-less",
 

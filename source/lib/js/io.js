@@ -1,5 +1,5 @@
-$NS$.makeNs('$NS$/io');
-$NS$.io = (function (){
+NS.makeNs('io');
+NS.io = (function (){
     'use strict';
     var W = window,
         xdr = typeof W.XDomainRequest !== 'undefined' && document.all && !(navigator.userAgent.match(/opera/i)),
@@ -46,7 +46,7 @@ $NS$.io = (function (){
 
             setCookiesHeaders : function (xhr) {
                 var cookies, i, l;
-                cookies = $NS$.cookie.getall();
+                cookies = NS.cookie.getall();
                 i = 0, l = cookies.length;
                 while (i < l) {
                     xhr.setRequestHeader('Cookie', cookies[i].name + '=' + cookies[i].value);
@@ -83,7 +83,7 @@ $NS$.io = (function (){
                 }
                 
                 if (method === 'GET') {
-                    data = $NS$.object.toQs(data).substr(1);
+                    data = NS.object.toQs(data).substr(1);
                 } else {
                     // wrap data into a FromData object
                     // 

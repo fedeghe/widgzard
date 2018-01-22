@@ -3,7 +3,7 @@
  * the autocall is used to put the function itself in a namespace
  * 
  */
-(function (ns){
+(function (){
     // this is due, to test all implications see
     // http://www.jmvc.org/test_strict?ga=false
     // (the ga=false params inhibits google analytics tracking)
@@ -11,8 +11,7 @@
 
     var allowLog = true,
         allowDebug = true,
-        _u_ = 'undefined',
-        _context_ = window;
+        _u_ = 'undefined';
 
     /**
      * Creates a namespace
@@ -60,7 +59,7 @@
 
         // default context window
         // 
-        (typeof ctx === _u_) && (ctx = _context_);
+        (typeof ctx === _u_) && (ctx = NS);
 
         // default object empty
         // 
@@ -116,29 +115,28 @@
 
     // use makens to publish itself and something more
     //
-    makens(ns, {
-        makeNs : makens,
-        checkNs : checkns,
-        extendNs : extendns,
-        debug : function () {
-            var args = Array.prototype.slice.call(arguments, 0);
-            allowDebug && 'debug' in console && console.debug.apply(console, args);
-        },
-        log : function () {
-            var args = Array.prototype.slice.call(arguments, 0);
-            allowLog && 'log' in console && console.log.apply(console, args);
-        },
+    
+    NS.makeNs = makens;
+    NS.checkNs = checkns;
+    NS.extendNs = extendns;
+    NS.debug = function () {
+        var args = Array.prototype.slice.call(arguments, 0);
+        allowDebug && 'debug' in console && console.debug.apply(console, args);
+    };
+    NS.log = function () {
+        var args = Array.prototype.slice.call(arguments, 0);
+        allowLog && 'log' in console && console.log.apply(console, args);
+    };
 
-        dbg : function (m) {
-            // maybe shut up
-            if (!allowDebug) {return void 0;}
-            try {console.log(m);} catch(e1) {try {opera.postError(m);} catch(e2){alert(m);}}
-        }
-    });
+    NS.dbg = function (m) {
+        // maybe shut up
+        if (!allowDebug) {return void 0;}
+        try {console.log(m);} catch(e1) {try {opera.postError(m);} catch(e2){alert(m);}}
+    };
     
     // use it again to define a function to get
     // uniqueid
-    makens(ns + '.utils', {
+    NS.makeNs('utils', {
         /**
          * useful to get a unique id string
          * @return {String} the wanted id
@@ -146,7 +144,7 @@
         uniqueId : new function () {
             var count = 0,
                 self = this;
-            this.prefix = ns + '_';
+            this.prefix = 'NS_';
             this.toString = function () {
                 count += 1;
                 return self.prefix + count;
@@ -155,4 +153,4 @@
     });
 
 // base ns 
-})('$NS$');
+})();

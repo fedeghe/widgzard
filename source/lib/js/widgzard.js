@@ -42,7 +42,7 @@
 		__nodeIdentifier = 'wid',
 		__autoclean = true,
 		__debug = false,
-		__promise = $NS$.Promise,
+		__promise = NS.Promise,
 		__renders = {};
 /* */
 	$$../wnode.js$$
@@ -335,7 +335,7 @@
 	
 	// publish module
 	// 
-	$NS$.Widgzard = {
+	NS.Widgzard = {
 		render : render,
 		cleanup : cleanup,
 		get : get,

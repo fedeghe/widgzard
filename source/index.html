@@ -45,6 +45,7 @@
 <body class="resp">
     <div id="trg"></div>
     <script>
+        var Wid = getWidgzard();
         (function () {
             var trg = document.getElementById('trg'),
                 App = {
@@ -69,8 +70,8 @@
                                         $elf = self.node,
                                         counter = 0;
                                     
-                                    $NS$.Channel('ev').sub('CLICKED', function (action, e) {
-                                        $NS$.events.eventTarget(e).innerText =
+                                    Wid.Channel('ev').sub('CLICKED', function (action, e) {
+                                        Wid.events.eventTarget(e).innerText =
                                             'ouch ... You clicked me ' +
                                             ++counter + ' time' +
                                             (counter > 1 ? 's' : '') ;
@@ -103,13 +104,13 @@
                             cursor: 'pointer'
                         },
                         onClick : function (e) {
-                            $NS$.Channel('ev').pub('CLICKED', e);
+                            Wid.Channel('ev').pub('CLICKED', e);
                         }
                     }]
                 };
 
-            $NS$.Widgzard.render(App);
-            $NS$.Widgzard.render(subApp);
+            Wid.Widgzard.render(App);
+            Wid.Widgzard.render(subApp);
         })()
         
     </script>

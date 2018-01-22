@@ -2,7 +2,7 @@
  * [Channel description]
  * @param {[type]} n [description]
  */
-$NS$.Promise = (function () {
+NS.Promise = (function () {
 
     // MY WONDERFUL Promise Implementation .... that's shit
     // 

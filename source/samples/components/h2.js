@@ -7,7 +7,7 @@ var t = {
 	cb : function () {
 		var self = this,
 			$elf = self.node;
-		$NS$.events.on($elf, 'click', function () {
+		Wid.events.on($elf, 'click', function () {
 			var times = ++self.data.times;
 			$elf.innerHTML = 'clicked ' + times + " time" + (times == 1 ? "" : "s");
 		});

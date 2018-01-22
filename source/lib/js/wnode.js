@@ -255,7 +255,7 @@ Wnode.prototype.setEvents = function (el, conf) {
 		var j;
 		if (name in conf) {
 			j = name.match(/on(.*)/)[1].toLowerCase();
-			$NS$.events.on(el, j, function (e) {
+			NS.events.on(el, j, function (e) {
 				conf[name].call(self, e);
 			});
 		}
@@ -294,12 +294,12 @@ Wnode.prototype.render = function () {
 	tmp = node.getAttribute('wwdb');
 	if (tmp) {
 		node.removeAttribute('wwdb');
-		i = $NS$.checkNs(tmp, this);
+		i = NS.checkNs(tmp, this);
 		if (i !== undefined) {
 			j = ("this." + tmp).split(".");
 			k = j.pop();
 			i = eval(j.join("."));
-			k in i && $NS$.events.ww.on(i, k, node);
+			k in i && NS.events.ww.on(i, k, node);
 		}	
 	}
 	// 2WDB end

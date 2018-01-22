@@ -1,4 +1,5 @@
-(function () {
+window.getWidgzard = (function () {
+	var NS = {};
 	$$../core.js$$
 	$$../events.js$$
 
@@ -11,4 +12,8 @@
 	$$../widgzard.js$$
 	$$../store.js$$
 	$$../engy.js$$
+
+	return function () {
+		return NS;
+	}
 })();

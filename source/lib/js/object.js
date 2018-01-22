@@ -1,4 +1,4 @@
-$NS$.object = (function() {
+NS.object = (function() {
     'use strict';
     /**
      * maps an object literal to a string according using the map function  passed
@@ -54,13 +54,13 @@ $NS$.object = (function() {
         var found = 0,
             matches = {
                 key: function(k1, k2, key) {
-                    return ($NS$.object.isString(k1) && key instanceof RegExp) ?
+                    return (NS.object.isString(k1) && key instanceof RegExp) ?
                         k1.match(key) :
                         jCompare(k1, key);
                 },
                 value: function(k1, k2, val) {
 
-                    var v = ($NS$.object.isString(k2) && val instanceof RegExp) ?
+                    var v = (NS.object.isString(k2) && val instanceof RegExp) ?
                         k2.match(val) :
                         jCompare(k2, val);
 
@@ -68,12 +68,12 @@ $NS$.object = (function() {
                 },
                 keyvalue: function(k1, k2, keyval) {
                     return (
-                        ($NS$.object.isString(k1) && keyval.key instanceof RegExp) ?
+                        (NS.object.isString(k1) && keyval.key instanceof RegExp) ?
                         k1.match(keyval.key) :
                         jCompare(k1, keyval.key)
                     ) && (
 
-                        ($NS$.object.isString(k2) && keyval.value instanceof RegExp) ?
+                        (NS.object.isString(k2) && keyval.value instanceof RegExp) ?
                         k2.match(keyval.value) :
                         jCompare(k2, keyval.value)
                     );
@@ -150,7 +150,7 @@ $NS$.object = (function() {
         },
 
         clone: function(obj) {
-            var self = $NS$.object,
+            var self = NS.object,
                 copy,
                 i, l;
             // Handle the 3 simple types, and null or undefined
@@ -222,7 +222,7 @@ $NS$.object = (function() {
         },
 
         extend: function(o, ext, force) {
-            var obj = $NS$.object.clone(o),
+            var obj = NS.object.clone(o),
                 j;
             for (j in ext) {
                 if (ext.hasOwnProperty(j) && (!(j in obj) || force)) {

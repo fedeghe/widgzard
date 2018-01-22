@@ -23,7 +23,7 @@
 	@version 0.3
 
 */
-$NS$.makeNs('Engy', function () {
+NS.makeNs('Engy', function () {
 
 	console.log("\n\n ENGY v.$VERSION.ENGY$\n\n");
 
@@ -89,7 +89,7 @@ $NS$.makeNs('Engy', function () {
 	 */
 	function _mergeComponent(ns, path, o) {
 		
-		var componentPH = $NS$.checkNs(path, ns),
+		var componentPH = NS.checkNs(path, ns),
 			replacementOBJ = o,
 			merged = {}, i,
 			pathEls = path.split(/\.|\//),
@@ -110,7 +110,7 @@ $NS$.makeNs('Engy', function () {
 
 	function Processor(config) {
 		this.config = config;
-		this.endPromise = $NS$.Promise.create();
+		this.endPromise = NS.Promise.create();
 	}
 
 	/**
@@ -138,19 +138,19 @@ $NS$.makeNs('Engy', function () {
 	 */
 	Processor.prototype.run = function () {
 		var self = this,
-			langFunc = $NS$.i18n.parse,
+			langFunc = NS.i18n.parse,
 			elementsN = 0,
-			countPromise = $NS$.Promise.create(),
-			solveTime = $NS$.Promise.create(),
+			countPromise = NS.Promise.create(),
+			solveTime = NS.Promise.create(),
 			start = +new Date(), end,
 			xhrTot = 0,
 			cback;
 
 		(function solve() {
-			var component = $NS$.object.digForKey(self.config, 'component', 1),
+			var component = NS.object.digForKey(self.config, 'component', 1),
 				componentName,
 				cached, preLoaded,
-				innerPromise = $NS$.Promise.create(),
+				innerPromise = NS.Promise.create(),
 				xhrStart = 0,
 				xhrEnd = 0;
 
@@ -174,7 +174,7 @@ $NS$.makeNs('Engy', function () {
 				cback = function (cntORobj) {
 					xhrEnd = +new Date;
 					xhrTot += xhrEnd - xhrStart;
- 					var params = $NS$.checkNs(component.container + '/params', self.config),
+ 					var params = NS.checkNs(component.container + '/params', self.config),
 						obj,
 						usedParams, foundParam, foundParamValue, foundParamValueReplaced, i, l;
 					if (preLoaded) {
@@ -190,19 +190,19 @@ $NS$.makeNs('Engy', function () {
 					// before merging the object I check for the presence of parameters
 					if (params) {
 						// check if into the component are used var placeholders
-						usedParams = $NS$.object.digForValue(obj, /#PARAM{([^}|]*)?\|?([^}]*)}/);
+						usedParams = NS.object.digForValue(obj, /#PARAM{([^}|]*)?\|?([^}]*)}/);
 						l = usedParams.length;
 
 						if (l) {
 							for (i = 0; i < l; i++) {
 								// check if the label of the placeholder is in the params
-								foundParam = $NS$.checkNs(usedParams[i].regexp[1], params);
+								foundParam = NS.checkNs(usedParams[i].regexp[1], params);
 								// in case use it otherwise, the fallback otherwise cleanup
 								foundParamValue = typeof foundParam !== 'undefined' ? foundParam : (usedParams[i].regexp[2] || "");
 								// string or an object?
 								if ((typeof foundParamValue).match(/string/i)){
 
-									foundParamValueReplaced = $NS$.checkNs(usedParams[i].path, obj)
+									foundParamValueReplaced = NS.checkNs(usedParams[i].path, obj)
 										.replace(usedParams[i].regexp[0],  foundParamValue);
 									
 									_overwrite(obj, usedParams[i].path, foundParamValueReplaced);
@@ -227,7 +227,7 @@ $NS$.makeNs('Engy', function () {
 				} else if (cached) {
 					cback (components[componentName]);
 				} else {
-					$NS$.io.get(componentName, cback, true);
+					NS.io.get(componentName, cback, true);
 				}
 			}
 		})();
@@ -279,32 +279,32 @@ $NS$.makeNs('Engy', function () {
 		configSet : _configSet,
 		define : _component,
 		get  : function (params, clean, name) {
-			var pRet = $NS$.Promise.create();
+			var pRet = NS.Promise.create();
 			_process(params).then(function(p, r) {
-			    pRet.done($NS$.Widgzard.get(r[0]));
+			    pRet.done(NS.Widgzard.get(r[0]));
 			});
 			return pRet;
 		},
 		load : function (src) {
-			return $NS$.Widgzard.load(src);	
+			return NS.Widgzard.load(src);	
 		},
 		getElement : function(n) {
-			return $NS$.Widgzard.getElement(n);
+			return NS.Widgzard.getElement(n);
 		},
 		getElements : function () {
-			return $NS$.Widgzard.getElements();
+			return NS.Widgzard.getElements();
 		},
 		process : _process,
 		render : function (params, clean, name) {
 			var self = this,
 				t = +new Date,
-				pRet = $NS$.Promise.create();
+				pRet = NS.Promise.create();
 
 			_process(params).then(function(p, r) {
 			    console.log('t: ' + (+new Date - t));
-			    pRet.done($NS$.Widgzard.render(r[0], clean, name));
+			    pRet.done(NS.Widgzard.render(r[0], clean, name));
 			});
 			return pRet;
 		}
 	};
-}, $NS$);
+}, NS);

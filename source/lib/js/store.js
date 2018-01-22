@@ -60,7 +60,7 @@
         _pushState(this, newState);
     };
 
-    $NS$.getStore = function (reducer, initState) {
+    NS.getStore = function (reducer, initState) {
         return new Store(reducer, initState);
     };
 }());

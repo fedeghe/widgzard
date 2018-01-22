@@ -2,7 +2,7 @@
  * [Channel description]
  * @param {[type]} n [description]
  */
-$NS$.Channel = (function () {
+NS.Channel = (function () {
     'use strict';
     var channels = {},
 

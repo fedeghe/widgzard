@@ -1,7 +1,7 @@
-$NS$.makeNs('$NS$/events');
+NS.makeNs('events');
 
 (function () {
-
+    // NS.events = {};
     var _ = {
         events : {
             wwdb_bindings : {},
@@ -12,7 +12,7 @@ $NS$.makeNs('$NS$/events');
         }
     };
 
-    $NS$.events.on = (function(W) {
+    NS.events.on = (function(W) {
         var fn;
 
         if ('addEventListener' in W) {
@@ -31,7 +31,7 @@ $NS$.makeNs('$NS$/events');
         return fn;
     })(this);
 
-    $NS$.events.off = (function (W){
+    NS.events.off = (function (W){
         var fn;
 
         if ('removeEventListener' in W) {
@@ -51,7 +51,7 @@ $NS$.makeNs('$NS$/events');
         
     })(this);
 
-    $NS$.events.eventTarget = function(e) {
+    NS.events.eventTarget = function(e) {
         e = e ? e : window.event;
         var targetElement = e.currentTarget || (typeof e.target !== 'undefined') ? e.target : e.srcElement;
         if (!targetElement) {
@@ -63,7 +63,7 @@ $NS$.makeNs('$NS$/events');
         return targetElement;
     };
 
-    $NS$.events.kill = function(e) {
+    NS.events.kill = function(e) {
         if (!e) {
             e = W.event;
             e.cancelBubble = true;
@@ -73,7 +73,7 @@ $NS$.makeNs('$NS$/events');
         return false;
     };
 
-    $NS$.events.ready = (function () {
+    NS.events.ready = (function () {
         var cb = [],
             i,
             l,
@@ -97,7 +97,7 @@ $NS$.makeNs('$NS$/events');
     /**
      * my 2 way databinding
      */
-    $NS$.events.ww = {
+    NS.events.ww = {
         on : function (obj, field,  el, debugobj) {
             var objLock = false,
                 elLock = false,
@@ -108,7 +108,7 @@ $NS$.makeNs('$NS$/events');
                     objLock = elLock = !!m;
                 };
 
-            el.wwdbID = "_" + $NS$.utils.uniqueid;
+            el.wwdbID = "_" + NS.utils.uniqueid;
 
             // obj
             // when object changes -> element changes
@@ -126,7 +126,7 @@ $NS$.makeNs('$NS$/events');
             
             // input
             //
-            $NS$.events.on(el, 'keyup', function () {
+            NS.events.on(el, 'keyup', function () {
                 if (elLock) return;
                 lock(true);
                 if (this[elDet] !== obj[field]) {
@@ -142,7 +142,7 @@ $NS$.makeNs('$NS$/events');
             var els = [].slice.call(arguments, 0),
                 l = els.length;
             while (l-- > 0) {
-                $NS$.events.off(els[l], 'keyup');
+                NS.events.off(els[l], 'keyup');
                 window.clearInterval(_.events.wwdb_bindings[els[l].wwdbID]);    
             }
         }

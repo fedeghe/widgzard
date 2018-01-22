@@ -1,4 +1,4 @@
-$NS$.engy.bag = {
+NS.engy.bag = {
     /**
      * The bag
      * @type {Object}
@@ -16,7 +16,7 @@ $NS$.engy.bag = {
         if (node in this.bag) {
             for (j in props) {
                 this.bag[node][j] = typeof props[j] === 'function' ?
-                    $NS$.util.delegate(props[j], node)
+                    NS.util.delegate(props[j], node)
                     :
                     props[j];
             }
@@ -69,6 +69,6 @@ $NS$.engy.bag = {
 };
 /*
 var n = document.getElementById('trg1');
-$NS$.engy.bag.set(n, {getParent : function () {return this.parentNode;}, prop2 : 'federico ghedina'});
-$NS$.engy.bag.get(n, 'getParent')();
+NS.engy.bag.set(n, {getParent : function () {return this.parentNode;}, prop2 : 'federico ghedina'});
+NS.engy.bag.get(n, 'getParent')();
 */
