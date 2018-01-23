@@ -1,6 +1,6 @@
 # WIDGZARD  
 
-![postoreder walk](media/img/Sorted_binary_tree_postorder.svg "postorder walk")
+![postoreder walk](Sorted_binary_tree_postorder.svg "postorder walk")
 
 
 Widgzard is a simple module, which allows to build arbirary DOM tree through components with their own lifecycle.   

@@ -3,7 +3,8 @@
         "rm -rf home media samples lib index.html srv.js",
         "mkdir -p samples/components lib/js lib/css home",
         "cp -r source/media ./",
-        "cp source/home/*.woff home/"
+        "cp source/home/*.woff home/",
+        "cp source/media/img/Sorted_binary_tree_postorder.svg ."
     ],
 
     // Main Lib
