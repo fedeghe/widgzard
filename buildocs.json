@@ -1,0 +1,11 @@
+{
+    "EXE": [
+        "rm -rf docs",
+        "mkdir docs"
+    ],
+
+    // Main Lib
+    //
+    "source/docs/README.md": ". -vars=source/lib/vars.json",
+    "source/docs/*.md": "docs -vars=source/lib/vars.json"
+}
