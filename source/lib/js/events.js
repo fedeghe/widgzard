@@ -1,7 +1,6 @@
-NS.makeNs('events');
-
 (function () {
-    // NS.events = {};
+    NS.makeNs('events');
+
     var _ = {
         events : {
             wwdb_bindings : {},

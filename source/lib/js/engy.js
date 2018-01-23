@@ -23,7 +23,7 @@
 	@version 0.3
 
 */
-NS.makeNs('Engy', function () {
++function () {
 
 	console.log("\n\n ENGY v.$VERSION.ENGY$\n\n");
 
@@ -273,7 +273,7 @@ NS.makeNs('Engy', function () {
 	}
 
 
-	return {
+	NS.makeNs('Engy', {
 		component : _component,
 		components : _components,
 		configSet : _configSet,
@@ -306,5 +306,5 @@ NS.makeNs('Engy', function () {
 			});
 			return pRet;
 		}
-	};
-}, NS);
+	});
+}();

@@ -2,7 +2,7 @@
  * [Channel description]
  * @param {[type]} n [description]
  */
-NS.Promise = (function () {
++function () {
 
     // MY WONDERFUL Promise Implementation .... that's shit
     // 
@@ -48,10 +48,10 @@ NS.Promise = (function () {
 
     /* returning module
     */
-    return {
+    NS.makeNs('Promise', {
         create: function() {
             return new _Promise();
         }
-    };
+    });
     
-})();
+}();

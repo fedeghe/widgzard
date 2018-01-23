@@ -1,4 +1,4 @@
-NS.object = (function() {
+(function() {
     'use strict';
     /**
      * maps an object literal to a string according using the map function  passed
@@ -134,7 +134,7 @@ NS.object = (function() {
     /**
      * returning module
      */
-    return {
+    NS.makeNs('object', {
         fromQs: function() {
             var els = document.location.search.substr(1).split('&'),
                 i, len, tmp, out = [];
@@ -260,5 +260,5 @@ NS.object = (function() {
                 return ((r ? '&' : '?') + encodeURIComponent(i) + '=' + encodeURIComponent(o[i])).replace(/\'/g, '%27');
             });
         }
-    };
+    });
 })();

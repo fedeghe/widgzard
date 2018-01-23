@@ -4,6 +4,7 @@
 		"URL" : "/samples/components/",
 		"NAME_PREPEND" : ""
 	},
+	"NAME" : "Widgzard",
 	"VERSION" : {
 		"WIDGZARD" : 0.2,
 		"ENGY" : 0.3
@@ -20,5 +21,8 @@
 		"server" : {
 			"port" : 3000
 		}
+	},
+	"HOME" : {
+		"TITLE" : "$NAME$ $VERSION.WIDGZARD$"
 	}
 }

@@ -1,5 +1,4 @@
-NS.makeNs('io');
-NS.io = (function (){
+(function (){
     'use strict';
     var W = window,
         xdr = typeof W.XDomainRequest !== 'undefined' && document.all && !(navigator.userAgent.match(/opera/i)),
@@ -245,7 +244,7 @@ NS.io = (function (){
 
     // returning module
     // 
-    return {
+    NS.makeNs('io', {
         getxhr : _.getxhr,
         post : function (uri, cback, sync, data, cache, files, err) {
             return _.ajcall(uri, {
@@ -308,6 +307,6 @@ NS.io = (function (){
                 cback : cback || function () {}
             });
         }
-    };
+    });
 })();
 //-----------------------------------------------------------------------------

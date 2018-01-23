@@ -1,0 +1,25 @@
+    @font-face {
+        font-family: "Luckiest Guy";
+        font-style: normal;
+        font-weight: 400;
+        src: local("Luckiest Guy"), local("LuckiestGuy-Regular"), url("lukiestguy.woff") format("woff");
+    }
+    body{
+        font-family: verdana, sans;
+        margin:50px;
+        /* color:#387D22; */
+        color:#abf;
+        background-color: #052577;
+    }
+    .logo {
+        font-family:'Luckiest Guy', sans;
+        color:green;
+    }
+    p {
+        line-height: 1.4em;
+        padding:1em 0;
+    }
+    button {
+        padding:10px;
+        font-size: 1em
+    }

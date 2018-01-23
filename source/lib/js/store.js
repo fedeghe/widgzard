@@ -1,4 +1,4 @@
-(function (){
++function (){
     "use strict";
     function _emptyObjFun(){return {};}
     
@@ -63,4 +63,4 @@
     NS.getStore = function (reducer, initState) {
         return new Store(reducer, initState);
     };
-}());
+}();
