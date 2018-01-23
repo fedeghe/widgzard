@@ -2,6 +2,7 @@
 *.buildNum.json
 lib
 media/
+home/
 samples
 index.html
 srv.js
