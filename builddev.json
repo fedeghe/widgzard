@@ -4,7 +4,7 @@
         "mkdir -p samples/components lib/js lib/css home",
         "cp -r source/media ./",
         "cp source/home/*.woff home/",
-        "cp source/media/img/Sorted_binary_tree_postorder.svg ."
+        "cp source/media/img/postorder.svg ."
     ],
 
     // Main Lib
@@ -16,14 +16,11 @@
 
     // SAMPLES
     //
-    "source/index.html": ". -plugins=malta-browser-refresh[files:\"*\"] -vars=source/lib/vars.json",
+    "source/home/index.html": ". -plugins=malta-browser-refresh[files:\"*\"] -vars=source/lib/vars.json",
     "source/home/style.css": "home",
     "source/home/script.js": "home",
     "source/samples/components/*.js": "samples/components -vars=source/lib/vars.json",
-    "source/samples/index.html": "samples",
+    "source/samples/index.html": "samples -plugins=malta-browser-refresh[files:\"*\"] -vars=source/lib/vars.json",
     
-    "source/samples/2wdb/require.json": true,
-    "source/samples/store/require.json": true,
-    "source/samples/4carousel/require.json": true,
-    "source/samples/basic/require.json": true
+    "source/samples/requiredev.json": true
 }

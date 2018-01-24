@@ -1,0 +1,6 @@
+{
+    "EXE": [
+        "rm -rf home lib media node_modules samples",
+        "rm srv.js index.html"
+    ]
+}
