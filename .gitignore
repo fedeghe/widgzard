@@ -1,11 +1,13 @@
 *.printVersion
 *.buildNum.json
-lib
+lib/
 media/
 home/
-samples
+samples/
+extra/
 index.html
 srv.js
 READMEold.md
 WIDGZARD.md
 POST.md
+node_modules/
