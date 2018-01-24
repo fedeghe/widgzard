@@ -42,4 +42,8 @@ then build it
 now simply go to http://localhost:3000 or http://localhost:3000/samples
 
 
-that's all for the moment... and obviously... to be continued !!!
+### use it 
+
+Now to use it all You need is (get a look at the samples and) the `lib/js/widgzard.js` file, copy it wherever You like
+
+### ... to be continued !!!

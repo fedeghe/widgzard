@@ -44,6 +44,6 @@ now simply go to http://localhost:3000 or http://localhost:3000/samples
 
 ### use it 
 
-Now to use it all You need is (get a look at the examples and) the `lib/js/widgzard.js` file, copy it wherever You like
+Now to use it all You need is (get a look at the samples and) the `lib/js/widgzard.js` file, copy it wherever You like
 
 ### ... to be continued !!!
