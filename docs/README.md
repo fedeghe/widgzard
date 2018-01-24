@@ -6,14 +6,15 @@
 Widgzard is a simple module, which allows to build arbirary DOM tree through components with their own lifecycle.   
 
 ---
-<br/>
-### Widgzard is perfect if 
 
-- want to render arbitrary dom trees from literal objects and attach it somewhere. 
+
+### Widgzard will be useful if 
+
+- You want to render arbitrary dom trees from literal objects and attach it somewhere. 
 
 - each component needs to exploit his own and others component lifecycle
 
-- all components can comunicate in a clear way  
+- all components should comunicate in a clear way  
 
 <br/>
 
@@ -21,7 +22,7 @@ The _Widgzard_ aims to solve the problem in a clear way, receiving a main object
 
 ---
 
-### Install dependencies and build
+Install dependencies  
 
 	> npm i
 
@@ -29,9 +30,9 @@ then build it
 
 	> npm run build
 
-the build is a demon process that for the moment (when everything seems quiet) can be shut down (ctrl+c)
+**hint**: build is a demon process that for the moment (when everything seems quiet) can be shut down (ctrl+c)
 
-### Time to run  
+It\`s time to start it  
 
 	> npm start  
 
