@@ -1,15 +1,21 @@
 {
   "name": "widgzard",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "main": "lib/js/widgzard.js",
   "scripts": {
     "start": "node srv.js",
-    "build": "malta build.json",
-    "build:dev": "malta builddev.json",
-    "clean": "malta buildclean.json"
+    "build": "node node_modules/malta/src/bin.js build.json",
+    "build:dev": "node node_modules/malta/src/bin.js builddev.json"
   },
   "repository": "https://github.com/fedeghe/widgzard",
   "description": "A simple engine to build webapps",
   "author": "Federico Ghedina <fedeghe@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "malta": "^3.7.7",
+    "malta-browser-refresh": "^1.2.0",
+    "malta-header-comment": "^1.0.3",
+    "malta-js-uglify": "^1.0.1",
+    "malta-less": "^1.0.1"
+  }
 }
