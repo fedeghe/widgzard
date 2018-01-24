@@ -7,10 +7,16 @@
     "build": "node node_modules/malta/src/bin.js build.json",
     "build:dev": "node node_modules/malta/src/bin.js builddev.json"
   },
-  "repository": "https://github.com/fedeghe/widgzard",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/fedeghe/widgzard"
+  },
   "description": "A simple engine to build webapps",
   "author": "Federico Ghedina <fedeghe@gmail.com>",
   "license": "MIT",
+  "engines": {
+    "node": ">=4.0.0"
+  },
   "devDependencies": {
     "malta": "^3.7.7",
     "malta-browser-refresh": "^1.2.0",
