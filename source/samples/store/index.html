@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Store test</title>
+    <script src="/lib/js/widgzard.js"></script>
+    <style>
+    body{font-family:verdana, sans}
+    </style>
+</head>
+<body>
+    <script>
+        var Wid = getWidgzard();
+        (function (){
+
+        
+            const initState = {
+                num :2,
+                name : "Federico"
+            };
+
+            function reducer1(state=initState, actionType) {
+                var s = {...state};
+                switch (actionType) {
+                    case 'INCREMENT':
+                        s.num++;
+                        break;
+                    case 'DECREMENT':
+                        s.num--;
+                        break;
+                    case 'RENAME':
+                        break;
+                    default :;
+                }
+                return s;
+            }
+
+            var store = Wid.getStore(reducer1, initState);
+
+            store.subscribe((oldState, newState) => {
+                console.log("--- something is changing ---")
+                console.log("from: ")
+                console.log(oldState)
+                console.log("to: ")
+                console.log(newState)
+                console.log("--- something changed ---")
+                console.log("\n\n")
+            });
+
+            store.dispatch({type : "INCREMENT"})
+            store.dispatch({type : "INCREMENT"})
+            store.dispatch({
+                type : "RENAME",
+                name : "Gabriele",
+                cognome : "Ghedina"
+            });
+            store.dispatch({type : "INCREMENT"})
+            ;
+            
+            store.dispatch({type : "INCREMENT"})
+            store.dispatch({
+                type : "RENAME",
+                name : "Francesca"
+            });
+            store.dispatch({type : "DECREMENT"})
+        })();
+
+    </script>
+    <p>Open the console ( + option + i)</p>
+</body>
+</html>

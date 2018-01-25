@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Cube carousel</title>
+    <style>
+        body {
+            margin: 0 !important;
+            /*padding:0 !important;*/
+            background-color: gray;
+            overflow: hidden;
+            padding: 100px;
+            font-family: verdana, sans;
+        }
+
+        a {
+            text-decoration: none;
+            color: white;
+        }
+
+        a.active {
+            color: red;
+        }
+
+        #target {
+            /*border:5px solid red;*/
+            /*overflow:hidden;*/
+        }
+    </style>
+</head>
+
+<body>
+    <script src="/lib/js/widgzard.js"></script>
+    <script src="/lib/js/base.js"></script>
+    <script src="/samples/4carousel/index.js"></script>
+    <a href="?#" id="I">Image</a> ~
+    <a href="?fs" id="FI">Full screen image</a> ~
+    <a href="?video" id="V">Video</a> ~
+    <a href="?fs&video" id="FV">Full screen video</a>
+    <hr>
+    <div id="target"></div>
+    <script src="/samples/4carousel/script.js"></script>
+</body>
+</html>
