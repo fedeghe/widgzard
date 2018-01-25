@@ -6,8 +6,8 @@
 	},
 	"NAME" : "Widgzard",
 	"VERSION" : {
-		"WIDGZARD" : 1.0.0,
-		"ENGY" : 1.0.0
+		"WIDGZARD" : "1.0.2",
+		"ENGY" : "1.0.0"
 	},
 	"AUTHOR" : {
 		"name" : "Federico",
