@@ -27,7 +27,9 @@ The _Widgzard_ aims to solve the problem in a clear way, receiving a main object
 
 ### Install dependencies  
 
-	> npm i
+go in the node_modules/widgzard and install devDependencies for the build
+
+	> cd node_modules/widgzard && npm i
 
 then build it 
 
