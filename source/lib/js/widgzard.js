@@ -45,7 +45,7 @@
 		__promise = NS.Promise,
 		__renders = {};
 /* */
-	$$../___wnode.js$$
+	$$../wnode.js$$
 /*  */
 	function cleanupWnode(trg) {
 		var node = trg.node,
