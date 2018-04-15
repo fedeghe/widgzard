@@ -1,5 +1,6 @@
-this.getWidgzard = (function () {
+this.getWidgzard = (function (_context_) {
 	var NS = {};
+	
 	$$../core.js$$
 	$$../events.js$$
 
@@ -16,4 +17,4 @@ this.getWidgzard = (function () {
 	return function () {
 		return NS;
 	}
-})();
+})(this);

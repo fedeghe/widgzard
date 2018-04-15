@@ -51,7 +51,6 @@
      *     
      */
     function makens(str, obj, ctx) {
-
         str = str.replace(/^\//, '');
         var els = str.split(/\.|\//),
             l = els.length,
@@ -77,9 +76,7 @@
         return (l > 1) ? makens(els.slice(1).join('.'), obj, ctx[els[0]]) : ret;
     }
 
-
     function checkns(ns, ctx) {
-
         ns = ns.replace(/^\//, '');
         var els = ns.split(/\.|\//),
             i = 0,
@@ -112,10 +109,8 @@
         }
     }
 
-
     // use makens to publish itself and something more
     //
-    
     NS.makeNs = makens;
     NS.checkNs = checkns;
     NS.extendNs = extendns;
@@ -151,6 +146,4 @@
             };
         }
     });
-
-// base ns 
 })();

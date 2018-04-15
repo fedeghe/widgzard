@@ -291,8 +291,7 @@ Wnode.prototype.render = function () {
 	/**
 	 * ABSOLUTELY EXPERIMENTAL 2WDB
 	 */
-	tmp = node.getAttribute('wwdb');
-	if (tmp) {
+	if (tmp = node.getAttribute('wwdb')) {
 		node.removeAttribute('wwdb');
 		i = NS.checkNs(tmp, this);
 		if (i !== undefined) {
