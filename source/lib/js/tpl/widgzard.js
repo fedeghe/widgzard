@@ -1,4 +1,4 @@
-window.getWidgzard = (function () {
+this.getWidgzard = (function () {
 	var NS = {};
 	$$../core.js$$
 	$$../events.js$$

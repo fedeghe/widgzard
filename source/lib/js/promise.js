@@ -4,7 +4,7 @@
  */
 +function () {
 
-    // MY WONDERFUL Promise Implementation .... that's shit
+    // MY SHITTY Promise Implementation
     // 
     var _Promise = function() {
             this.cbacks = [];
