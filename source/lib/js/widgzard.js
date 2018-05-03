@@ -44,9 +44,9 @@
 		__debug = false,
 		__promise = NS.Promise,
 		__renders = {};
+/* */ 
+$$../wnode.js$$
 /* */
-	$$../wnode.js$$
-/*  */
 	function cleanupWnode(trg) {
 		var node = trg.node,
 			removeNode = function (t) {
@@ -239,7 +239,10 @@
 					}
 					// in case a ns is specified, use it through all the subtree automatically
 					if ('ns' in cnf) cnf.content[i].ns = cnf.ns;
-					recur(cnf.content[i], new Wnode(cnf.content[i], trg, mapcnt).render());
+					recur(
+						cnf.content[i],
+						new Wnode(cnf.content[i], trg, mapcnt).render()
+					);
 				}
 			}
 		})(params, targetFragment);

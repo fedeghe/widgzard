@@ -1,11 +1,12 @@
 {
   "name": "widgzard",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "main": "lib/js/widgzard.js",
   "scripts": {
     "start": "node srv.js",
     "build": "node node_modules/malta/src/bin.js build.json",
     "build:dev": "node node_modules/malta/src/bin.js builddev.json",
+    "clean": "node node_modules/malta/src/bin.js clean.json",
     "test": "mocha"
   },
   "repository": {
@@ -19,7 +20,7 @@
     "node": ">=4.0.0"
   },
   "devDependencies": {
-    "coveralls": "^3.0.0",
+    "coveralls": "^3.0.1",
     "istanbul": "^0.4.5",
     "malta": "^3.8.0",
     "malta-browser-refresh": "^1.2.0",

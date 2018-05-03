@@ -44,6 +44,15 @@
             }, {
                 attrs: {
                     id: 'container'
+                },
+                html :'inner',
+                cb : function () {
+                    console.log(this);
+                    this.done();
+                },
+                onClick: function () {
+                    console.log(this);
+                    // this.render();
                 }
             }]
         },

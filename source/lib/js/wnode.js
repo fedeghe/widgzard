@@ -13,9 +13,9 @@ function Wnode(conf, trg, mapcnt) {
 	// save a reference to the instance
 	// 
 	var self = this,
-
 		// the tag used for that node can be specified in the conf
 		// otherwise will be a div (except for 'clearer') 
+		//
 		tag = conf.tag || "div";
 	
 	// save a reference to the target parent for that node
@@ -269,9 +269,14 @@ Wnode.prototype.setEvents = function (el, conf) {
  */
 Wnode.prototype.render = function () {
 	"use strict";
+
+	// 
+	this.WIDGZARD = true;
+
 	var conf = this.conf,
 		node = this.node,
 		tmp, i, j, k;
+
 	// set attributes and styles
 	// 
 	this.setAttrs(node, conf.attrs)
@@ -332,8 +337,6 @@ Wnode.prototype.render = function () {
 	}
 	(conf.target || this.target).childrens.push(this);
 
-	this.WIDGZARD = true;
-
 	// if the node configuration do not declares content array
 	// then the callback is executed.
 	// in the callback the user is asked to explicitly declare
@@ -341,7 +344,6 @@ Wnode.prototype.render = function () {
 	// this.done() OR this.resolve()
 	// this is the node itself, those functions are attached
 	// 
-	
 	(!conf.content || conf.content.length == 0) && this.WIDGZARD_cb.call(this);
 
 	// chain

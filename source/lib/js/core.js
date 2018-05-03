@@ -77,7 +77,10 @@
     }
 
     function checkns(ns, ctx) {
+        // remove stating slash
         ns = ns.replace(/^\//, '');
+
+        // get all elements splitting by . or /
         var els = ns.split(/\.|\//),
             i = 0,
             l = els.length;
