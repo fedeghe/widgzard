@@ -3,7 +3,7 @@
   "version": "1.0.4",
   "main": "lib/js/widgzard.js",
   "scripts": {
-    "start": "node srv.js",
+    "start": "node node_modules/malta/src/bin.js start.json",
     "build": "node node_modules/malta/src/bin.js build.json",
     "build:dev": "node node_modules/malta/src/bin.js builddev.json",
     "clean": "node node_modules/malta/src/bin.js clean.json",
@@ -22,8 +22,9 @@
   "devDependencies": {
     "coveralls": "^3.0.1",
     "istanbul": "^0.4.5",
-    "malta": "^3.8.0",
+    "malta": "^3.8.12",
     "malta-browser-refresh": "^1.2.0",
+    "malta-dev-srv": "^1.0.4",
     "malta-header-comment": "^1.0.3",
     "malta-js-uglify": "^1.0.1",
     "malta-less": "^1.0.1",

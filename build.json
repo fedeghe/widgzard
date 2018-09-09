@@ -9,16 +9,7 @@
 
     // Main Lib
     //
-    "source/srv.js": ". -vars=source/lib/vars.json",
     "source/lib/js/tpl/widgzard.js": "lib/js -plugins=malta-header-comment[name:\"source/lib/js/tpl/header.txt\"] -vars=source/lib/vars.json",
     "source/base/base.js": "lib/js -plugins=malta-header-comment[name:\"source/lib/js/tpl/header.txt\"]",
-    "source/lib/less/theWidgzard.less": "lib/css -vars=source/lib/vars.json -plugins=malta-less",
-
-    // SAMPLES
-    //
-    "source/home/index.html": ". -vars=source/lib/vars.json",
-    "source/home/style.css": "home",
-    "source/home/script.js": "home",
-    
-    "source/samples/require.json": true
+    "source/lib/less/theWidgzard.less": "lib/css -vars=source/lib/vars.json -plugins=malta-less"
 }

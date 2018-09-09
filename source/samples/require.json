@@ -3,11 +3,8 @@
         "mkdir -p samples/components",
         "mkdir -p samples/2wdb/js",
         "mkdir -p samples/2wdb/css",
-
         "cp -R source/samples/4carousel/media samples/4carousel",
-
         "mkdir -p samples/basic",
-
         "mkdir -p samples/store"
     ],
     "source/samples/components/*.js": "samples/components -vars=source/lib/vars.json",
