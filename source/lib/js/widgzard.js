@@ -297,8 +297,6 @@ $$../wnode.js$$
 		s.onload = function () {
 			s.parentNode.removeChild(s);
 		};
-
-		// 
 		s.src = src;
 	}
 
