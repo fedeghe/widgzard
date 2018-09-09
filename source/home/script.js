@@ -42,16 +42,16 @@
                                 <p>I\`m "$name$", a <i>small</i> engine to render anything on a  webpage</p>`
                 }]
             }, {
+                tag : 'span',
                 attrs: {
                     id: 'container'
                 },
                 html :'inner',
                 cb : function () {
-                    console.log(this);
                     this.done();
                 },
-                onClick: function () {
-                    console.log(this);
+                onClick: function (e) {
+                    console.log(e);
                     // this.render();
                 }
             }]

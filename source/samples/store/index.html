@@ -11,62 +11,91 @@
     </style>
 </head>
 <body>
+    <div id="trg"></div>
     <script>
-        var Wid = getWidgzard();
-        (function (){
-
-        
-            const initState = {
-                num :2,
-                name : "Federico"
-            };
-
-            function reducer1(state=initState, actionType) {
-                var s = {...state};
-                switch (actionType) {
-                    case 'INCREMENT':
-                        s.num++;
-                        break;
-                    case 'DECREMENT':
-                        s.num--;
-                        break;
-                    case 'RENAME':
-                        break;
-                    default :;
+        var Wid = getWidgzard(),
+            target = document.getElementById('trg'),
+            actions = (function (){
+                const initState = {
+                    num: 0,
+                    name: "Federico",
+                    surname: "Ghedina"
+                };
+                function reducer1(state=initState, actionType) {
+                    var s = {...state};
+                    switch (actionType) {
+                        case 'INCREMENT':
+                            s.num++;
+                            break;
+                        case 'DECREMENT':
+                            s.num--;
+                            break;
+                        case 'RENAME':
+                            break;
+                        default :;
+                    }
+                    return s;
                 }
-                return s;
+
+                var store = Wid.getStore(reducer1, initState);
+
+                store.subscribe((oldState, newState) => {
+                    console.log("--- something is changing ---")
+                    console.log("from: ")
+                    console.log(oldState)
+                    console.log("to: ")
+                    console.log(newState)
+                    console.log("--- something changed ---")
+                    console.log("\n\n")
+                });
+                store.subscribe((oldState, newState) => {
+                    Wid.Channel('state').pub('dataChanged', newState);
+                })
+
+                return {
+                    increment: function() {
+                        store.dispatch({ type: "INCREMENT" })
+                    },
+                    decrement: function () {
+                        store.dispatch({ type: "DECREMENT" })
+                    },
+                    getState: function () {
+                        return store.state;
+                    }
+                }
+            })();
+
+        // now render something
+        Wid.Widgzard.render({
+            target : target,
+            content: [{
+                tag: 'button',
+                html: 'decrement',
+                onClick: function() {actions.decrement();}
+            }, {
+                tag: 'button',
+                html: 'increment',
+                onClick: function () { actions.increment(); }
+            },{
+                init: function() {
+                    var node = this.node;
+                    Wid.Channel('state').sub('numberChanged', function(topic, v) {
+                        node.innerHTML = v;
+                    });
+                    return true;
+                },
+                cb: function() {
+                    var state = actions.getState();
+                    this.node.innerHTML = state.num;
+                    this.done();
+                }
+            }],
+            cb: function () {
+                Wid.Channel('state').sub('dataChanged', function(topic, data) {
+                    Wid.Channel('state').pub('numberChanged', data.num);
+                });
             }
-
-            var store = Wid.getStore(reducer1, initState);
-
-            store.subscribe((oldState, newState) => {
-                console.log("--- something is changing ---")
-                console.log("from: ")
-                console.log(oldState)
-                console.log("to: ")
-                console.log(newState)
-                console.log("--- something changed ---")
-                console.log("\n\n")
-            });
-
-            store.dispatch({type : "INCREMENT"})
-            store.dispatch({type : "INCREMENT"})
-            store.dispatch({
-                type : "RENAME",
-                name : "Gabriele",
-                cognome : "Ghedina"
-            });
-            store.dispatch({type : "INCREMENT"})
-            ;
-            
-            store.dispatch({type : "INCREMENT"})
-            store.dispatch({
-                type : "RENAME",
-                name : "Francesca"
-            });
-            store.dispatch({type : "DECREMENT"})
-        })();
-
+        });
     </script>
     <p>Open the console ( + option + i)</p>
 </body>
