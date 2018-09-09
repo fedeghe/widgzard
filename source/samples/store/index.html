@@ -30,6 +30,9 @@
                         case 'DECREMENT':
                             s.num--;
                             break;
+                        case 'RESET':
+                            s.num = 0;
+                            break;
                         case 'RENAME':
                             break;
                         default :;
@@ -39,13 +42,13 @@
 
                 var store = Wid.getStore(reducer1, initState);
 
-                store.subscribe((oldState, newState) => {
-                    console.log("--- something is changing ---")
-                    console.log("from: ")
+                store.subscribe((oldState, newState, action) => {
+                    console.log('----------')
+                    console.log(`ACTION dispatched: ${action}`)
+                    console.log("previous state: ")
                     console.log(oldState)
-                    console.log("to: ")
+                    console.log("new state: ")
                     console.log(newState)
-                    console.log("--- something changed ---")
                     console.log("\n\n")
                 });
                 store.subscribe((oldState, newState) => {
@@ -59,8 +62,11 @@
                     decrement: function () {
                         store.dispatch({ type: "DECREMENT" })
                     },
+                    reset: function () {
+                        store.dispatch({ type: "RESET" })
+                    },
                     getState: function () {
-                        return store.state;
+                        return store.getState();
                     }
                 }
             })();
@@ -72,10 +78,14 @@
                 tag: 'button',
                 html: 'decrement',
                 onClick: function() {actions.decrement();}
-            }, {
+            },{
                 tag: 'button',
                 html: 'increment',
                 onClick: function () { actions.increment(); }
+            },{
+                tag: 'button',
+                html: 'reset',
+                onClick: function () { actions.reset(); }
             },{
                 init: function() {
                     var node = this.node;

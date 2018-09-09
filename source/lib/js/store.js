@@ -2,11 +2,11 @@
     "use strict";
     function _emptyObjFun(){return {};}
     
-    function _pushState(instance, newState) {
+    function _pushState(instance, newState, actionType) {
         var len = instance.states.length,
             oldState = instance.states[len - 1];
         instance.listeners.forEach(function (sub) {
-            sub(oldState, newState);
+            sub(oldState, newState, actionType);
         });
         instance.states[len] = newState;
     }
@@ -33,7 +33,7 @@
                 newState[i] = a[i];
             }
         }
-        _pushState(this, newState);
+        _pushState(this, newState, actionType);
     };
 
     Store.prototype.subscribe = function (s) {
