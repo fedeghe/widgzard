@@ -9,14 +9,13 @@
 
     // Main Lib
     //
-    "source/srv.js": ". -vars=source/lib/vars.json",
     "source/lib/js/tpl/widgzard.js": "lib/js -vars=source/lib/vars.json",
     "source/base/base.js": "lib/js",
     "source/lib/less/theWidgzard.less": "lib/css -vars=source/lib/vars.json -plugins=malta-less",
 
     // SAMPLES
     //
-    "source/home/index.html": ". -plugins=malta-browser-refresh[files:\"*\"] -vars=source/lib/vars.json",
+    "source/home/index.html": ". -plugins=malta-browser-refresh[files:\"*\"]...malta-dev-srv -vars=source/lib/vars.json",
     "source/home/style.css": "home",
     "source/home/script.js": "home",
     // "source/samples/components/*.js": "samples/components -vars=source/lib/vars.json",

@@ -26,13 +26,13 @@
         if (!("type" in a)) {throw new Error("Actions needs a type");}
         var actionType = a.type,
             oldState = this.states[this.states.length - 1],
-            newState = this.reducer(oldState, actionType),
+            newState = this.reducer(oldState, actionType, a),
             i;
-        for (i in a) {
-            if (i !== "type") {
-                newState[i] = a[i];
-            }
-        }
+        // for (i in a) {
+        //     if (i !== "type") {
+        //         newState[i] = a[i];
+        //     }
+        // }
         _pushState(this, newState, actionType);
     };
 
