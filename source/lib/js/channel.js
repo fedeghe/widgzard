@@ -15,9 +15,7 @@ NS.Channel = (function () {
                 return arr.indexOf(mvar);
             }
             var l = arr.length - 1;
-            while (arr[l] !== mvar) {
-                l--;
-            }
+            while (l >= 0 && arr[l] !== mvar) l--;
             return l;
         },
 

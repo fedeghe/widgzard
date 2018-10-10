@@ -141,7 +141,7 @@
 			langFunc = NS.i18n.parse,
 			elementsN = 0,
 			countPromise = NS.Promise.create(),
-			solveTime = NS.Promise.create(),
+			solveTimePromise = NS.Promise.create(),
 			start = +new Date(), end,
 			xhrTot = 0,
 			cback;
@@ -161,7 +161,7 @@
 				end = +new Date();
 				self.endPromise.done(self.config);
 				countPromise.done(elementsN);
-				solveTime.done(end - start);
+				solveTimePromise.done(end - start);
 
 			} else {
 
@@ -186,13 +186,11 @@
 						cntORobj = cntORobj.replace(/^[^{]*/, '').replace(/;?$/, '');
 						obj = eval('(' + cntORobj + ')');
 					}
-
 					// before merging the object I check for the presence of parameters
 					if (params) {
 						// check if into the component are used var placeholders
 						usedParams = NS.object.digForValue(obj, /#PARAM{([^}|]*)?\|?([^}]*)}/);
 						l = usedParams.length;
-
 						if (l) {
 							for (i = 0; i < l; i++) {
 								// check if the label of the placeholder is in the params
@@ -239,13 +237,11 @@
 		countPromise.then(function (pro ,par){
 			console.log("Engy used " + par[0] + " component" + (par[0]==1 ? "" : "s"));
 		});
-
-		solveTime.then(function (pro ,par){
+		solveTimePromise.then(function (pro ,par){
 			console.log("Engy total time: " + par[0] + 'ms');
 			console.log("      \"       unfolding : " + (par[0] - xhrTot) + 'ms');
 			console.log("      \"       xhr : " + xhrTot + 'ms');
 		});
-
 		return self.endPromise;
 	};
 
