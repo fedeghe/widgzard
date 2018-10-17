@@ -7,6 +7,7 @@ this.getWidgzard = (function (_context_) {
 	$$../i18n.js$$
 	$$../io.js$$
 	$$../object.js$$
+	$$../cookie.js$$
 	$$../promise.js$$
 	$$../channel.js$$
 
