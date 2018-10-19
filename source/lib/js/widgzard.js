@@ -165,8 +165,8 @@ $$../wnode.js$$
 
 		// maybe a raw html is requested before treating content
 		// 
-		if (typeof params.html !== 'undefined') {
-			target.node.innerHTML = replaceDataInHTML(params.html, params.html);
+		if (typeof params.html !== 'undefined' && params.data) {
+			target.node.innerHTML = replaceDataInHTML(params.html, params.data);
 		}
 		
 		// initialize the root node to respect what is needed
