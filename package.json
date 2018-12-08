@@ -22,7 +22,7 @@
   "devDependencies": {
     "coveralls": "^3.0.1",
     "istanbul": "^0.4.5",
-    "malta": "^3.8.12",
+    "malta": "^3.8.18",
     "malta-browser-refresh": "^1.2.0",
     "malta-dev-srv": "^1.0.4",
     "malta-header-comment": "^1.0.3",
