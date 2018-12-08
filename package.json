@@ -27,7 +27,7 @@
     "malta-dev-srv": "^1.0.4",
     "malta-header-comment": "^1.0.3",
     "malta-js-uglify": "^1.0.1",
-    "malta-less": "^1.0.1",
+    "malta-less": "^1.0.6",
     "mocha": "^5.0.1",
     "mocha-lcov-reporter": "^1.3.0"
   }
