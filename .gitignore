@@ -1,0 +1,7 @@
+node_modules/
+samples/
+components/
+media/
+*.html
+favicon.ico
+theWidgzard.*
