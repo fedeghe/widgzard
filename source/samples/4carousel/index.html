@@ -23,24 +23,21 @@
         a.active {
             color: red;
         }
-
-        #target {
-            /*border:5px solid red;*/
-            /*overflow:hidden;*/
-        }
     </style>
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
-    <script src="/lib/js/widgzard.js"></script>
-    <script src="/lib/js/base.js"></script>
-    <script src="/samples/4carousel/index.js"></script>
-    <a href="?#" id="I">Image</a> ~
-    <a href="?fs" id="FI">Full screen image</a> ~
-    <a href="?video" id="V">Video</a> ~
-    <a href="?fs&video" id="FV">Full screen video</a>
-    <hr>
+    <script src="../../theWidgzard.js"></script>
+    <script src="index.js"></script>
+    <div id="panel">
+        <a href="?#" id="I">Image</a> ~
+        <a href="?fs" id="FI">Full screen image</a> ~
+        <a href="?video" id="V">Video</a> ~
+        <a href="?fs&video" id="FV">Full screen video</a>
+        <hr>
+    </div>
     <div id="target"></div>
-    <script src="/samples/4carousel/script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

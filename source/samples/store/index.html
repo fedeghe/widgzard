@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Store test</title>
-    <script src="/lib/js/widgzard.js"></script>
+    <script src="../../theWidgzard.js"></script>
     <style>
     body{font-family:verdana, sans}
     </style>
@@ -13,8 +13,7 @@
 <body>
     <div id="trg"></div>
     <script>
-        var Wid = getWidgzard(),
-            target = document.getElementById('trg'),
+        var target = document.getElementById('trg'),
             actions = (function (){
                 const initState = {
                     num: 10,
@@ -41,7 +40,7 @@
                     return s;
                 }
 
-                var store = Wid.getStore(reducer1, initState);
+                var store = Widgzard.getStore(reducer1, initState);
 
                 store.subscribe((oldState, newState, action) => {
                     console.log('----------')
@@ -53,7 +52,7 @@
                     console.log("\n\n")
                 });
                 store.subscribe((oldState, newState) => {
-                    Wid.Channel('state').pub('dataChanged', newState);
+                    Widgzard.Channel('state').pub('dataChanged', newState);
                 });
 
                 return {
@@ -76,24 +75,30 @@
             })();
 
         // now render something
-        Wid.Widgzard.render({
+        Widgzard.render({
             target : target,
+            data: {
+                prova: ''
+            },
             content: [{
                 tag: 'input',
-                attrs: { type: 'text' },
+                attrs: {
+                    type: 'text'
+                },
                 cb: function () {
                     var self = this,
                         $elf = self.node,
                         state = actions.getState();
                     $elf.value = state.name;
-                    Wid.events.on($elf, 'input', function (e) {
+                    Widgzard.events.on($elf, 'input', function (e) {
                         actions.rename(e.target.value);
                     })
                     this.done();
                 },
                 init: function () {
-                    var node = this.node;
-                    Wid.Channel('state').sub('nameChanged', function (topic, v) {
+                    var self = this,
+                        node = this.node;
+                    Widgzard.Channel('state').sub('nameChanged', function (topic, v) {
                         node.value = v;
                     });
                     return true;
@@ -114,7 +119,7 @@
                 tag : 'p',
                 init: function() {
                     var node = this.node;
-                    Wid.Channel('state').sub('numberChanged', function(topic, v) {
+                    Widgzard.Channel('state').sub('numberChanged', function(topic, v) {
                         node.innerHTML = v;
                     });
                     return true;
@@ -126,10 +131,11 @@
                 }
             }],
             cb: function () {
-                Wid.Channel('state').sub('dataChanged', function(topic, data) {
-                    Wid.Channel('state').pub('numberChanged', data.num);
-                    Wid.Channel('state').pub('nameChanged', data.name);
+                Widgzard.Channel('state').sub('dataChanged', function(topic, data) {
+                    Widgzard.Channel('state').pub('numberChanged', data.num);
+                    Widgzard.Channel('state').pub('nameChanged', data.name);
                 });
+                this.done();
             }
         });
     </script>

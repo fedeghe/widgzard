@@ -1,6 +1,0 @@
-{
-    "source/home/style.css": "home",
-    "source/home/script.js": "home",
-    "source/samples/require.json": true,
-    "source/home/index.html": ". -plugins=malta-browser-refresh[files:\"*\"]...malta-dev-srv -vars=source/lib/vars.json"
-}

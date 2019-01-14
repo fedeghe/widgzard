@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Widgzard</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="theWidgzard.js"></script>
+        <link rel="stylesheet" type="text/css" href="theWidgzard.css">
+    </head>
+    <body>
+        <div id="trg"></div>
+        <script>
+            var target = document.getElementById('trg'); 
+            var t = Widgzard.render({
+                target: target,
+                content: [{
+                    html: 1,
+                    content: [{
+                        html: '$n$',
+                        data : {
+                            n : 2
+                        },
+                        onClick: function () {
+                            this.data.n *= 2;
+                            this.conf.style.color = 'red';
+                            this.render()
+                        },
+                        content: [{
+                            html: 3,
+                            content: [{
+                                html: 4,
+                                content: [{
+                                    html: 5,
+                                    cb: function () {
+                                        console.log(5, +new Date)
+                                        this.done();
+                                    }
+                                }]
+                            }]
+                        }]
+                    }]
+                },{
+                    tag: 'h1',
+                    html: 'WIDGZARD',
+                    attrs: {id: 'xxxx'},
+                    // wid: 'myTitle',
+                    style:{
+                        color:'green'
+                    },
+                    init: function () {
+                        console.log('init')
+                        return true;
+                    },
+                    end: function () {
+                        console.log('End')
+                        // console.log(this)
+                    },
+                    cb: function () {
+                        console.log('cb')
+                        // this.lateWid('myTitle');
+                        this.done()
+                    }
+
+                },{
+                    content: [{
+                        data: {
+                            p: 'dom',
+                            d: 'mod',
+                        },
+                        tag: 'span',
+                        html: '$p$',
+                        onClick: function (e) {
+                            this.data.p = 'godo';
+                            this.onClick = function (e) {
+                                console.log(e);
+                            }
+                            this.render();
+                        },
+                    }, {
+                        tag: 'img',
+                        attrs: {
+                            src: 'media/Wizard3.png'
+                        },
+                        cb: function () {
+                            var self = this,
+                                img = new Image(),
+                                src = 'media/Wizard3.png';
+                            img.onload = function () {
+                                self.node.src = src;
+                                self.done();
+                            };
+                            img.src = src;
+                        } 
+                    }, {
+                        tag: 'span',
+                        html: 'engine',
+                        wid: '123'
+                    }],
+                    cb: function () {
+                        // console.log('from ', this.node);
+                        // console.log(this.getNode('myTitle'));
+                        this.done();
+                    }
+                },{
+                    tag: 'a',
+                    attrs: {
+                        href: 'components.html'
+                    },
+                    html: 'components'
+                },{
+                    tag: 'span',
+                    html: '&nbsp;'
+                },{
+                    tag: 'a',
+                    attrs: {
+                        href: 'calls.html'
+                    },
+                    html: 'calls'
+                }, {
+                    tag: 'span',
+                    html: '&nbsp;'
+                }, {
+                    tag: 'a',
+                    attrs: {
+                        href: 'samples/index.html'
+                    },
+                    html: 'samples'
+                }],
+                cb: function () {
+                    var n = this.node;
+                    n.style.textAlign = 'center';
+                    this.report();
+                    this.done();
+                },
+                onAbort: function () {
+                    alert('abortido')
+                }
+            });
+        </script>
+    </body>
+</html>

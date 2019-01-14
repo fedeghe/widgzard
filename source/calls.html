@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="theWidgzard.js"></script>
+        <link rel="stylesheet" type="text/css" href="theWidgzard.css">
+    </head>
+    <body>
+        <div id="trg"></div>
+        <script>
+            var t = Widgzard.render({
+                target: document.getElementById('trg'),
+                content: [{
+                    html: '1',
+                    willRender: function () {
+                        console.log('willRender #1');
+                        return true;
+                    },
+                    init: function () {
+                        console.log('init #1');
+                        return true;
+                    },
+                    cb: function () {
+                        console.log('cb #1');
+                        console.log('arguments');
+                        console.log(arguments);
+                        this.done(1);
+                    },
+                    end: function () {
+                        console.log('end #1');
+                    }
+                }, {
+                    html: '2',
+                    willRender: function () {
+                        console.log('willRender #2');
+                        return true;
+                    },
+                    init: function () {
+                        console.log('init #2');
+                        return true;
+                    },
+                    cb: function () {
+                        console.log('cb #2');
+                        console.log('arguments');
+                        console.log(arguments);
+                        this.done(2);
+                    },
+                    end: function () {
+                        console.log('end #2');
+                    }
+                }],
+                html: '0',
+                willRender: function () {
+                    console.log('willRender #0');
+                    return true;
+                },
+                init: function () {
+                    console.log('init root #0');
+                    return true;
+                },
+                cb: function (){
+                    console.log('cb #0');
+                    console.log('arguments');
+                    console.log(arguments);
+                    this.done();
+                },
+                end: function () {
+                    console.log('end #0');
+                }
+            });
+        </script>
+    </body>
+</html>

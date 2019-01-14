@@ -1,23 +1,21 @@
 {
     "EXE": [
-        "mkdir -p samples/components",
-        "mkdir -p samples/2wdb/js",
-        "mkdir -p samples/2wdb/css",
-        "cp -R source/samples/4carousel/media samples/4carousel",
-        "mkdir -p samples/basic",
-        "mkdir -p samples/store"
+        "mkdir -p samples/4carousel samples/store samples/sub samples/spa samples/deep samples/runge-kutta",
+        "cp -r source/samples/4carousel/media samples/4carousel/"
     ],
-    "source/samples/components/*.js": "samples/components -vars=source/lib/vars.json",
-    "source/samples/index.html": "samples -vars=source/lib/vars.json",
-    "source/samples/2wdb/*.html": "samples/2wdb -vars=source/lib/vars.json",
-    "source/samples/2wdb/*.js": "samples/2wdb/js -plugins=malta-js-uglify -vars=source/lib/vars.json",
-    "source/samples/2wdb/*.less": "samples/2wdb/css -plugins=malta-less",
+    "source/samples/index.html": "samples",
 
-    "source/samples/4carousel/index.html": "samples/4carousel -vars=source/lib/vars.json",
-    "source/samples/4carousel/*.js": "samples/4carousel -plugins=malta-js-uglify -vars=source/lib/vars.json",
+    "source/samples/store/index.html": "samples/store",
 
-    "source/samples/basic/index.html": "samples/basic -plugins=malta-browser-refresh[files:\"*\"] -vars=source/lib/vars.json",
-    "source/samples/basic/index.js": "samples/basic -plugins=malta-js-uglify -vars=source/lib/vars.json",
+    "source/samples/4carousel/index.html": "samples/4carousel",
+    "source/samples/4carousel/*.js": "samples/4carousel",
+    "source/samples/4carousel/*.less": "samples/4carousel -plugins=malta-less",
+    
+    "source/samples/runge-kutta/index.html": "samples/runge-kutta",
+    "source/samples/runge-kutta/*.js": "samples/runge-kutta",
 
-    "source/samples/store/index.html": "samples/store"
+    "source/samples/sub/index.html": "samples/sub",
+
+    "source/samples/spa/index.html": "samples/spa",
+    "source/samples/deep/index.html": "samples/deep"
 }

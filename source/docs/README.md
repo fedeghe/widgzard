@@ -35,17 +35,16 @@ then build it
 
 	> npm run build
 
-**hint**: build is a demon process that for the moment (when everything seems quiet) can be shut down (ctrl+c)
-
-### It\`s time to start it  
-
-	> npm start  
-
-now simply go to http://localhost:3000 or http://localhost:3000/samples
+**hint**: build is a demon process that watch for changesin the scource files, also starts a small dev-srv:  
+navigate to http://localhost:3001
 
 
 ### use it 
 
-Now to use it all You need is (get a look at the samples and) the `lib/js/widgzard.js` file, copy it wherever You like
+Are you crazy? 
+
+	> npm run build:pro
+
+use the `theWidgzard.js` that is on the root
 
 ### ... to be continued !!!

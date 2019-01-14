@@ -1,34 +1,26 @@
 {
-  "name": "widgzard",
-  "version": "1.0.4",
-  "main": "lib/js/widgzard.js",
-  "scripts": {
-    "start": "node node_modules/malta/src/bin.js start.json",
-    "build": "node node_modules/malta/src/bin.js build.json",
-    "build:dev": "node node_modules/malta/src/bin.js builddev.json",
-    "clean": "node node_modules/malta/src/bin.js clean.json",
-    "test": "mocha"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://fedeghe@github.com/fedeghe/widgzard.git"
-  },
+  "name": "widgzard2",
+  "version": "2.0.0",
   "description": "A simple engine to build webapps",
-  "author": "Federico Ghedina <fedeghe@gmail.com>",
-  "license": "MIT",
-  "engines": {
-    "node": ">=4.0.0"
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test implemented yet\" && exit 1",
+    "build": "malta source/buildev.json",
+    "build:prod": "malta source/build.json",
+    "start": "malta source/start.json",
+    "clean": "malta source/clean.json"
   },
+  "keywords": [],
+  "author": "Federico Ghedina <federico.ghedina@gmail.com>",
+  "license": "MIT",
   "devDependencies": {
-    "coveralls": "^3.0.1",
-    "istanbul": "^0.4.5",
+    "balle": "^1.0.27",
     "malta": "^3.8.18",
-    "malta-browser-refresh": "^1.2.0",
-    "malta-dev-srv": "^1.0.4",
-    "malta-header-comment": "^1.0.3",
-    "malta-js-uglify": "^1.0.1",
+    "malta-browser-refresh": "^1.2.1",
+    "malta-dev-srv": "^1.0.5",
+    "malta-header-comment": "^1.0.4",
+    "malta-js-uglify": "^1.0.2",
     "malta-less": "^1.0.6",
-    "mocha": "^5.0.1",
-    "mocha-lcov-reporter": "^1.3.0"
+    "malta-css-uglify": "^1.0.2"
   }
 }

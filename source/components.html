@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title></title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="theWidgzard.js"></script>
+        <link rel="stylesheet" type="text/css" href="theWidgzard.css">
+    </head>
+    <body>
+        <div id="trg"></div>
+        <script>
+            /*            
+            Engy.component('elem', {
+                tag: 'li',
+                html: '#PARAM{html|nothing}',
+                onClick: function () {
+                    console.log(this.node.innerHTML)
+                }
+            })
+            Engy.component('list', {
+                tag: 'ul',
+                content: '#PARAM{elements}'
+            })
+            */
+
+            /*
+            Engy.component('h1mine', {
+                tag: 'h1',
+                html: "#PARAM{html} <span style='font-size:.5em'>not lazy</span>",
+                data: {
+                    times: 0,
+                    hoverColor: "#PARAM{hoverColor|true}",
+                },
+                onClick: function () {
+                    var self = this,
+                        $elf = this.node;
+                    var times = ++self.data.times;
+                    $elf.innerHTML = 'clicked ' + times + " time" + (times == 1 ? "" : "s");
+                },
+                onMouseover: function (e) {
+                    this.data.hoverColor && (this.node.style.color = 'green')
+                },
+                onMouseout: function (e) {
+                    this.data.hoverColor && (this.node.style.color = 'black')
+                }
+            });
+            */
+            var t = Engy.render({
+                
+                target: document.getElementById('trg'),
+
+                content: [
+                    {
+                        component: "h1mine",
+                        params: {
+                            html: 'hello there',
+                            color: 'orange'
+                        }
+                    },
+                    
+                    {
+                        html: 1,
+                        content: [{
+                            html: '$n$',
+                            data : {
+                                n : 2
+                            },
+                            onClick: function () {
+                                this.data.n *= 2;
+                                this.conf.style.color = 'red';
+                                this.render()
+                            },
+                            content: [{
+                                html: 3,
+                                content: [{
+                                    html: 4,
+                                    content: [{
+                                        html: 5,
+                                        cb: function () {
+                                            console.log(5, +new Date)
+                                            this.done();
+                                            console.log(Widgzard)
+                                        }
+                                    }]
+                                }]
+                            }]
+                        }]
+                    },
+                    {
+                        tag: 'h1',
+                        html: '$NAME$',
+                        attrs: {id: 'xxxx'},
+                        // wid: 'myTitle',
+                        style:{
+                            color:'green'
+                        },
+                        init: function () {
+                            console.log('init')
+                            return true;
+                        },
+                        end: function () {
+                            console.log('End')
+                            // console.log(this)
+                        },
+                        cb: function () {
+                            console.log('cb')
+                            // this.lateWid('myTitle');
+                            this.done()
+                        }
+
+                    },
+                    {
+                        content: [{
+                            data: {
+                                p: 'dom',
+                                d: 'mod',
+                            },
+                            tag: 'span',
+                            html: '$p$',
+                            onClick: function (e) {
+                                // this.data.p = 'godo';
+                                // this.onClick = function (e) {
+                                //     console.log(e);
+                                // }
+                                // this.render();
+                                this.node.innerHTML = 'yesss'
+                            },
+                        }, {
+                            tag: 'img',
+                            style: {
+                                display: 'none'
+                            },           
+                            cb: function () {
+                                var self = this,
+                                    $elf = self.node;
+                                $elf.onload = function () {
+                                    $elf.style.display= '';
+                                    self.done();
+                                };
+                                $elf.src = '/media/homer.jpg';
+                            }
+                        }, {
+                            tag: 'span',
+                            html: 'engine'
+                        }],
+                        // cb: function () {
+                        //     console.log('from ', this.node);
+                        //     console.log(this.getNode('myTitle'));
+                        //     this.done();
+                        // }
+                    },
+                    {
+                        component: "h1mine",
+                        params: {
+                            hoverColor: false,
+                            html: 'footer'
+                        },
+                        cb: function() {
+                            this.done()
+                        }
+                    },
+                    {
+                        tag: 'a',
+                        attrs: {
+                            href: '/'
+                        },
+                        text: 'home'
+                    },
+                    {
+                        data: {
+                            prova: ''
+                        },
+                        content: [{
+                            tag: 'input',
+                            attrs: {
+                                type: 'text',
+                                wwdb: 'parent.data.prova'
+                            }
+                        }, {
+                            tag: 'p',
+                            style: {
+                                color: 'red',
+                                fontWeight: 'bold'
+                            },
+                            attrs: {
+                                'wwdb': 'parent.data.prova'
+                            }
+                        }]
+                    }
+                ],
+                cb: function () {
+                    var $elf = this.node;
+                    $elf.style.textAlign = 'center';
+                    this.report();
+                    this.done();
+                },
+                onAbort: function () {
+                    alert('abortido')
+                }
+            });
+        </script>
+    </body>
+</html>

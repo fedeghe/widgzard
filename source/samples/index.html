@@ -1,29 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../../lib/css/theWidgzard.css">
-    <style>
-        body{
-            padding : 10px;
-            font-family: verdana; 
-        }
-        h2{
-            margin : 0px;
-            padding : 0px;
-        }
-    </style>
-    <title>$HOME.TITLE$</title>
-</head>
-<body>
-    <h2>$HOME.TITLE$</h2>
-    <ul>
-        <li><a href="/samples/2wdb">2wdb</a></li>
-        <li><a href="/samples/4carousel">4carousel</a></li>
-        <li><a href="/samples/store">store</a></li>
-        <li><a href="/samples/basic">basic</a></li>
-    </ul>
-</body>
+    <head>
+        <title>Widgzard samples</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="../theWidgzard.js"></script>
+        <link rel="stylesheet" type="text/css" href="../theWidgzard.css">
+    </head>
+    <body>
+        <div id="trg"></div>
+        <script>
+            var target = document.getElementById('trg'),
+
+                link = Engy.component('link', {
+                    tag: 'li',
+                    content: [{
+                        tag: 'a',
+                        attrs: { href: '#PARAM{url}' },
+                        text: '#PARAM{label}'
+                    }],
+                });
+
+            Engy.render({
+                target: target,  
+                style: {
+                    margin:'5rem'
+                },
+                content: [{
+                    tag: 'h3',
+                    text: 'Some samples'
+                }, {
+                    tag: 'ul',
+                    content: [
+                        {
+                            component: 'link',
+                            params: { url: '4carousel/', label: 'carousel'},
+                            cb: function () { this.done('one'); }
+                        }, {
+                            component: 'link',
+                            params: { url: 'store/', label: 'store'},
+                            cb: function () { this.done('one'); }
+                        }, {
+                            component: 'link',
+                            params: { url: 'sub/', label: 'sub' }
+                        }, {
+                            component: 'link',
+                            params: { url: 'spa/', label: 'spa' }
+                        }, {
+                            component: 'link',
+                            params: { url: 'deep/', label: 'deep'}
+                        }, {
+                            component: 'link',
+                            params: { url: 'runge-kutta/', label: 'runge-kutta' }
+                        }
+                    ],
+                    cb: function () {
+                        // console.log(arguments);
+                        this.done([].slice.call(arguments, 0).concat('four')); 
+                    }
+                }],
+                cb: function () {
+                    console.log(arguments)
+                    this.done();
+                }
+            });
+        </script>
+    </body>
 </html>

@@ -3,6 +3,7 @@
         fi = document.getElementById('FI'),
         v = document.getElementById('V'),
         i = document.getElementById('I'),
+        panel = document.getElementById('panel'),
         href = document.location.href,
         vid = !!(href.match(/[\?|&]video/)),
         fs = !!(href.match(/[\?|&]fs/));
@@ -15,10 +16,13 @@
     } else if (!vid && !fs) {
         i.className = 'active';
     }
+    if (fs) {
+        panel.style.display = 'none';
+    }
 }();
 
 +function () {
-    var s = BASE.utils.getViewportSize(),
+    var s = Widgzard.utils.getViewportSize(),
         video = document.location.href.match(/video/),
         fulls = document.location.href.match(/fs/),
         trg = document.getElementById('target'),
@@ -40,17 +44,21 @@
             height: h,
             transitionTime: .5,
             controls: false,
-            videos: [{
-                // mp4: 'video/The_Fourth_Phase_TEASER.mp4'
-                mp4: 'https://static.videezy.com/system/resources/previews/000/002/454/original/out-of-the-box-hd-stock-video.mp4'
-            }, {
-                // mp4: 'video/motocross.mp4'
-                mp4: 'https://static.videezy.com/system/resources/previews/000/004/950/original/Snow_Day_4K_Living_Background.mp4'
-            }, {
-                mp4: 'https://static.videezy.com/system/resources/previews/000/004/936/original/Forest_Sun_4K_Living_Background.mp4'
-            }, {
-                mp4: 'https://static.videezy.com/system/resources/previews/000/005/341/original/Earth_Spin_Medium.mp4'
-            }]
+            mediaShowDurationBar: true,
+            videos: [
+                {mp4: 'https://static.videezy.com/system/resources/previews/000/002/454/original/out-of-the-box-hd-stock-video.mp4'}
+                ,{mp4: 'https://static.videezy.com/system/resources/previews/000/004/950/original/Snow_Day_4K_Living_Background.mp4'}
+                ,{mp4: 'https://static.videezy.com/system/resources/previews/000/004/936/original/Forest_Sun_4K_Living_Background.mp4'}
+                ,{mp4: 'https://static.videezy.com/system/resources/previews/000/005/341/original/Earth_Spin_Medium.mp4'}
+                // ,{mp4: 'https://ak5.picdn.net/shutterstock/videos/17213035/preview/stock-footage-the-abstract-plexus-background-is-an-abstract-animated-backgrounds-that-are-perfect-for-use-with.mp4'}
+            ]
+            // urls: [
+            //     'https://www.google.com/#q=css+animation',
+            //     'https://www.google.com/#q=jmvc.org',
+            //     'https://www.google.com/#q=npm+malta',
+            //     'https://www.google.com/#q=freakstyle+it',
+            //     'https://www.google.com/#q=npm+balle'
+            // ]
         });
     else
         CubeCarousel({
@@ -58,17 +66,25 @@
             animation: 'linear', // ease-in-out
             width: w,
             height: h,
-            mantainRatio: true,
-            // invertedControl: false,
-            transitionTime: .5, // speed
+            // invertedControl: true,
+            transitionTime: 0.4, // speed
             showTime: 5, //time
-            zoomEffect: 0.6,
+            // zoomEffect: 0.6,
             images: [
-                '/samples/4carousel/img/snow/1.jpg',
-                '/samples/4carousel/img/snow/2.jpg',
-                '/samples/4carousel/img/snow/3.jpg',
-                '/samples/4carousel/img/snow/4.jpg'
+                '/samples/4carousel/media/img/snow/1.jpg',
+                '/samples/4carousel/media/img/snow/2.jpg',
+                '/samples/4carousel/media/img/snow/3.jpg',
+                '/samples/4carousel/media/img/snow/4.jpg',
+                // '/samples/4carousel/media/img/snow/5.jpg',
+                // '/samples/4carousel/media/img/snow/6.jpg'
             ],
-            urls: ['https://www.google.com/#q=css+animation', 'https://www.google.com/#q=jmvc.org', 'https://www.google.com/#q=npm+malta', 'https://www.google.com/#q=freakstyle+it']
+            urls: [
+                'https://www.google.com/#q=css+animation',
+                'https://www.google.com/#q=jmvc.org',
+                'https://www.google.com/#q=npm+malta',
+                'https://www.google.com/#q=freakstyle+it',
+                // 'https://www.google.com/#q=npm+balle',
+                // 'https://www.google.com/#q=npm+ridof'
+            ]
         });
 }();
