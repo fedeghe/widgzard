@@ -2,3 +2,4 @@
 /theWidgzard.*
 /sample
 .printVersion
+.buildNum.json
