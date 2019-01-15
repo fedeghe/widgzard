@@ -2,22 +2,14 @@
     "AUTHOR": "Federico Ghedina",
     "ENGY": {
         "STATS": true,
-        "MODES": [
-            "PRE",
-            "LIVE"
-        ],
-        "MODE": 0,
         "COMPONENTS": {
             "EXT": ".js",
             "URL": "/components/",
             "NAME_PREPEND": ""
         }
     },
-    "NS": "Widgzard",
-    
-    "NAME": "Widgzard",
     "VERSION": {
-        "WIDGZARD": "3.0",
-        "ENGY": "2.0"
+        "WIDGZARD": "3.0.3",
+        "ENGY": "2.0.1"
     }
 }
