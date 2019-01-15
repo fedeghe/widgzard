@@ -3,7 +3,7 @@
         "rm -rf sample",
         "mkdir -p sample/components sample/media sample/samples",
         "cp -r source/sample/media/* sample/media/",
-        "cp source/sample/favicon.ico ."
+        "cp source/sample/favicon.ico sample"
     ],
     "source/docs/README.md": ". -vars=source/vars.json",
     "source/theWidgzard.js": "sample  -plugins=malta-header-comment[name:'source/head.txt'] -vars=source/vars.json",
