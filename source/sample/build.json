@@ -1,0 +1,15 @@
+{
+    "EXE": [
+        "rm -rf sample",
+        "mkdir -p sample/components sample/media sample/samples",
+        "cp -r source/sample/media/* sample/media/",
+        "cp source/sample/favicon.ico ."
+    ],
+    "source/docs/README.md": ". -vars=source/vars.json",
+    "source/theWidgzard.js": "sample  -plugins=malta-header-comment[name:'source/head.txt'] -vars=source/vars.json",
+    "source/theWidgzard.less": "sample -plugins=malta-less...malta-css-uglify -vars=source/vars.json",
+
+    "source/sample/components/*.js": "sample/components",
+    "source/sample/*.html": "sample -plugins=malta-dev-srv[folder:\"sample\"]...malta-browser-refresh[files:\"local\"]",
+    "source/sample/samples/require.json": true
+}

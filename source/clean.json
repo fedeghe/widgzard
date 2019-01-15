@@ -1,6 +1,6 @@
 {
     "EXE": [
-        "rm -rf media components samples node_modules",
-        "rm -rf *.html *.js *.css favicon.ico"
+        "rm -rf sample node_modules",
+        "rm -rf *.js *.css"
     ] 
 }

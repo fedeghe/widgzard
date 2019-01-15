@@ -7,7 +7,6 @@
     "test": "echo \"Error: no test implemented yet\" && exit 1",
     "build": "malta source/buildev.json",
     "build:prod": "malta source/build.json",
-    "start": "malta source/start.json",
     "clean": "malta source/clean.json"
   },
   "keywords": [],

@@ -1,2 +1,11 @@
 /node_modules
-!/source
+/theWidgzard.*
+.printVersion
+
+/app
+
+/components
+/media
+/sample
+/favicon.ico
+/*.html

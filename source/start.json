@@ -1,3 +1,0 @@
-{   
-    "#source/*.html": ". -plugins=malta-dev-srv"
-}
