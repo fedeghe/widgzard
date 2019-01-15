@@ -1,11 +1,4 @@
 /node_modules
 /theWidgzard.*
-.printVersion
-
-/app
-
-/components
-/media
 /sample
-/favicon.ico
-/*.html
+.printVersion
