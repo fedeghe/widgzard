@@ -29,7 +29,7 @@ The _Widgzard_ aims to solve the problem in a clear way, receiving a main object
 
 Are you crazy? 
 
-use the `theWidgzard.js` that is on the root
+use the `node_modules/widgzard/dist/index.js`
 
 
 ### Dev it
@@ -42,7 +42,7 @@ then dev-build it
 
 	> npm run buildev
 
-**hint**: build is a demon process that watch for changesin the scource files, also starts a small dev-srv:  
+**hint**: build is a demon process that watch for relevant changes in the scource folder, also starts a small dev-srv:  
 navigate to http://localhost:3001
 
 ### ... to be continued !!!
