@@ -1,5 +1,4 @@
 /node_modules
-/theWidgzard.*
 /sample
 .printVersion
 .buildNum.json
