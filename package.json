@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test implemented yet\" && exit 1",
-    "buildev": "malta source/buildev.json",
+    "buildev": "malta source/sample/build.json",
     "build": "malta source/build.json",
     "clean": "malta source/clean.json",
     "postinstall": "npm run build"

@@ -1,4 +1,0 @@
-{   
-    "source/docs/README.md" : ". -vars=source/vars.json",
-    "source/sample/build.json": true
-}
