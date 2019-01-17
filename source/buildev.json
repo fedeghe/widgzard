@@ -1,6 +1,4 @@
 {   
     "source/docs/README.md" : ". -vars=source/vars.json",
-    "source/theWidgzard.js" : ".  -plugins=malta-header-comment[name:'source/head.txt'] -vars=source/vars.json",
-    "source/theWidgzard.less" : ". -plugins=malta-less...malta-css-uglify -vars=source/vars.json",
     "source/sample/build.json": true
 }

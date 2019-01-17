@@ -1,6 +1,6 @@
 {
     "EXE": [
-        "rm -rf sample node_modules",
+        "rm -rf sample dist node_modules",
         "rm -rf *.js *.css *.ico"
     ] 
 }

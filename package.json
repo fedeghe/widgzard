@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test implemented yet\" && exit 1",
-    "build": "malta source/buildev.json",
-    "build:prod": "malta source/build.json",
-    "clean": "malta source/clean.json"
+    "buildev": "malta source/buildev.json",
+    "build": "malta source/build.json",
+    "clean": "malta source/clean.json",
+    "postinstall": "npm run build"
   },
   "keywords": [],
   "author": "Federico Ghedina <federico.ghedina@gmail.com>",

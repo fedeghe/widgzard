@@ -25,26 +25,24 @@ The _Widgzard_ aims to solve the problem in a clear way, receiving a main object
 
 	> npm install widgzard
 
-### Install dependencies  
-
-go in the `node_modules/widgzard` folder and install devDependencies for the build
-
-	> cd node_modules/widgzard && npm i
-
-then build it 
-
-	> npm run build
-
-**hint**: build is a demon process that watch for changesin the scource files, also starts a small dev-srv:  
-navigate to http://localhost:3001
-
-
-### use it 
+### Use it
 
 Are you crazy? 
 
-	> npm run build:pro
-
 use the `theWidgzard.js` that is on the root
+
+
+### Dev it
+
+go in the `node_modules/widgzard` folder and install devDependencies for the dev build
+
+	> cd node_modules/widgzard && npm i
+
+then dev-build it 
+
+	> npm run buildev
+
+**hint**: build is a demon process that watch for changesin the scource files, also starts a small dev-srv:  
+navigate to http://localhost:3001
 
 ### ... to be continued !!!
