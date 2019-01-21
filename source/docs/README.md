@@ -42,7 +42,7 @@ then dev-build it
 
 	> npm run buildev
 
-**hint**: build is a demon process that watch for relevant changes in the scource folder, also starts a small dev-srv:  
+**hint**: build is a demon process that watch for relevant changes in the source folder, also starts a small dev-srv:  
 navigate to http://localhost:3001
 
 ### ... to be continued !!!
