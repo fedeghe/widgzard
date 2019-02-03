@@ -7,8 +7,7 @@
     "test": "echo \"Error: no test implemented yet\" && exit 1",
     "buildev": "malta source/sample/build.json",
     "build": "malta source/build.json",
-    "clean": "malta source/clean.json",
-    "postinstall": "npm run build"
+    "clean": "malta source/clean.json"
   },
   "keywords": [],
   "author": "Federico Ghedina <federico.ghedina@gmail.com>",
