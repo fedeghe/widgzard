@@ -26,7 +26,6 @@ SM = {
 			data = self.data;
 
 		data.count = data.medias.length
-
 		data.calc = function () {
 			var a1 = Math.atan(2 / 10),
 				a2 = Math.atan(2 / 9),
@@ -47,14 +46,15 @@ SM = {
 			var self = this,
 				$elf = self.node,
 				data = self.parent.data,
-				l = data.count;
-			console.log('l ' + l)
+                l = data.count;
+            
 			$elf.style.width = data.width + 'px';
 			$elf.style.height = data.height + 'px';
 			data.stage = {
 				target: $elf,
 				content: []
-			};
+            };
+            data.videoStates = new Array(l).fill(0);
 			function push(index, mediaIndex) {
 				data.stage.content.push({
 					component: data.card,
@@ -71,7 +71,8 @@ SM = {
 						showTime: data.showTime,
 						transitionTime: data.transitionTime,
 						mediaShowDurationBar: data.mediaShowDurationBar,
-						description: data.descriptions[mediaIndex]
+                        description: data.descriptions[mediaIndex],
+                        videoStates: data.videoStates
 					}
 				});
 			}
@@ -121,19 +122,21 @@ SM = {
 				var prevMediaIndex = mod0X(current - 1, data.count),
 					nextMediaIndex = mod0X(current + 1, data.count),
 					prevIndex = mod0X(current - 1, 4),
-					nextIndex = mod0X(current + 1, 4);
+                    nextIndex = mod0X(current + 1, 4);
+                
+                if (data.count > 4) {
+                    Widgzard.Channel.get(data.carouselId).pub('updateMedia', [
+                        prevIndex,
+                        prevMediaIndex,
+                        data.medias[prevMediaIndex]
+                    ]);
 
-				Widgzard.Channel(data.carouselId).pub('updateMedia', [
-					prevIndex,
-					prevMediaIndex,
-					data.medias[prevMediaIndex]
-				]);
-
-				Widgzard.Channel(data.carouselId).pub('updateMedia', [
-					nextIndex,
-					nextMediaIndex,
-					data.medias[nextMediaIndex]
-				]);
+                    Widgzard.Channel.get(data.carouselId).pub('updateMedia', [
+                        nextIndex,
+                        nextMediaIndex,
+                        data.medias[nextMediaIndex]
+                    ]);
+                }
 
 				go();
 			}
@@ -154,7 +157,7 @@ SM = {
 			function go() {
 				var tmp = -step * current,
 					index = mod0X(current, 4);
-				Widgzard.Channel(data.carouselId).pub('move_to', [index]);
+				Widgzard.Channel.get(data.carouselId).pub('move_to', [index]);
 				Widgzard.css.style($elf, {
 					'transform': 'scale(' + data.zoomEffect + ') rotateY(' + (tmp + versus * step / 2) + 'deg)',
 					'-o-transform': 'scale (' + data.zoomEffect + ') rotatey(' + (tmp + versus * step / 2) + 'deg)',
@@ -175,18 +178,19 @@ SM = {
 				window.clearInterval(interval);
 			}
 
-			Widgzard.Channel(data.carouselId).sub('clicked', function (topic, e, index) {
+			Widgzard.Channel.get(data.carouselId).sub('clicked', function (e, index) {
 				var i = parseInt(index, 10);
 				data.urls
 					&& i in data.urls
 					&& data.urls[i]
 					&& window.open(data.urls[i]);
-			});
-
-			Widgzard.Channel(data.carouselId).sub('ended', forward);
-			Widgzard.Channel(data.carouselId).sub('clicked_left', backward);
-			Widgzard.Channel(data.carouselId).sub('clicked_right', forward);
-			Widgzard.Channel(data.carouselId).pub('move_to', [0]);
+            });
+            
+            //for video
+			Widgzard.Channel.get(data.carouselId).sub('ended', forward);
+			Widgzard.Channel.get(data.carouselId).sub('clicked_left', backward);
+			Widgzard.Channel.get(data.carouselId).sub('clicked_right', forward);
+			Widgzard.Channel.get(data.carouselId).pub('move_to', [0]);
 
 			switch (data.card) {
 				case '4card_video': break;

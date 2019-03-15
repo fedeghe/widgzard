@@ -38,14 +38,14 @@ SM = {
 			$elf.height = pdata.height;
 
 			Widgzard.events.on($elf, 'click', function (e) {
-				Widgzard.Channel(pdata.carouselId).pub('clicked', [e, parseInt($elf.getAttribute('data-id'), 10)]);
+				Widgzard.Channel.get(pdata.carouselId).pub('clicked', [e, parseInt($elf.getAttribute('data-id'), 10)]);
 			});
 
 			Widgzard.events.on($elf, 'load', function(){
 				self.done();
 			});
 
-			Widgzard.Channel(pdata.carouselId).sub('updateMedia', function (topic, index, mediaIndex, media) {
+			Widgzard.Channel.get(pdata.carouselId).sub('updateMedia', function (index, mediaIndex, media) {
 				if (index === ~~pdata.index) {
 					$elf.src = media;
 					$elf.dataset.id = mediaIndex;

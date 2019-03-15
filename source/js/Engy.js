@@ -272,7 +272,7 @@
         },
         process: _process,
         report : function (stats) {
-            var j, ln = '------------------------------------';
+            var j, ln = new Array(37).join('-');
             console.log(ln);
             console.log("Engy used " + stats.elements + " component" + (stats.elements  == 1 ? "" : "s"));
             console.log("usage: ");

@@ -1,4 +1,4 @@
-# WIDGZARD 
+# WIDGZARD  
 
 ![postoreder walk](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Sorted_binary_tree_preorder.svg/2000px-Sorted_binary_tree_preorder.svg.png "postorder walk")
 
@@ -25,24 +25,26 @@ The _Widgzard_ aims to solve the problem in a clear way, receiving a main object
 
 	> npm install widgzard
 
-### Use it
+### Install dependencies  
 
-Are you crazy? 
-
-use the `node_modules/widgzard/dist/index.js`
-
-
-### Dev it
-
-go in the `node_modules/widgzard` folder and install devDependencies for the dev build
+go in the `node_modules/widgzard` folder and install devDependencies for the build
 
 	> cd node_modules/widgzard && npm i
 
-then dev-build it 
+then build it 
 
-	> npm run buildev
+	> npm run build
 
-**hint**: build is a demon process that watch for relevant changes in the source folder, also starts a small dev-srv:  
+**hint**: build is a demon process that watch for changesin the scource files, also starts a small dev-srv:  
 navigate to http://localhost:3001
+
+
+### use it 
+
+Are you crazy? 
+
+	> npm run build:pro
+
+use the `theWidgzard.js` that is on the root
 
 ### ... to be continued !!!

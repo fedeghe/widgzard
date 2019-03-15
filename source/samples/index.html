@@ -4,8 +4,8 @@
         <title>Widgzard samples</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="../index.js"></script>
-        <link rel="stylesheet" type="text/css" href="../style.css">
+        <script src="../dist/theWidgzard.js"></script>
+        <link rel="stylesheet" type="text/css" href="../dist/theWidgzard.css">
     </head>
     <body>
         <div id="trg"></div>
@@ -24,7 +24,7 @@
             Engy.render({
                 target: target,  
                 style: {
-                    margin:'2rem'
+                    margin:'5rem'
                 },
                 content: [{
                     tag: 'h3',
@@ -61,7 +61,6 @@
                 }],
                 cb: function () {
                     console.log(arguments)
-                    
                     this.done();
                 }
             });

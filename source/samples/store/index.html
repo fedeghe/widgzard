@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Store test</title>
-    <script src="../../index.js"></script>
+    <script src="../../dist/theWidgzard.js"></script>
     <style>
     body{font-family:verdana, sans}
     </style>
@@ -52,7 +52,7 @@
                     console.log("\n\n")
                 });
                 store.subscribe((oldState, newState) => {
-                    Widgzard.Channel('state').pub('dataChanged', newState);
+                    Widgzard.Channel.get('state').pub('dataChanged', newState);
                 });
 
                 return {
@@ -95,10 +95,11 @@
                     })
                     this.done();
                 },
+            
                 init: function () {
                     var self = this,
                         node = this.node;
-                    Widgzard.Channel('state').sub('nameChanged', function (topic, v) {
+                    Widgzard.Channel.get('state').sub('nameChanged', function (v) {
                         node.value = v;
                     });
                     return true;
@@ -119,7 +120,7 @@
                 tag : 'p',
                 init: function() {
                     var node = this.node;
-                    Widgzard.Channel('state').sub('numberChanged', function(topic, v) {
+                    Widgzard.Channel.get('state').sub('numberChanged', function(v) {
                         node.innerHTML = v;
                     });
                     return true;
@@ -131,9 +132,9 @@
                 }
             }],
             cb: function () {
-                Widgzard.Channel('state').sub('dataChanged', function(topic, data) {
-                    Widgzard.Channel('state').pub('numberChanged', data.num);
-                    Widgzard.Channel('state').pub('nameChanged', data.name);
+                Widgzard.Channel.get('state').sub('dataChanged', function(data) {
+                    Widgzard.Channel.get('state').pub('numberChanged', data.num);
+                    Widgzard.Channel.get('state').pub('nameChanged', data.name);
                 });
                 this.done();
             }

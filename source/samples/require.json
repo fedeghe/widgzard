@@ -1,0 +1,21 @@
+{
+    "EXE": [
+        "mkdir -p samples/4carousel samples/store samples/sub samples/spa samples/deep samples/runge-kutta",
+        "cp -r source/samples/4carousel/media samples/4carousel/"
+    ],
+    "source/samples/index.html": "samples",
+
+    "source/samples/store/index.html": "samples/store",
+
+    "source/samples/4carousel/index.html": "samples/4carousel",
+    "source/samples/4carousel/*.js": "samples/4carousel",
+    "source/samples/4carousel/*.less": "samples/4carousel -plugins=malta-less",
+    
+    "source/samples/runge-kutta/index.html": "samples/runge-kutta",
+    "source/samples/runge-kutta/*.js": "samples/runge-kutta",
+
+    "source/samples/sub/index.html": "samples/sub",
+
+    "source/samples/spa/index.html": "samples/spa",
+    "source/samples/deep/index.html": "samples/deep"
+}

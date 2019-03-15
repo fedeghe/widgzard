@@ -96,8 +96,8 @@ SM = {
 			$elf.width = pdata.width;
 			$elf.height = pdata.height;
 
-			Widgzard.Channel(pdata.carouselId).sub('move_to', function (topic, num) {
-				var itis = num == ~~self.parent.data.index;
+			Widgzard.Channel.get(pdata.carouselId).sub('move_to', function (num) {
+                var itis = num == ~~self.parent.data.index;
 				pdata.playing = itis;
 				$elf[itis ? 'play' : 'pause']();
 			});
@@ -107,21 +107,21 @@ SM = {
 			}
 			
 			Widgzard.events.on($elf, 'ended', function (e) {
-				Widgzard.Channel(pdata.carouselId).pub('ended');
+				Widgzard.Channel.get(pdata.carouselId).pub('ended');
 				pdata.playing = false;
 			});
 
 			Widgzard.events.on($elf, 'click', function (e) {
-				Widgzard.Channel(pdata.carouselId).pub('clicked', [e, parseInt($elf.getAttribute('data-id'), 10)]);
+				Widgzard.Channel.get(pdata.carouselId).pub('clicked', [e, parseInt($elf.getAttribute('data-id'), 10)]);
 			});
 
 			Widgzard.events.on($elf, 'canplay', function(){
-				if (0 == self.parent.data.index){
-					window.setTimeout(function(){
-						$elf.play();
-						pdata.playing = true;
-					}, 100);
-				}
+				// if (0 == pdata.index){
+				// 	window.setTimeout(function(){
+				// 		$elf.play();
+				// 		pdata.playing = true;
+				// 	}, 100);
+				// }
 				self.done();
 			});
 
@@ -129,15 +129,17 @@ SM = {
 				if (pdata.playing) {
 					var current = $elf.currentTime,
 						duration = $elf.duration;
-					Widgzard.Channel(pdata.uid).pub('updateProgress', [Math.ceil(100 * current / duration)])
+					Widgzard.Channel.get(pdata.uid).pub('updateProgress', [Math.ceil(100 * current / duration)])
 				}
 			});
 			
-			Widgzard.Channel(pdata.carouselId).sub('updateMedia', function (topic, index, mediaIndex, media) {
-				var desc
+			Widgzard.Channel.get(pdata.carouselId).sub('updateMedia', function (index, mediaIndex, media) {
+                var desc
 				if (index === ~~pdata.index) {
 					desc = self.descendant(0);
-					desc.src = media;
+                    desc.node.setAttribute('src', media.mp4);
+                    $elf.load();
+                    $elf.currentTime = 0;
 					$elf.dataset.id = mediaIndex;
 				}
 			});
@@ -172,7 +174,7 @@ SM = {
 			var self = this,
 				$elf = this.node,
 				pdata = self.parent.data;
-			Widgzard.Channel(pdata.uid).sub('updateProgress', function (topic, perc) {
+			Widgzard.Channel.get(pdata.uid).sub('updateProgress', function (perc) {
 				$elf.style.width = perc + '%';
 			});
 			this.done();
