@@ -116,16 +116,16 @@ SM = {
 			});
 
 			Widgzard.events.on($elf, 'canplay', function(){
-				// if (0 == pdata.index){
-				// 	window.setTimeout(function(){
-				// 		$elf.play();
-				// 		pdata.playing = true;
-				// 	}, 100);
-				// }
+				if (0 == pdata.index){
+					window.setTimeout(function(){
+						$elf.play();
+						pdata.playing = true;
+					}, 100);
+				}
 				self.done();
 			});
-
-			pdata.mediaShowDurationBar && Widgzard.events.on($elf, 'timeupdate', function(e) {
+            
+			pdata.mediaShowDurationBar && Widgzard.events.on($elf, 'timeupdate', function() {
 				if (pdata.playing) {
 					var current = $elf.currentTime,
 						duration = $elf.duration;
@@ -175,6 +175,7 @@ SM = {
 				$elf = this.node,
 				pdata = self.parent.data;
 			Widgzard.Channel.get(pdata.uid).sub('updateProgress', function (perc) {
+                console.log(perc)
 				$elf.style.width = perc + '%';
 			});
 			this.done();
