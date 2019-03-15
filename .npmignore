@@ -1,5 +1,8 @@
 /node_modules
-/sample
-/source
+/samples
+/media
+/components
 .printVersion
 .buildNum.json
+/*.html
+/*.ico
