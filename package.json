@@ -4,7 +4,6 @@
     "description": "A simple engine to build webapps",
     "main": "index.js",
     "scripts": {
-        "postinstall": "npm run build:prod",
         "test": "echo \"Error: no test implemented yet\" && exit 1",
         "build": "malta source/buildev.json",
         "build:prod": "malta source/build.json",

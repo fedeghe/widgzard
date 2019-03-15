@@ -35,6 +35,10 @@ use the `dist/theWidgzard.js`
 
 ### Run the demos
 
+In your `node_modules/Widgzard` folder run  
+
+    > npm i
+    // and then 
 	> npm run build
 
 **hint**: build is a demon process that watch for changesin the scource files, also starts a small dev-srv:  
