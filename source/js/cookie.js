@@ -1,8 +1,8 @@
 // type : NS
-// 
-+function () {
-    "use strict";
-    function initCheck() {
+//
+(function () {
+    'use strict';
+    function initCheck () {
         return W.navigator.cookieEnabled;
     }
 
@@ -21,34 +21,34 @@
         return true;
     }
 
-    function get(check_name) {
-        var a_all_cookies = WD.cookie.split(';'),
-            a_temp_cookie = '',
-            cookie_name = '',
-            cookie_value = '',
-            b_cookie_found = false,
+    function get(checkName) {
+        var allCookies = WD.cookie.split(';'),
+            tempCookie = '',
+            cookieName = '',
+            cookieValue = '',
+            cookieFound = false,
             i = 0,
-            l = a_all_cookies.length;
+            l = allCookies.length;
 
         if (!NS.cookie.enabled) return false;
 
         for (null; i < l; i += 1) {
-            a_temp_cookie = a_all_cookies[i].split('=');
-            cookie_name = a_temp_cookie[0].replace(/^\s+|\s+$/g, '');
+            tempCookie = allCookies[i].split('=');
+            cookieName = tempCookie[0].replace(/^\s+|\s+$/g, '');
 
-            if (cookie_name === check_name) {
-                b_cookie_found = true;
-                a_temp_cookie.length > 1 && (cookie_value = W.unescape(a_temp_cookie[1].replace(/^\s+|\s+$/g, '')));
-                return cookie_value;
+            if (cookieName === checkName) {
+                cookieFound = true;
+                tempCookie.length > 1 && (cookieValue = W.unescape(tempCookie[1].replace(/^\s+|\s+$/g, '')));
+                return cookieValue;
             }
 
-            a_temp_cookie = null;
-            cookie_name = '';
+            tempCookie = null;
+            cookieName = '';
         }
-        return b_cookie_found;
+        return cookieFound;
     }
 
-    function del(name, path, domain) {
+    function del (name, path, domain) {
         if (!NS.cookie.enabled) return false;
         var ret = false;
 
@@ -59,8 +59,7 @@
         return ret;
     }
 
-	
-    function delall() {
+    function delall () {
         if (!NS.cookie.enabled) return false;
         var thecookie = WD.cookie.split(";"),
             i = 0,
@@ -100,4 +99,4 @@
         delall:  delall,
         getall: getall
     });
-}();
+})();
