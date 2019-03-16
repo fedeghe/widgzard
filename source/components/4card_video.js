@@ -175,7 +175,6 @@ SM = {
 				$elf = this.node,
 				pdata = self.parent.data;
 			Widgzard.Channel.get(pdata.uid).sub('updateProgress', function (perc) {
-                console.log(perc)
 				$elf.style.width = perc + '%';
 			});
 			this.done();
