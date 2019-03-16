@@ -71,20 +71,20 @@
             showTime: 5, //time
             // zoomEffect: 0.6,
             images: [
-                '/samples/4carousel/media/img/snow/1.jpg',
-                '/samples/4carousel/media/img/snow/2.jpg',
-                '/samples/4carousel/media/img/snow/3.jpg',
-                '/samples/4carousel/media/img/snow/4.jpg',
-                // '/samples/4carousel/media/img/snow/5.jpg',
-                // '/samples/4carousel/media/img/snow/6.jpg'
+                'http://jmvc.org/node/widgzard//1.jpg',
+                'http://jmvc.org/node/widgzard//2.jpg',
+                'http://jmvc.org/node/widgzard//3.jpg',
+                'http://jmvc.org/node/widgzard//4.jpg',
+                'http://jmvc.org/node/widgzard//5.jpg',
+                'http://jmvc.org/node/widgzard//6.jpg'
             ],
             urls: [
                 'https://www.google.com/#q=css+animation',
                 'https://www.google.com/#q=jmvc.org',
                 'https://www.google.com/#q=npm+malta',
                 'https://www.google.com/#q=freakstyle+it',
-                // 'https://www.google.com/#q=npm+balle',
-                // 'https://www.google.com/#q=npm+ridof'
+                'https://www.google.com/#q=npm+balle',
+                'https://www.google.com/#q=npm+ridof'
             ]
         });
 }();

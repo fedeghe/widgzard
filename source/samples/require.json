@@ -1,7 +1,6 @@
 {
     "EXE": [
-        "mkdir -p samples/4carousel samples/store samples/sub samples/spa samples/deep samples/runge-kutta",
-        "cp -r source/samples/4carousel/media samples/4carousel/"
+        "mkdir -p samples/4carousel samples/store samples/sub samples/spa samples/deep samples/runge-kutta"
     ],
     "source/samples/index.html": "samples",
 
