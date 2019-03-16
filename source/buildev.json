@@ -1,6 +1,5 @@
 {   
     "EXE": [
-        "cp -r source/media .",
         "cp source/favicon.ico .",
         "mkdir -p dist components"
     ],

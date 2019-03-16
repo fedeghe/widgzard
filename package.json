@@ -19,7 +19,7 @@
     },
     "devDependencies": {
         "@fedeghe/channeljs": "^1.2.0",
-        "balle": "^1.0.34",
+        "balle": "^1.0.36",
         "malta-browser-refresh": "^1.2.1",
         "malta-css-uglify": "^1.0.2",
         "malta-dev-srv": "^1.0.5",
