@@ -22,29 +22,27 @@ The _Widgzard_ aims to solve the problem in a clear way, receiving a main object
 
 ---
 ### Install it  
-
-	> npm install widgzard
+```
+@ npm install widgzard
+```
 
 ### Use it 
 
-Are you crazy? 
-
-	> npm run build:pro
-
-use the `dist/theWidgzard.js`
+In the `<head>` of your html attach the   
+``` html
+<script src="THE_PATH_TO_WIDGZARD/dist/theWidgzard.js"></script>
+```
 
 ### Run the demos
 
-In your `node_modules/Widgzard` folder run  
+In your `node_modules/widgzard` folder run  
 
     > npm i
     // and then 
-	> npm run build
+	> npm run build:dev
 
-**hint**: build is a demon process that watch for changesin the scource files, also starts a small dev-srv:  
+**hint**: build:dev launches a demon process watching for relevant changes in the `source` folder, also starts a small dev-srv:  
 navigate to http://localhost:3001/samples
-
-
 
 
 ### ... to be continued !!!

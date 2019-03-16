@@ -1,0 +1,7 @@
+{
+    "EXE": [
+        "rm -rf media components samples",
+        "rm -rf *.html *.js *.css favicon.ico"
+    ],
+    "#source/buildProd.json": true
+}

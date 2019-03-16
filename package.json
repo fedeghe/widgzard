@@ -5,10 +5,12 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test implemented yet\" && exit 1",
-        "build": "malta source/buildev.json",
-        "build:prod": "malta source/build.json",
+        "build:dev": "malta source/builDev.json",
+        "build": "malta source/buildProd.json",
         "start": "malta source/start.json",
-        "clean": "malta source/clean.json"
+        "clean": "malta source/clean.json",
+        "lint": "./node_modules/.bin/eslint --ignore-path .eslintignore .",
+        "prepublishOnly": "npm i && malta source/buildCleanProd.json"
     },
     "keywords": [],
     "author": "Federico Ghedina <federico.ghedina@gmail.com>",
@@ -20,6 +22,12 @@
     "devDependencies": {
         "@fedeghe/channeljs": "^1.2.0",
         "balle": "^1.0.36",
+        "eslint": "^5.15.1",
+        "eslint-config-standard": "^12.0.0",
+        "eslint-plugin-import": "^2.16.0",
+        "eslint-plugin-node": "^8.0.1",
+        "eslint-plugin-promise": "^4.0.1",
+        "eslint-plugin-standard": "^4.0.0",
         "malta-browser-refresh": "^1.2.1",
         "malta-css-uglify": "^1.0.2",
         "malta-dev-srv": "^1.0.5",
