@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test implemented yet\" && exit 1",
-        "build:dev": "malta source/builDev.json",
+        "build:dev": "malta source/buildDev.json",
         "build": "malta source/buildProd.json",
         "start": "malta source/start.json",
         "clean": "malta source/clean.json",
@@ -33,6 +33,7 @@
         "malta-dev-srv": "^1.0.5",
         "malta-header-comment": "^1.0.4",
         "malta-js-uglify": "^1.0.2",
-        "malta-less": "^1.0.6"
+        "malta-less": "^1.0.6",
+        "ridof": "^1.0.6"
     }
 }
