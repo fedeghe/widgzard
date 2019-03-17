@@ -30,6 +30,7 @@
         "eslint-plugin-node": "^8.0.1",
         "eslint-plugin-promise": "^4.0.1",
         "eslint-plugin-standard": "^4.0.0",
+        "malta": "^3.9.5",
         "malta-browser-refresh": "^1.2.1",
         "malta-css-uglify": "^1.0.2",
         "malta-dev-srv": "^1.0.5",
@@ -37,5 +38,6 @@
         "malta-js-uglify": "^1.0.2",
         "malta-less": "^1.0.6",
         "ridof": "^1.0.6"
-    }
+    },
+    "dependencies": {}
 }
