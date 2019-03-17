@@ -14,5 +14,6 @@
                                                .dWi   `88E  %k  <88F
                                                4888~  J8%    "+:*%`
                                                 ^"===*"`
-Date: __DATE__
+Author: $PACKAGE.author$
+Version: $PACKAGE.version$
 Size: __SIZE__
