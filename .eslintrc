@@ -3,6 +3,13 @@
     "globals": {
         "NS": true,
         "W": true,
+        "WD": true,
+        "_U_":true,
+        "_P_": true,
+        "_context_": true,
+        "Wnode": true,
+        "Engy": true,
+        "Widgzard": true
     },
     "rules": {
         "complexity": [
@@ -31,7 +38,11 @@
             "error",
             "always"
         ],
-        "prefer-template": "error",
+        "operator-linebreak": [
+            "error",
+            "before"
+        ],
+        "prefer-template": 0,
         "semi": [
             "error",
             "always"
