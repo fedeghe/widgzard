@@ -13,10 +13,10 @@
       `"**"`    `"**""                                   ""         "YP'
 
  */
-function Wnode(conf, done, map, parent) {
+function Wnode (conf, done, map, parent) {
     var self = this;
 
-    this.id = NS.utils.uniqueId + '';
+    this.id = '' + NS.utils.uniqueId;
     this.conf = conf;
     this.done = done;
     this.map = map;
@@ -33,7 +33,7 @@ function Wnode(conf, done, map, parent) {
     this.conf.data = this.conf.data || {};
     this.doRender = true;
 
-    //from map
+    // from map
     this.root = map.rootNode;
     this.abort = map.abort;
     this.getNode = map.getNode;
@@ -41,14 +41,14 @@ function Wnode(conf, done, map, parent) {
     this.lateWid = map.lateWid;
 
     this.report = function () {
-        W.JSON && console.log(
-            'json size : ' +
+        W.JSON && console.log([
+            'json size : ',
             NS.utils.toMemFormat(JSON.stringify(self.conf).length, 'B')
-        );
-        console.log(
-            'html size : ' +
+        ].join(''));
+        console.log([
+            'html size : ',
             NS.utils.toMemFormat(self.node.innerHTML.length, 'B')
-        );
+        ].join(''));
     };
 
     this.events = {
@@ -77,15 +77,15 @@ Wnode.prototype.cleanup = function () {
             return true;
         },
         nodesToBeCleaned = [],
-        keys = ["cleanable", "parent", "getNode", "climb", "root", "done", "resolve", "data"],
+        keys = ['cleanable', 'parent', 'getNode', 'climb', 'root', 'done', 'resolve', 'data'],
         kL = keys.length,
         i = 0, j = 0, k = 0,
         n = null;
 
     // pick up postorder tree traversal
     NS.utils.eulerWalk(node, function (n) {
-        //skip root & text nodes
-        n !== node && n.nodeType != 3 && nodesToBeCleaned.push(n) && k++;
+        // skip root & text nodes
+        n !== node && n.nodeType !== 3 && nodesToBeCleaned.push(n) && k++;
     }, 'post');
 
     while (j < k) {
@@ -96,16 +96,15 @@ Wnode.prototype.cleanup = function () {
     }
 
     // now delete all Wnodes
-    (function remWnode(wn) {
-        wn.children.forEach(remWnode)
+    (function remWnode (wn) {
+        wn.children.forEach(remWnode);
         wn = null;
     })(this);
 
-    nodesToBeCleaned = [],
-        keys = null;
+    nodesToBeCleaned = [];
+    keys = null;
     delete this.root;
     return true;
-
 };
 
 Wnode.prototype.setMap = function (map) {
@@ -117,13 +116,15 @@ Wnode.prototype.setMap = function (map) {
     this.lateWid = map.lateWid;
 };
 
+// eslint-disable-next-line complexity
 Wnode.prototype.render = function () {
     var self = this,
         tmp, i, j, k,
         __nodeIdentifier = 'wid',
         replacementTempNode,
         rerendering = this.node
-            && (this.parent && this.node.parentNode == this.parent.node);
+            && this.parent
+            && this.node.parentNode === this.parent.node;
 
     if (rerendering) {
         replacementTempNode = document.createElement('div');
@@ -131,16 +132,15 @@ Wnode.prototype.render = function () {
         this.conf.target.replaceChild(replacementTempNode, this.node);
     }
 
-    if (typeof this.conf[__nodeIdentifier] !== "undefined") {
-        this.map.add(this.conf[__nodeIdentifier], this);
-    }
+    typeof this.conf[__nodeIdentifier] !== _U_
+    && this.map.add(this.conf[__nodeIdentifier], this);
 
-    //do it now, so the content if function can consume it
+    // do it now, so the content if function can consume it
     this.node = this.conf.ns
         ? document.createElementNS(this.conf.ns, this.tag)
         : document.createElement(this.tag);
     this.node.innerHTML = (this.conf.html && this.conf.data)
-        ? NS.utils.replaceDataInTxt(this.conf.html + '', this.conf.data)
+        ? NS.utils.replaceDataInTxt('' + this.conf.html, this.conf.data)
         : (this.conf.html || '');
 
     this.setData().setAttrs()
@@ -149,7 +149,7 @@ Wnode.prototype.render = function () {
         .checkInit()
         .checkWillRender();
 
-    if ( /*this.conf.content && */ typeof this.conf.content === 'function') {
+    if (/* this.conf.content && */ typeof this.conf.content === 'function') {
         this.conf.content = this.conf.content.call(this);
     }
 
@@ -166,18 +166,19 @@ Wnode.prototype.render = function () {
         return this;
     }
 
-    if (typeof this.conf.text !== "undefined") {
-        tmp = document.createTextNode("" + NS.utils.replaceDataInTxt(this.conf.text + '', this.conf.data));
+    if (typeof this.conf.text !== _U_) {
+        tmp = NS.utils.replaceDataInTxt('' + this.conf.text, this.conf.data);
+        tmp = document.createTextNode('' + tmp);
         this.node.appendChild(tmp);
     }
-    
+
     rerendering
         ? this.conf.target.replaceChild(this.node, replacementTempNode)
         : this.conf.target.appendChild(this.node);
 
     this.checkEnd();
 
-    if (this.wlen == 0) {
+    if (this.wlen === 0) {
         this.conf.cb('---auto---');
     } else {
         this.praramsFromChildren = [];
@@ -186,7 +187,7 @@ Wnode.prototype.render = function () {
             self.children.push((new Wnode(
                 conf,
                 function () {
-                    self.praramsFromChildren.push([].slice.call(arguments, 0))
+                    self.praramsFromChildren.push([].slice.call(arguments, 0));
                     --self.wlen <= 0 && self.conf.cb.apply(self, self.praramsFromChildren);
                 },
                 self.map,
@@ -196,15 +197,16 @@ Wnode.prototype.render = function () {
     }
 
     /**
-	 * ABSOLUTELY EXPERIMENTAL 2WDB
-	 */
-    if (tmp = this.node.getAttribute('wwdb')) {
+     * ABSOLUTELY EXPERIMENTAL 2WDB
+     */
+    tmp = this.node.getAttribute('wwdb');
+    if (tmp) {
         this.node.removeAttribute('wwdb');
         i = NS.checkNs(tmp, this);
         if (i !== undefined) {
-            j = ("this." + tmp).split(".");
+            j = ('this.' + tmp).split('.');
             k = j.pop();
-            i = eval(j.join("."));
+            i = eval(j.join('.'));
             k in i && NS.events.ww.on(i, k, this.node);
         }
     }
@@ -214,8 +216,10 @@ Wnode.prototype.render = function () {
 };
 
 Wnode.prototype.checkWillRender = function () {
-    "use strict";
-    if ("willRender" in this.conf && typeof this.conf.willRender === "function") {
+    'use strict';
+    if ('willRender' in this.conf
+        && typeof this.conf.willRender === 'function'
+    ) {
         this.doRender = this.conf.willRender.call(this);
     }
     return this;
@@ -228,13 +232,14 @@ Wnode.prototype.subRender = function () {
 Wnode.prototype.climb = function (n) {
     n = n || 1;
     var ret = this;
-    while (n--)
+    while (n--) {
         ret = ret.parent || ret;
+    }
     return ret;
 };
 
 Wnode.prototype.descendant = function () {
-    "use strict";
+    'use strict';
     var self = this,
         args = Array.prototype.slice.call(arguments, 0),
         i = 0,
@@ -248,18 +253,19 @@ Wnode.prototype.descendant = function () {
 };
 
 Wnode.prototype.setAttrs = function () {
-    var node = this.node;
-    if (typeof this.conf.attrs !== "undefined") {
+    var node = this.node,
+        tmp;
+    if (typeof this.conf.attrs !== _U_) {
         this.attrs = this.conf.attrs;
-        for (var j in this.attrs) {
-            if (j !== "class") {
-                if (j !== "style") {
-                    node.setAttribute(j, this.attrs[j]);
+        for (tmp in this.attrs) {
+            if (tmp !== 'class') {
+                if (tmp !== 'style') {
+                    node.setAttribute(tmp, this.attrs[tmp]);
                 } else {
                     Wnode.prototype.setStyle.call(this);
                 }
             } else {
-                node.className = this.attrs[j];
+                node.className = this.attrs[tmp];
             }
         }
     }
@@ -267,11 +273,16 @@ Wnode.prototype.setAttrs = function () {
 };
 
 Wnode.prototype.setStyle = function () {
-    var node = this.node;
-    if (typeof this.conf.style !== "undefined") {
+    var node = this.node,
+        tmp;
+    if (typeof this.conf.style !== _U_) {
         this.style = this.conf.style;
-        for (var j in this.style) {
-            node.style[j.replace(/^float$/i, "cssFloat")] = this.style[j];
+        for (tmp in this.style) {
+            if (tmp === 'float') {
+                node.style[tmp.replace(/^float$/i, 'cssFloat')] = this.style[tmp];
+            } else {
+                node.style[tmp] = this.style[tmp];
+            }
         }
     }
     return this;
@@ -280,11 +291,9 @@ Wnode.prototype.setStyle = function () {
 Wnode.prototype.setMethods = function () {
     var self = this,
         keys = Object.keys(this.conf),
-        els = [],
-        tmp,
-        i;
+        tmp;
     keys.forEach(function (k) {
-        tmp = k.match(/^method_(\w*)$/i)
+        tmp = k.match(/^method_(\w*)$/i);
         if (tmp) {
             self[tmp[1]] = self.conf[tmp[0]].bind(self);
         }
@@ -293,15 +302,15 @@ Wnode.prototype.setMethods = function () {
 };
 
 Wnode.prototype.setData = function () {
-    "use strict";
+    'use strict';
     if (this.conf.data) this.data = this.conf.data || {};
     return this;
 };
 
 Wnode.prototype.checkInit = function () {
-    "use strict";
+    'use strict';
     var keepRunning = true;
-    if ("init" in this.conf && typeof this.conf.init === "function") {
+    if ('init' in this.conf && typeof this.conf.init === 'function') {
         keepRunning = this.conf.init.call(this);
         !keepRunning && this.abort();
     }
@@ -309,29 +318,31 @@ Wnode.prototype.checkInit = function () {
 };
 
 Wnode.prototype.checkEnd = function () {
-    "use strict";
+    'use strict';
     var self = this;
-    "end" in this.conf &&
-        typeof this.conf.end === "function" &&
-        this.map.endFunctions.push(function () {
-            self.conf.end.call(self);
-        });
+    'end' in this.conf
+    && typeof this.conf.end === 'function'
+    && this.map.endFunctions.push(function () {
+        self.conf.end.call(self);
+    });
     return this;
 };
 
 Wnode.prototype.setEvents = function () {
-    "use strict";
+    'use strict';
     var i,
         self = this;
-    for (i in this.events) (function (name) {
-        var j;
-        if (name in self.conf) {
-            j = name.match(/on(.*)/)[1].toLowerCase();
-            NS.events.on(self.node, j, function (e) {
-                self.conf[name].call(self, e);
-            });
-        }
-    })(i);
+    for (i in this.events) {
+        (function (name) {
+            var j;
+            if (name in self.conf) {
+                j = name.match(/on(.*)/)[1].toLowerCase();
+                NS.events.on(self.node, j, function (e) {
+                    self.conf[name].call(self, e);
+                });
+            }
+        })(i);
+    };
     return this;
 };
 

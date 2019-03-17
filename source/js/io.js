@@ -1,4 +1,4 @@
-+function () {
+(function () {
     'use strict';
 
     var W = window,
@@ -25,7 +25,7 @@
                                 xhr = new W.ActiveXObject(IEfuckIds[i]);
                             } catch (e2) { continue; }
                         }
-                        !xhr && alert('No way to initialize XHR');
+                        !xhr && W.alert('No way to initialize XHR');
                     }
                 }
                 return xhr;
@@ -37,7 +37,7 @@
                     html: 'text/html',
                     json: 'application/json'
                 }[type] || 'text/html';
-                xhr.setRequestHeader('Accept', tmp + '; charset=utf-8');
+                xhr.setRequestHeader('Accept', tmp + 'charset=utf-8');
             },
 
             setMultipartHeader: function (xhr) {
@@ -47,27 +47,29 @@
             setCookiesHeaders: function (xhr) {
                 var cookies, i, l;
                 cookies = NS.cookie.getall();
-                i = 0, l = cookies.length;
+                i = 0;
+                l = cookies.length;
                 while (i < l) {
                     xhr.setRequestHeader('Cookie', cookies[i].name + '=' + cookies[i].value);
                     i++;
                 }
             },
 
+            // eslint-disable-next-line complexity
             ajcall: function (uri, options) {
                 var xhr = _.getxhr(options),
                     method = (options && options.method) || 'POST',
                     cback = options && options.cback,
-                    cb_opened = (options && options.opened) || function () { },
-                    cb_loading = (options && options.loading) || function () { },
-                    cb_error = (options && options.error) || function () { },
-                    cb_abort = (options && options.abort) || function () { },
+                    cbOpened = (options && options.opened) || function () { },
+                    cbLoading = (options && options.loading) || function () { },
+                    cbError = (options && options.error) || function () { },
+                    cbabort = (options && options.abort) || function () { },
                     sync = options && options.sync,
                     data = (options && options.data) || {},
                     type = (options && options.type) || 'text/html',
                     cache = (options && options.cache !== undefined) ? options.cache : true,
                     targetType = type === 'xml' ? 'responseXML' : 'responseText',
-                    timeout = options && options.timeout || 10000,
+                    timeout = (options && options.timeout) || 10000,
                     hasFiles = options && options.hasFiles,
                     formData,
                     complete = false,
@@ -76,7 +78,7 @@
                     state = false,
                     tmp;
 
-                //prepare data, caring of cache
+                // prepare data, caring of cache
                 //
                 if (!cache) {
                     data.C = +new Date();
@@ -86,8 +88,8 @@
                     data = NS.object.toQs(data).substr(1);
                 } else {
                     // wrap data into a FromData object
-                    // 
-                    formData = new FormData();
+                    //
+                    formData = new W.FormData();
                     for (tmp in data) {
                         if (data.hasOwnProperty(tmp)) {
                             formData.append(tmp, data[tmp]);
@@ -98,9 +100,9 @@
 
                 if (xdr && options.cors) {
                     // xhr is actually a xdr
-                    xhr.open(method, (method === 'GET') ? (uri + ((data) ? '?' + data : '')) : uri);
+                    xhr.open(method, (method === 'GET') ? (uri + ((data) ? ('?' + data) : '')) : uri);
 
-                    xhr.onerror = cb_error;
+                    xhr.onerror = cbError;
                     xhr.ontimeout = function () { };
                     xhr.onprogress = function (e) {
                         if (e.lengthComputable) {
@@ -108,7 +110,7 @@
                             console.log(percentComplete + '% uploaded');
                         }
                     };
-                    xhr.onload = function (/*r*/) {
+                    xhr.onload = function (/* r */) {
                         // cback((targetType === 'responseXML') ? r.target[targetType].childNodes[0] : r.target[targetType]);
                         cback(xhr.responseText);
                     };
@@ -126,14 +128,10 @@
                     window.setTimeout(function () {
                         xhr.send();
                     }, 20);
-
-
-
                 } else {
+                    // eslint-disable-next-line complexity
                     xhr.onreadystatechange = function () {
-
                         if (state === xhr.readyState) {
-
                             return false;
                         }
                         state = xhr.readyState;
@@ -169,15 +167,15 @@
                         } else if (state === 3) {
                             // loading data
                             //
-                            cb_loading(xhr);
+                            cbLoading(xhr);
                         } else if (state === 2) {
                             // headers received
                             //
-                            cb_opened(xhr);
+                            cbOpened(xhr);
                         } else if (state === 1) {
                             // only if no file upload is required
                             // add the header
-                            // 
+                            //
                             if (!hasFiles) {
                                 _.setHeaders(xhr, type);
                                 // NOOOOOOO
@@ -186,7 +184,7 @@
                                 _.setHeaders(xhr, 'json');
                                 // NO HEADERS AT ALL!!!!!!
                                 // othewise no up
-                                //                                
+                                //
                                 // _.setMultipartHeader(xhr);
                             }
                             switch (method) {
@@ -203,7 +201,7 @@
                                     } catch (e2) { }
                                     break;
                                 default:
-                                    alert(method);
+                                    W.alert(method);
                                     xhr.send(null);
                                     break;
                             }
@@ -212,20 +210,20 @@
                     };
 
                     // error
-                    // 
+                    //
                     xhr.onerror = function () {
-                        cb_error && cb_error.apply(null, arguments);
+                        cbError && cbError.apply(null, arguments);
                     };
 
                     // abort
-                    // 
+                    //
                     xhr.onabort = function () {
-                        cb_abort && cb_abort.apply(null, arguments);
+                        cbabort && cbabort.apply(null, arguments);
                     };
 
                     // open request
                     //
-                    xhr.open(method, method === 'GET' ? uri + (data ? '?' + data : '') : uri, sync);
+                    xhr.open(method, method === 'GET' ? uri + (data ? ('?' + data) : '') : uri, sync);
 
                     // thread abortion
                     //
@@ -245,7 +243,7 @@
 
 
     // returning module
-    // 
+    //
     NS.makeNs('io', {
         getxhr: _.getxhr,
         post: function (uri, cback, sync, data, cache, files, err) {
@@ -253,7 +251,7 @@
                 cback: function (r) {
                     if (files) {
                         r = r.replace(/(?:\/\*(?:[\s\S]*?)\*\/)|(?:([\s;])+\/\/(?:.*)$)/gm, '');
-                        cback((window.JSON && window.JSON.parse) ? JSON.parse(r) : eval('(' + r + ')'));
+                        cback((window.JSON && window.JSON.parse) ? JSON.parse(r) : eval(['(', r, ')'].join('')));
                     } else {
                         cback(r);
                     }
@@ -295,7 +293,7 @@
                     // just to allow inline comments on json (not valid in json)
                     // cleanup comments
                     r = r.replace(/(?:\/\*(?:[\s\S]*?)\*\/)|(?:([\s;])+\/\/(?:.*)$)/gm, '');
-                    cback((W.JSON && W.JSON.parse) ? JSON.parse(r) : eval('(' + r + ')'));
+                    cback((W.JSON && W.JSON.parse) ? JSON.parse(r) : eval(['(', r, ')'].join('')));
                 },
                 data: data,
                 cors: !!cors
@@ -310,5 +308,4 @@
             });
         }
     });
-}();
-//-----------------------------------------------------------------------------
+})();

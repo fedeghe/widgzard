@@ -6,22 +6,39 @@
         return W.navigator.cookieEnabled;
     }
 
-    function set(name, value, expires, path, domain, secure) {
+    function set (name, value, expires, copath, domain, secure) {
         if (!NS.cookie.enabled) return false;
         this.cookie_nocookiesaround = false;
         var today = new Date(),
-            expires_date = new Date(today.getTime() + expires);
+            expiresDate = new Date(today.getTime() + expires);
         // expires && (expires = expires * 1000 * 60 * 60 * 24);
-        WD.cookie = name +
-            "=" + W.escape(value) +
-            (expires ? ";expires=" + expires_date.toGMTString() : "") +
-            (path ? ";path=" + path : "") +
-            (domain ? ";domain=" + domain : "") +
-            (secure ? ";secure" : "");
+        WD.cookie = [
+            name, '=', W.escape(value),
+            (expires ? ';expires=' + expiresDate.toGMTString() : ''),
+            (copath ? ';path=' + copath : ''),
+            (domain ? ';domain=' + domain : ''),
+            (secure ? ';secure' : '')
+        ].join();
         return true;
     }
 
-    function get(checkName) {
+    function del (name, path, domain) {
+        if (!NS.cookie.enabled) return false;
+        var ret = false;
+
+        if (this.get(name)) {
+            WD.cookie = [
+                name, '=',
+                (path ? ';path=' + path : ''),
+                (domain ? ';domain=' + domain : ''),
+                ';expires=Thu, 01-Jan-1970 00:00:01 GMT'
+            ].join('');
+            ret = true;
+        }
+        return ret;
+    }
+
+    function get (checkName) {
         var allCookies = WD.cookie.split(';'),
             tempCookie = '',
             cookieName = '',
@@ -48,40 +65,28 @@
         return cookieFound;
     }
 
-    function del (name, path, domain) {
-        if (!NS.cookie.enabled) return false;
-        var ret = false;
-
-        if (this.get(name)) {
-            WD.cookie = name + "=" + (path ? ";path=" + path : "") + (domain ? ";domain=" + domain : "") + ";expires=Thu, 01-Jan-1970 00:00:01 GMT";
-            ret = true;
-        }
-        return ret;
-    }
-
     function delall () {
         if (!NS.cookie.enabled) return false;
-        var thecookie = WD.cookie.split(";"),
+        var thecookie = WD.cookie.split(/;/),
             i = 0,
             l = thecookie.length,
             nome;
         for (null; i < l; i += 1) {
-            nome = thecookie[i].split('=');
+            nome = thecookie[i].split(/=/);
             this.del(nome[0], false, false);
         }
         this.cookie_nocookiesaround = true;
         return true;
     }
 
-    function getall() {
+    function getall () {
         if (!NS.cookie.enabled) return false;
         if (WD.cookie === '') {
             return [];
         }
-        return this.cookie_nocookiesaround ?
-            []
-            :
-            WD.cookie.split(';').forEach(
+        return this.cookie_nocookiesaround
+            ? []
+            : WD.cookie.split(';').forEach(
                 function (i) {
                     var t = i.split('=');
                     return { name: t[0], value: t[1] };
@@ -96,7 +101,7 @@
         set: set,
         get: get,
         del: del,
-        delall:  delall,
+        delall: delall,
         getall: getall
     });
 })();

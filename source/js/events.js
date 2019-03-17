@@ -1,25 +1,24 @@
-+function () {
-    "use strict";
+(function () {
+    'use strict';
     var _ = {
-            events: {
-                wwdb_bindings: {},
-                getElementDeterminant: function (el) {
-                    var tname = el.tagName;
-                    return (tname.match(/input|textarea|select/i)) ? 'value' : 'innerHTML';
-                },
-                getElementEvent: function (el) {
-                    var tname = el.tagName;
-                    return (tname.match(/input|textarea/i)) ? 'input' : 'change';
-                }
+        events: {
+            wwdb_bindings: {},
+            getElementDeterminant: function (el) {
+                var tname = el.tagName;
+                return (tname.match(/input|textarea|select/i)) ? 'value' : 'innerHTML';
             },
-            unhandlers: {}
+            getElementEvent: function (el) {
+                var tname = el.tagName;
+                return (tname.match(/input|textarea/i)) ? 'input' : 'change';
+            }
         },
-        n = 0;
+        unhandlers: {}
+    };
 
     NS.makeNs('events', {
         saveUnhandler: function (el, f) {
             _.unhandlers[el] = _.unhandlers[el] || [];
-            _.unhandlers[el].push(f)
+            _.unhandlers[el].push(f);
         },
         unhandle: function (el) {
             _.unhandlers[el] && _.unhandlers[el].forEach(function (unhandler) {
@@ -28,7 +27,7 @@
             _.unhandlers = [];
         },
         on: (function () {
-            function unhandle(el, evnt, cb) {
+            function unhandle (el, evnt, cb) {
                 NS.events.saveUnhandler(el, function () {
                     NS.events.off(el, evnt, cb);
                 });
@@ -76,8 +75,8 @@
         },
 
         eventTarget: function (e) {
-            e = e ? e : W.event;
-            var targetElement = e.currentTarget || (typeof e.target !== 'undefined') ? e.target : e.srcElement;
+            e = e || W.event;
+            var targetElement = e.currentTarget || (typeof e.target !== _U_) ? e.target : e.srcElement;
             if (!targetElement) {
                 return false;
             }
@@ -92,7 +91,7 @@
                 i,
                 l,
                 readyStateCheckInterval = setInterval(function () {
-                    if (document.readyState === "complete") {
+                    if (document.readyState === 'complete') {
                         clearInterval(readyStateCheckInterval);
                         for (i = 0, l = cb.length; i < l; i++) {
                             cb[i].call(this);
@@ -100,7 +99,7 @@
                     }
                 }, 10);
             return function (c) {
-                if (document.readyState === "complete") {
+                if (document.readyState === 'complete') {
                     c.call(this);
                 } else {
                     cb.push(c);
@@ -110,7 +109,6 @@
 
         ww: {
             on: function (obj, field, el, debugobj) {
-
                 var objLock = false,
                     elLock = false,
                     elDet = _.events.getElementDeterminant(el),
@@ -121,15 +119,15 @@
                         objLock = elLock = !!m;
                     };
 
-                el.wwdbID = "_" + NS.utils.uniqueid;
+                el.wwdbID = '_' + NS.utils.uniqueid;
 
                 // obj
                 // when object changes -> element changes
-                // 
+                //
                 _.events.wwdb_bindings[el.wwdbID] = W.setInterval(function () {
                     if (objLock) return;
                     lock(true);
-                    if (objOldVal != obj[field]) {
+                    if (objOldVal !== obj[field]) {
                         elOldVal = obj[field];
                         objOldVal = elOldVal;
                         el[elDet] = elOldVal;
@@ -161,4 +159,4 @@
             }
         }
     });
-}();
+})();

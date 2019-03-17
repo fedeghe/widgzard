@@ -1,21 +1,21 @@
 NS.makeNs('css', {
     style: function (el, prop, val) {
-        var prop_is_obj = typeof prop === 'object'
-                          && typeof val === 'undefined',
+        var propIsObj = typeof prop === 'object'
+                          && typeof val === _U_,
             ret = false,
             k;
 
-        if (prop_is_obj) {
+        if (propIsObj) {
             for (k in prop) el.style[k] = prop[k];
         } else {
-            if (typeof val === 'undefined') {
+            if (typeof val === _U_) {
                 ret = el.currentStyle ? el.currentStyle[prop] : el.style[prop];
                 return ret;
             } else {
                 val += '';
                 el.style[prop] = val;
                 if (prop === 'opacity') {
-                    el.style.filter = 'alpha(opacity = ' + (~~(100 * parseFloat(val, 10))) + ')';
+                    el.style.filter = 'alpha(opacity = ' + ~~(100 * parseFloat(val, 10));
                 }
             }
         }

@@ -1,45 +1,43 @@
 /**
 
 
-	      ..      .                                            
-	   x88f` `..x88. .>                             ..         
-	 :8888   xf`*8888%     u.    u.                @L          
-	:8888f .888  `"`     x@88k u@88c.      uL     9888i   .dL  
-	88888' X8888. >"8x  ^"8888""8888"  .ue888Nc.. `Y888k:*888. 
-	88888  ?88888< 888>   8888  888R  d88E`"888E`   888E  888I 
-	88888   "88888 "8%    8888  888R  888E  888E    888E  888I 
-	88888 '  `8888>       8888  888R  888E  888E    888E  888I 
-	`8888> %  X88!        8888  888R  888E  888E    888E  888I 
-	 `888X  `~""`   :    "*88*" 8888" 888& .888E   x888N><888' 
-	   "88k.      .~       ""   'Y"   *888" 888&    "88"  888  
-	     `""*==~~`                     `"   "888E         88F  
-	                                  .dWi   `88E        98"   
-	                                  4888~  J8%       ./"     
-	                                   ^"===*"`       ~`  v.0.3 the razor
-  
+          ..      .
+       x88f` `..x88. .>                             ..
+     :8888   xf`*8888%     u.    u.                @L
+    :8888f .888  `"`     x@88k u@88c.      uL     9888i   .dL
+    88888' X8888. >"8x  ^"8888""8888"  .ue888Nc.. `Y888k:*888.
+    88888  ?88888< 888>   8888  888R  d88E`"888E`   888E  888I
+    88888   "88888 "8%    8888  888R  888E  888E    888E  888I
+    88888 '  `8888>       8888  888R  888E  888E    888E  888I
+    `8888> %  X88!        8888  888R  888E  888E    888E  888I
+     `888X  `~""`   :    "*88*" 8888" 888& .888E   x888N><888'
+       "88k.      .~       ""   'Y"   *888" 888&    "88"  888
+         `""*==~~`                     `"   "888E         88F
+                                      .dWi   `88E        98"
+                                      4888~  J8%       ./"
+                                       ^"===*"`       ~`
 
-	@author Federico Ghedina <fedeghe@gmail.com>
-	@date 22-04-2016
-	@version 0.3
+
+    @author $PACKAGE.author$
+    @version $PACKAGE.version$
 
 */
-+function () {
-    "use strict";
-    console.log("\n\n ENGY v.$VERSION.ENGY$\n\n");
+(function () {
+    'use strict';
+    console.log('\n\n ENGY v.$PACKAGE.version$\n\n');
 
     // local cache for components
-    // 
+    //
     var components = {},
         preloadedComponents = {},
         config = {
-            fileNameSeparator: "/",
-            fileNamePrepend: "$ENGY.COMPONENTS.NAME_PREPEND$",
-            ext: "$ENGY.COMPONENTS.EXT$",
-            componentsUrl: "$ENGY.COMPONENTS.URL$"
-        },
-        num = 0;
+            fileNameSeparator: '/',
+            fileNamePrepend: '$ENGY.COMPONENTS.NAME_PREPEND$',
+            ext: '$ENGY.COMPONENTS.EXT$',
+            componentsUrl: '$ENGY.COMPONENTS.URL$'
+        };
 
-    function _configSet(cnf) {
+    function _configSet (cnf) {
         var j;
         for (j in config) {
             if (j in cnf) {
@@ -49,13 +47,12 @@
         return this;
     }
 
-    function _overwrite(destObj, path, obj) {
-
+    function _overwrite (destObj, path, obj) {
         // path can be
         // str1
         // str1/str2[/str3[...]] (or str1.str2[.str3])
-        // 
-        // in any case we need the elements of it 
+        //
+        // in any case we need the elements of it
         //
         var pathEls = path.split(/\.|\//),
             l = pathEls.length,
@@ -73,28 +70,26 @@
         destObj[pathEls[l - 1]] = obj;
     }
 
-    function _mergeComponent(ns, path, o) {
-
+    function _mergeComponent (ns, path, o) {
         var componentPH = NS.checkNs(path, ns),
             replacementOBJ = o,
-            merged = {}, i,
-            pathEls = path.split(/\.|\//),
-            i = 0, l = pathEls.length;
+            merged = {},
+            i = 0;
 
         // start from the replacement
-        // 
-        for (i in replacementOBJ)
+        //
+        for (i in replacementOBJ) {
             merged[i] = replacementOBJ[i];
-
+        }
         // copy everything but 'component' & 'params', overriding
-        // 
-        for (i in componentPH)
+        //
+        for (i in componentPH) {
             !(i.match(/component|params/)) && (merged[i] = componentPH[i]);
-
+        }
         _overwrite(ns, path, merged);
     }
 
-    function Processor(config) {
+    function Processor (config) {
         this.config = config;
         this.endPromise = NS.Balle.one();
     }
@@ -107,22 +102,25 @@
         els[l - 1] = config.fileNamePrepend + els[l - 1];
         res = els.join(config.fileNameSeparator);
 
-        return config.componentsUrl +
-            (config.componentsUrl.match(/\/$/) ? '' : '/') +
-            res + config.ext;
+        return [
+            config.componentsUrl,
+            (config.componentsUrl.match(/\/$/) ? '' : '/'),
+            res,
+            config.ext
+        ].join('');
     };
 
 
-	/**
-	 * [run description]
-	 * @return {[type]} [description]
-	 */
+    /**
+     * [run description]
+     * @return {[type]} [description]
+     */
     Processor.prototype.run = function () {
         var self = this,
             langFunc = NS.i18n.parse,
             elementsN = 0,
-            countPromise = NS.Balle.one(),
-            solveTimePromise = NS.Balle.one(),
+            // countPromise = NS.Balle.one(),
+            // solveTimePromise = NS.Balle.one(),
             start = +new Date(), end,
             xhrTot = 0,
             requested = {},
@@ -134,14 +132,14 @@
                 requested: {},
                 xhrTot: 0
             };
-        
-        (function solve() {
+
+        (function solve () {
             var component = NS.object.digForKey(self.config, 'component', 1),
                 componentName,
                 cached, preLoaded,
                 xhrStart = 0,
                 xhrEnd = 0;
-            
+
             if (!component.length) {
                 end = +new Date();
                 stats.time = end - start;
@@ -149,9 +147,7 @@
                 stats.requested = requested;
                 stats.xhrTot = xhrTot;
                 self.endPromise.resolve([self.config, computeStats && stats]);
-
             } else {
-                // elementsN++;
                 component = component[0];
                 componentName = self.getFileName(component.value);
                 if (component.value in requested) {
@@ -164,7 +160,7 @@
                 preLoaded = componentName in preloadedComponents;
 
                 cback = function (cntORobj) {
-                    xhrEnd = +new Date;
+                    xhrEnd = +new Date();
                     xhrTot += xhrEnd - xhrStart;
                     var params = NS.checkNs(component.container + '/params', self.config),
                         obj,
@@ -176,6 +172,7 @@
                             components[componentName] = _clone(cntORobj);
                         }
                         cntORobj = cntORobj.replace(/^[^{]*/, '').replace(/;?$/, '');
+                        // obj = eval('(' + cntORobj + ')');
                         obj = eval('(' + cntORobj + ')');
                     }
                     // before merging the object check for the presence of parameters
@@ -188,15 +185,13 @@
                                 // check if the label of the placeholder is in the params
                                 foundParam = NS.checkNs(usedParams[i].regexp[1], params);
                                 // in case use it otherwise, the fallback otherwise cleanup
-                                foundParamValue = typeof foundParam !== _U_ ? foundParam : (usedParams[i].regexp[2] || "");
+                                foundParamValue = typeof foundParam !== _U_ ? foundParam : (usedParams[i].regexp[2] || '');
                                 // string or an object?
                                 if ((typeof foundParamValue).match(/string/i)) {
-
                                     foundParamValueReplaced = NS.checkNs(usedParams[i].path, obj)
                                         .replace(usedParams[i].regexp[0], foundParamValue);
 
                                     _overwrite(obj, usedParams[i].path, foundParamValueReplaced);
-
                                 } else {
                                     _overwrite(obj, usedParams[i].path, foundParamValue);
                                 }
@@ -210,7 +205,7 @@
                     }
                     solve();
                 };
-                xhrStart = +new Date;
+                xhrStart = +new Date();
                 // cached?
                 if (preLoaded) {
                     cback(preloadedComponents[componentName]);
@@ -228,24 +223,27 @@
         return self.endPromise;
     };
 
-    function _process(a) {
+    function _process (a) {
         return (new Processor(a)).run();
     }
 
-    function _component(name, obj) {
+    function _component (name, obj) {
         if (!(name in preloadedComponents)) {
             preloadedComponents[Processor.prototype.getFileName(name)] = obj;
         }
     }
 
-    function _components(cmps) {
+    function _components (cmps) {
         for (var c in cmps) _component(c, cmps[c]);
     }
 
-    function _clone(obj) {
-        if (null == obj || "object" != typeof obj) return obj;
-        var copy = obj.constructor();
-        for (var attr in obj) {
+    function _clone (obj) {
+        if (obj == null || typeof obj !== 'object') {
+            return obj;
+        }
+        var copy = obj.constructor(),
+            attr;
+        for (attr in obj) {
             if (obj.hasOwnProperty(attr)) copy[attr] = _clone(obj[attr]);
         }
         return copy;
@@ -271,27 +269,39 @@
             return NS.Widgzard.getElements();
         },
         process: _process,
-        report : function (stats) {
+        report: function (stats) {
             var j, ln = new Array(37).join('-');
             console.log(ln);
-            console.log("Engy used " + stats.elements + " component" + (stats.elements  == 1 ? "" : "s"));
-            console.log("usage: ");
+            console.log(
+                'Engy used ' + stats.elements + ' component' + (stats.elements === 1 ? '' : 's')
+            );
+            console.log('usage: ');
             for (j in stats.requested) {
-                console.log('> ' + j + ': ' + stats.requested[j] + ' time' + (stats.requested[j]>1 && 's'))
+                console.log(
+                    '> ' + j + ': ' + stats.requested[j] + ' time' + (stats.requested[j] > 1 ? 's' : '')
+                );
             }
-            console.log('Engy total time: ' + stats.time + 'ms (' + (stats.time - stats.xhrTot) + ' unfolding,  ' + stats.xhrTot + ' xhr)');
+            console.log(
+                'Engy total time: '
+                + stats.time
+                + 'ms ('
+                + (stats.time - stats.xhrTot)
+                + ' unfolding, '
+                + stats.xhrTot
+                + ' xhr)'
+            );
             console.log(ln);
         },
         render: function (params, clean, name) {
-            var t = +new Date;
+            var t = +new Date();
             return NS.Balle.one(function (res, rej) {
                 _process(params).then(function (r) {
-                    r[1] && NS.Engy.report(r[1])
-                    var now = +new Date;
+                    r[1] && NS.Engy.report(r[1]);
+                    var now = +new Date();
                     console.log('Engy process tot: ' + (now - t));
-                    res(NS.Widgzard.render(r[0], clean, name))
-                })
+                    res(NS.Widgzard.render(r[0], clean, name));
+                });
             });
         }
     });
-}();
+})();

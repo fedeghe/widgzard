@@ -1,10 +1,9 @@
-(function(W, _U_, _P_) {
-    "use strict";
-
-    console.log("\n\n WIDGZARD v.$VERSION.WIDGZARD$\n\n");
+(function (W, _U_, _P_) {
+    'use strict';
+    console.log('\n\nWIDGZARD v.$PACKAGE.version$\n\n');
     var NS = {},
-        WD = W.document;
-    
+        WD = W.document,
+        _context_ = W;
     $$js/core.js$$
     $$js/balle.js$$
     $$js/history.js$$
@@ -59,5 +58,4 @@
         timer: NS.timer,
         history: NS.history
     };
-
 })(this, 'undefined', 'prototype');
