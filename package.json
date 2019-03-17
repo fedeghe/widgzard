@@ -1,6 +1,6 @@
 {
     "name": "widgzard",
-    "version": "3.1.9",
+    "version": "3.1.10",
     "description": "A simple engine to build webapps",
     "main": "index.js",
     "scripts": {
@@ -12,7 +12,9 @@
         "lint": "./node_modules/.bin/eslint --ignore-path .eslintignore .",
         "prepublishOnly": "npm i && malta source/buildCleanProd.json"
     },
-    "keywords": ["dom engine"],
+    "keywords": [
+        "dom engine"
+    ],
     "author": "Federico Ghedina <fedeghe@gmail.com>",
     "license": "MIT",
     "repository": {
