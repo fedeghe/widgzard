@@ -117,10 +117,10 @@ SM = {
 
 			Widgzard.events.on($elf, 'canplay', function(){
 				if (0 == pdata.index){
-					window.setTimeout(function(){
-						$elf.play();
+					// window.setTimeout(function(){
+						// $elf.play();
 						pdata.playing = true;
-					}, 100);
+					// }, 100);
 				}
 				self.done();
 			});
