@@ -7,7 +7,7 @@ xxx = {
         },
         percWidth: 0.2
     },
-    init : function () {
+    init: function () {
         var data = this.data;
         this.node.innerHTML = data.arrows[data.versus];
         this.attrs.class += (' arr-' + data.versus);
