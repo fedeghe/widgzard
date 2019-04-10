@@ -20,4 +20,5 @@ var t = {
     onMouseout: function (e) {
         this.data.hoverColor && (this.node.style.color = 'black');
     }
-}
+// eslint-disable-next-line eol-last
+};

@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // eslint-disable-next-line no-undef
 t = {
     style: {
@@ -38,10 +39,8 @@ t = {
                             canvas.data.paint(last());
                         }
                     }
-                }],
-
+                }]
             }, true);
-
         };
         return true;
     },
@@ -54,11 +53,12 @@ t = {
                 canvas = self.getNode('canvas');
             RK.setOrigin.apply(null, data.orig);
             last = function () {
-                return RK[data.func].apply(null, data.pars)
+                return RK[data.func].apply(null, data.pars);
             };
 
             data.showPanel();
             canvas.data.paint(last());
         }
     }]
-}
+// eslint-disable-next-line eol-last
+};

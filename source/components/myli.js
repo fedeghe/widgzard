@@ -2,4 +2,5 @@
 var t = {
     tag: 'li',
     html: '#PARAM{myhtml} (lazy)'
-}
+// eslint-disable-next-line eol-last
+};

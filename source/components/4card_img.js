@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 SM = {
     // tag : 'div',
     data: {
@@ -67,10 +68,11 @@ SM = {
         params: { versus: 'right' }
     }],
     init: function () {
-        this.node.className = "flip-card-side flip-card-side-" + this.data.index;
+        this.node.className = 'flip-card-side flip-card-side-' + this.data.index;
         return true;
     },
     cb: function () {
         this.done();
     }
+// eslint-disable-next-line eol-last
 };

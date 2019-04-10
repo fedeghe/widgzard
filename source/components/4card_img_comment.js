@@ -1,9 +1,10 @@
+// eslint-disable-next-line no-undef
 CMP = {
     attrs: {
         class: 'description'
     },
     content: [{
-        attrs:{
+        attrs: {
             class: 'container'
         },
         content: [{
@@ -14,4 +15,5 @@ CMP = {
             html: '#PARAM{description.description}'
         }]
     }]
+// eslint-disable-next-line eol-last
 };

@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 SM = {
     // tag : 'div',
     attrs: {
@@ -27,12 +28,11 @@ SM = {
 
         data.count = data.medias.length;
         data.calc = function () {
-            var a1 = Math.atan(2 / 10),
-                a2 = Math.atan(2 / 9),
+            var a2 = Math.atan(2 / 9),
                 l = 1000 / Math.cos(a2),
                 d = l * Math.sin(a2);
             return d;
-        }
+        };
 
         $elf.style.width = data.rWidth + 'px';
         $elf.style.height = data.rHeight + 'px';
@@ -94,6 +94,7 @@ SM = {
                 isMobile = Widgzard.utils.isMobile(),
                 mobTo,
                 sign = self.parent.data.invertedControl ? -1 : 1,
+                // eslint-disable-next-line no-unused-vars
                 REF;
 
             Engy.render(data.stage).then(function (r) { REF = r; });
@@ -216,4 +217,5 @@ SM = {
             self.done();
         }
     }]
+// eslint-disable-next-line eol-last
 };

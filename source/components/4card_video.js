@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 SM = {
     // tag : 'div',
     data: {
@@ -88,7 +89,6 @@ SM = {
                     width: pdata.width + 'px !important',
                     height: pdata.height + 'px !important'
                 };
-            
 
             pdata.url && (styles.cursor = 'pointer');
             Widgzard.css.style($elf, styles);
@@ -118,10 +118,9 @@ SM = {
             // once just for the first autoplay
             Widgzard.events.on($elf, 'canplay', function () {
                 if (parseInt(pdata.index, 10) === 0 && !pdata.started) {
-                    // $elf.setAttribute('autoplay', '');
                     pdata.started = true;
                     window.setTimeout(function () {
-                        $elf.play(); //remove for > 4 ...TODO FIX
+                        $elf.play(); // does not work if there is no user event
                         pdata.playing = true;
                     }, 500);
                 }
@@ -132,7 +131,7 @@ SM = {
                 if (pdata.playing) {
                     var current = $elf.currentTime,
                         duration = $elf.duration;
-                    Widgzard.Channel.get(pdata.uid).pub('updateProgress', [Math.ceil(100 * current / duration)])
+                    Widgzard.Channel.get(pdata.uid).pub('updateProgress', [Math.ceil(100 * current / duration)]);
                 }
             });
 
@@ -140,7 +139,7 @@ SM = {
                 // console.log(index, pdata.index);
                 if (parseInt(pdata.index, 10) === index) {
                     window.setTimeout(function () {
-                        $elf.play(); //remove for > 4 ...TODO FIX
+                        $elf.play();
                         pdata.playing = true;
                     }, 500);
                 }
@@ -197,4 +196,5 @@ SM = {
         this.node.className = 'flip-card-side flip-card-side-' + this.data.index;
         return true;
     }
+// eslint-disable-next-line eol-last
 };

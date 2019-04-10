@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef
 xxx = {
     data: {
         versus: '#PARAM{versus}',
@@ -29,7 +30,7 @@ xxx = {
                 width: (~~(pdata.width) * data.percWidth) + 'px',
                 height: pdata.height * 0.8 + 'px',
                 lineHeight: pdata.height * 0.8 + 'px',
-                top: pdata.height * 0.1 + 'px',
+                top: pdata.height * 0.1 + 'px'
             };
         styles[versus] = '0px';
 
@@ -41,4 +42,5 @@ xxx = {
         Widgzard.events.on($elf, 'click', function (e) { Widgzard.Channel.get(pdata.carouselId).pub('clicked_' + versus); });
         self.done();
     }
+// eslint-disable-next-line eol-last
 };
