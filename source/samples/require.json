@@ -5,6 +5,7 @@
     "source/samples/index.html": "samples",
 
     "source/samples/store/index.html": "samples/store",
+    "source/samples/store/index.js": "samples/store",
 
     "source/samples/4carousel/index.html": "samples/4carousel",
     "source/samples/4carousel/*.js": "samples/4carousel",
@@ -14,7 +15,11 @@
     "source/samples/runge-kutta/*.js": "samples/runge-kutta",
 
     "source/samples/sub/index.html": "samples/sub",
+    "source/samples/sub/index.js": "samples/sub",
 
     "source/samples/spa/index.html": "samples/spa",
-    "source/samples/deep/index.html": "samples/deep"
+    "source/samples/spa/index.js": "samples/spa",
+
+    "source/samples/deep/index.html": "samples/deep",
+    "source/samples/deep/index.js": "samples/deep"
 }

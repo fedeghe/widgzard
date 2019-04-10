@@ -14,4 +14,4 @@ CMP = {
             html: '#PARAM{description.description}'
         }]
     }]
-}
+};

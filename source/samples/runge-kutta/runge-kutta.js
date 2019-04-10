@@ -11,8 +11,9 @@ var RK = (function () {
         var Ks = [],
             Hs = [],
             Ai = A,
-            Vi = V;
-        for(var i  = 0; i < nPoints; i++) {
+            Vi = V,
+            i = 0;
+        for (null; i < nPoints; i++) {
             Ks[0] = incr * f1(Ai, Vi);
             Hs[0] = incr * f2(Ai, Vi);
 
@@ -25,27 +26,26 @@ var RK = (function () {
             Ks[3] = incr * f1(Ai + Ks[2], Vi + Hs[2]);
             Hs[3] = incr * f2(Ai + Ks[2], Vi + Hs[2]);
 
-            Ai = Ai + (Ks[0] + 2 * Ks[1] + 2 * Ks[2] + Ks[3]) * 1 / 6,
+            Ai = Ai + (Ks[0] + 2 * Ks[1] + 2 * Ks[2] + Ks[3]) * 1 / 6;
             Vi = Vi + (Hs[0] + 2 * Hs[1] + 2 * Hs[2] + Hs[3]) * 1 / 6;
             points.push([
-                + Math.round(Ai),
-                - Math.round(Vi)
+                +Math.round(Ai),
+                -Math.round(Vi)
             ]);
         }
     }
 
-    
-    function setInit() {
+    function setInit () {
         points = [];
     }
-    function getPoints() {
+    function getPoints () {
         return points;
     }
-    function sin(n) {
-        return Math.sin(n * Math.PI / 180)
+    function sin (n) {
+        return Math.sin(n * Math.PI / 180);
     }
-    function cos(n) {
-        return Math.cos(n * Math.PI / 180)
+    function cos (n) {
+        return Math.cos(n * Math.PI / 180);
     }
 
     funcz.setSize = function (amp) {
@@ -78,7 +78,7 @@ var RK = (function () {
         );
         return getPoints();
     };
-    
+
     funcz.penforsin = function (W, A, C) {
         setInit();
         var EE = C * incr;
@@ -153,7 +153,7 @@ var RK = (function () {
                 return th1;
             },
             function (th, th1) {
-                return - (W * W * th) + C * cos(EE);
+                return -(W * W * th) + C * cos(EE);
             }
         );
         return getPoints();
@@ -184,7 +184,7 @@ var RK = (function () {
         );
         return getPoints();
     };
-    
+
     funcz.regWatt = function (W, MU) {
         setInit();
         rk(
@@ -197,8 +197,6 @@ var RK = (function () {
         );
         return getPoints();
     };
-
-
 
     return funcz;
 })();
