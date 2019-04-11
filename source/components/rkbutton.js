@@ -60,5 +60,4 @@ t = {
             canvas.data.paint(last());
         }
     }]
-// eslint-disable-next-line eol-last
 };

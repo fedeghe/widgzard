@@ -14,5 +14,4 @@ var t = {
         });
         this.done();
     }
-// eslint-disable-next-line eol-last
 };

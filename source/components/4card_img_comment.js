@@ -15,5 +15,4 @@ CMP = {
             html: '#PARAM{description.description}'
         }]
     }]
-// eslint-disable-next-line eol-last
 };

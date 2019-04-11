@@ -217,5 +217,4 @@ SM = {
             self.done();
         }
     }]
-// eslint-disable-next-line eol-last
 };

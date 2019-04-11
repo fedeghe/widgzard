@@ -21,5 +21,4 @@ t = {
         tag: 'label',
         text: '#PARAM{value}'
     }]
-// eslint-disable-next-line eol-last
 };

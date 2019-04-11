@@ -196,5 +196,4 @@ SM = {
         this.node.className = 'flip-card-side flip-card-side-' + this.data.index;
         return true;
     }
-// eslint-disable-next-line eol-last
 };

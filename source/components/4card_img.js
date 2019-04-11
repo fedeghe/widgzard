@@ -74,5 +74,4 @@ SM = {
     cb: function () {
         this.done();
     }
-// eslint-disable-next-line eol-last
 };

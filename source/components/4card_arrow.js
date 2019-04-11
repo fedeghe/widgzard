@@ -42,5 +42,4 @@ xxx = {
         Widgzard.events.on($elf, 'click', function (e) { Widgzard.Channel.get(pdata.carouselId).pub('clicked_' + versus); });
         self.done();
     }
-// eslint-disable-next-line eol-last
 };
