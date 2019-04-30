@@ -44,14 +44,15 @@
             width: w,
             height: h,
             transitionTime: 0.5,
-            controls: false,
+            controls: true,
             mediaShowDurationBar: true,
             videos: [
-                { mp4: 'https://static.videezy.com/system/resources/previews/000/002/454/original/out-of-the-box-hd-stock-video.mp4' },
-                { mp4: 'https://static.videezy.com/system/resources/previews/000/004/950/original/Snow_Day_4K_Living_Background.mp4' },
-                { mp4: 'https://static.videezy.com/system/resources/previews/000/004/936/original/Forest_Sun_4K_Living_Background.mp4' },
-                { mp4: 'https://static.videezy.com/system/resources/previews/000/005/341/original/Earth_Spin_Medium.mp4' },
-                { mp4: 'https://ak5.picdn.net/shutterstock/videos/17213035/preview/stock-footage-the-abstract-plexus-background-is-an-abstract-animated-backgrounds-that-are-perfect-for-use-with.mp4' }
+                // https://gist.github.com/jsturgis/3b19447b304616f18657
+                { mp4: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4' },
+                { mp4: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4' },
+                { mp4: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4' },
+                { mp4: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4' },
+                { mp4: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/WhatCarCanYouGetForAGrand.mp4' }
             ]
             // urls: [
             //     'https://www.google.com/#q=css+animation',
