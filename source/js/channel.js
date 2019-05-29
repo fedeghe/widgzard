@@ -1,5 +1,9 @@
+/* eslint-disable */
+
 (function () {
-    "use strict";
+    'use strict';
     $$../node_modules/@fedeghe/channeljs/dist/index.js$$
     NS.Channel = Channeljs;
 })();
+
+/* eslint-enable */

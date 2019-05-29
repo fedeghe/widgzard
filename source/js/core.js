@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Autoexecuted closure that allows to create namespaces,
  * the autocall is used to put the function itself in a namespace

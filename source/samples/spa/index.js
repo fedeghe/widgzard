@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 (function () {
     var target = document.getElementById('trg'),
         App = {};
@@ -24,11 +25,11 @@
             route: 'spa',
             title: 'spa',
             cb: function () {
-                console.log(this)
-                console.log(state)
+                console.log(this);
+                console.log(state);
                 console.log(this.report());
                 console.log('================================');
-                this.done()
+                this.done();
             }
         }, true);
     };

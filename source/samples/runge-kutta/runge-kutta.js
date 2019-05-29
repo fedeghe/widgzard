@@ -1,13 +1,14 @@
+/* eslint-disable no-unused-vars */
 var RK = (function () {
     var nPoints = 5E4,
-        incr = 0.009 ,
+        incr = 0.009,
         A = 1,
         V = 1,
         AMP = 100,
-        points  = [],
+        points = [],
         funcz = {};
 
-    function rk(f1, f2) {
+    function rk (f1, f2) {
         var Ks = [],
             Hs = [],
             Ai = A,
@@ -50,7 +51,7 @@ var RK = (function () {
 
     funcz.setSize = function (amp) {
         AMP = amp;
-    }
+    };
     funcz.setOrigin = function (a, v) {
         A = a;
         V = v;
@@ -64,7 +65,6 @@ var RK = (function () {
     funcz.setnPoints = function (n) {
         nPoints = n;
     };
- 
 
     funcz.pen = function (W) {
         setInit();
@@ -100,7 +100,7 @@ var RK = (function () {
                 return th1;
             },
             function (th, th1) {
-                return -AMP * W * W * sin(th) - A *  (Math.abs(th1) / th1);
+                return -AMP * W * W * sin(th) - A * (Math.abs(th1) / th1);
             }
         );
         return getPoints();

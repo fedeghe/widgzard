@@ -1,10 +1,11 @@
+/* eslint-disable no-console */
 var target = document.getElementById('trg');
 
 Engy.component('myli', {
     tag: 'li',
     html: '#PARAM{myhtml}',
     onClick: function () {
-        console.log(this.node.innerHTML)
+        console.log(this.node.innerHTML);
     },
     cb: function () {
         var self = this;
@@ -35,17 +36,17 @@ Widgzard.render({
                 params: { myhtml: s }
             })),
             cb: function () {
-                console.log('inner')
+                console.log('inner');
                 this.done();
             }
-        }
+        };
         return true;
     },
     cb: function () {
         var self = this;
         this.subRender().then(function () {
-            console.log('outer')
-            console.log('TOTALE: ' + Widgzard.timer.get())
+            console.log('outer');
+            console.log('TOTALE: ' + Widgzard.timer.get());
             self.done();
         });
     }

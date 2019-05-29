@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 
 var target = document.getElementById('trg'),
     actions = (function () {
@@ -17,7 +18,6 @@ var target = document.getElementById('trg'),
                     break;
                 case 'RESET':
                     return initState;
-                    break;
                 case 'RENAME':
                     s.name = params.name;
                     break;
@@ -29,13 +29,13 @@ var target = document.getElementById('trg'),
         var store = Widgzard.getStore(reducer1, initState);
 
         store.subscribe((oldState, newState, action) => {
-            console.log('----------')
-            console.log(`ACTION dispatched: ${action}`)
-            console.log('previous state: ')
-            console.log(oldState)
-            console.log('new state: ')
-            console.log(newState)
-            console.log('\n\n')
+            console.log('----------');
+            console.log(`ACTION dispatched: ${action}`);
+            console.log('previous state: ');
+            console.log(oldState);
+            console.log('new state: ');
+            console.log(newState);
+            console.log('\n\n');
         });
         store.subscribe((oldState, newState) => {
             Widgzard.Channel.get('state').pub('dataChanged', newState);
@@ -43,13 +43,13 @@ var target = document.getElementById('trg'),
 
         return {
             increment: function () {
-                store.dispatch({ type: 'INCREMENT' })
+                store.dispatch({ type: 'INCREMENT' });
             },
             decrement: function () {
-                store.dispatch({ type: 'DECREMENT' })
+                store.dispatch({ type: 'DECREMENT' });
             },
             reset: function () {
-                store.dispatch({ type: 'RESET' })
+                store.dispatch({ type: 'RESET' });
             },
             rename: function (name) {
                 store.dispatch({ type: 'RENAME', name: name });
@@ -78,13 +78,12 @@ Widgzard.render({
             $elf.value = state.name;
             Widgzard.events.on($elf, 'input', function (e) {
                 actions.rename(e.target.value);
-            })
+            });
             this.done();
         },
 
         init: function () {
-            var self = this,
-                node = this.node;
+            var node = this.node;
             Widgzard.Channel.get('state').sub('nameChanged', function (v) {
                 node.value = v;
             });

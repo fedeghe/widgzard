@@ -1,5 +1,9 @@
+/* eslint-disable */
+
 (function () {
-    "use strict";
+    'use strict';
     $$../node_modules/ridof/dist/index.js$$
     NS.getStore = Ridof.getStore;
 })();
+
+/* eslint-enable */

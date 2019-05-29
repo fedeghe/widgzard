@@ -1,8 +1,6 @@
 (function () {
-    "use strict";
-
+    'use strict';
     var routes = {};
-
     NS.history.registerRouteHandler(function (url, state, title) {
         url in routes && routes[url].cb(state || {});
         document.title = title || routes[url].title;
@@ -13,7 +11,7 @@
             routes[url] = {
                 url: url,
                 cb: function (state) {
-                    cb.call(null, state)
+                    cb.call(null, state);
                 },
                 title: title
             };

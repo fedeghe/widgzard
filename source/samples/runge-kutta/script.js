@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 // var p = RK.pen(3);
 
 // var p = RK.penforsin(3, 1.5, 1.2);
@@ -12,9 +13,6 @@
 // var p = RK.regWatt(3, 1.2);
 
 var trg = document.getElementById('trg'),
-    lastFunc = null,
-    lastParams = null,
-    lastOrigin = null,
     last = null,
     width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0),
     height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
@@ -257,10 +255,10 @@ Engy.render({
 
                 ctx.fillStyle = colors[0];
                 for (var i = 0, l = points.length; i < l; i++) {
-                    ctx.fillRect(width / 2 + points[i][0], height / 2 + points[i][1], pointSize, pointSize)
+                    ctx.fillRect(width / 2 + points[i][0], height / 2 + points[i][1], pointSize, pointSize);
                 }
-            }
+            };
             return true;
         }
     }]
-})
+});

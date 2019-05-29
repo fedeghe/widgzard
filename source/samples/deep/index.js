@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 var target = document.getElementById('trg');
 
 Engy.component('myli', {
@@ -9,7 +10,7 @@ Engy.component('myli', {
             sign = (e.clientX - 2 * step) > p ? 1 : -1;
         this.node.style.color = sign < 0 ? 'red' : 'green';
         this.node.style.paddingLeft = (p + sign * step) + 'px';
-        console.log(this.node.innerHTML)
+        console.log(this.node.innerHTML);
     }
 });
 
@@ -41,9 +42,9 @@ Widgzard.render({
             //     return ret;
             // }
             /**
-             * The following works but: 
+             * The following works but:
              * - requires an IIFE
-             * - is really slow compared to the previous due to engy parsing 
+             * - is really slow compared to the previous due to engy parsing
              */
             content: (function () {
                 var n = 1000,
@@ -53,10 +54,10 @@ Widgzard.render({
                     ret.push({
                         component: self.data.type,
                         params: { myhtml: (i * 2) + '' }
-                    })
+                    });
                 }
-                console.log('ret')
-                console.log(ret)
+                console.log('ret');
+                console.log(ret);
                 return ret;
             })()
         };
@@ -65,7 +66,7 @@ Widgzard.render({
     cb: function () {
         var self = this;
         this.subRender().then(function () {
-            console.log('Widgzard rendering time: ' + Widgzard.timer.get())
+            console.log('Widgzard rendering time: ' + Widgzard.timer.get());
             self.report();
             self.done();
         });

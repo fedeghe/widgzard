@@ -1,3 +1,4 @@
+/* eslint-disable */
 (function (W, _U_, _P_) {
     'use strict';
     console.log('\n\nWIDGZARD v.$PACKAGE.version$\n\n');
@@ -59,3 +60,4 @@
         history: NS.history
     };
 })(this, 'undefined', 'prototype');
+/* eslint-enable */
