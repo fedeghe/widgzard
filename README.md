@@ -39,9 +39,9 @@ In your `node_modules/widgzard` folder run
 
     > npm i
     // and then 
-	> npm run build:dev
+	> npm run buildev
 
-**hint**: build:dev launches a demon process watching for relevant changes in the `source` folder, also starts a small dev-srv:  
+**hint**: buildev launches a demon process watching for relevant changes in the `source` folder, also starts a small dev-srv:  
 navigate to http://localhost:3001/samples
 
 
