@@ -174,7 +174,8 @@
                             components[componentName] = _clone(cntORobj);
                         }
                         cntORobj = cntORobj.replace(/^[^{]*/, '')
-                            .replace(/;?\n?$/, '');
+                            // .replace(/;?\n?$/, '')
+                            .replace(/(;?([\n\s]*)?)$/, '');
                         // obj = eval('(' + cntORobj + ')');
                         obj = eval('(' + cntORobj + ')');
                     }
