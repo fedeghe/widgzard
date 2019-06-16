@@ -6,3 +6,4 @@
 .buildNum.json
 /*.html
 /*.ico
+dist/widgzard.js
