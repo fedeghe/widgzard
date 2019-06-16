@@ -1,4 +1,6 @@
 /* eslint-disable */
+Widgzard = null;
+Engy = null;
 (function () {
     'use strict';
     (function () {
@@ -6,8 +8,8 @@
         $$widgzard.js$$
 
         // --------------------------
-        window.Widgzard = t.Widgzard;
-        window.Engy = t.Engy;
+        Widgzard = t.Widgzard;
+        Engy = t.Engy;
     })();
     
 })();
