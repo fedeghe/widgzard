@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test implemented yet\" && exit 1",
-        "build:dev": "malta source/buildDev.json",
+        "buildev": "malta source/buildDev.json",
         "build": "malta source/buildProd.json",
         "start": "malta source/start.json",
         "clean": "malta source/clean.json",
@@ -30,7 +30,7 @@
         "eslint-plugin-node": "^8.0.1",
         "eslint-plugin-promise": "^4.0.1",
         "eslint-plugin-standard": "^4.0.0",
-        "malta": "^3.9.14",
+        "malta": "^3.9.16",
         "malta-browser-refresh": "^1.2.1",
         "malta-css-uglify": "^1.0.2",
         "malta-dev-srv": "^1.0.5",

@@ -4,6 +4,7 @@
         "mkdir -p dist components"
     ],
     "source/docs/README.md" : ". -vars=source/vars.json",
+    "source/widgzard.js" : "dist -vars=source/vars.json",
     "source/theWidgzard.js" : "dist  -plugins=malta-header-comment[name:'source/head.txt'] -vars=source/vars.json",
     "source/theWidgzard.less" : "dist -plugins=malta-less...malta-css-uglify -vars=source/vars.json",
     "source/components/*.js" : "components",
