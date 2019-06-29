@@ -27,7 +27,7 @@
         Widgzard: {
             render: NS.Widgzard.render,
             cleanup: NS.Widgzard.cleanup,
-            load: NS.Widgzard.loadStealth,
+            load: NS.Widgzard.load,
             get: NS.Widgzard.get,
             getElement: NS.Widgzard.getElement,
             getElements: NS.Widgzard.getElements,
