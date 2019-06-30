@@ -34,14 +34,15 @@ var RK = (function () {
                 -Math.round(Vi)
             ]);
         }
+        return points;
     }
 
     function setInit () {
         points = [];
     }
-    function getPoints () {
-        return points;
-    }
+    // function getPoints () {
+    //     return points;
+    // }
     function sin (n) {
         return Math.sin(n * Math.PI / 180);
     }
@@ -68,7 +69,7 @@ var RK = (function () {
 
     funcz.pen = function (W) {
         setInit();
-        rk(
+        return rk(
             function (th, th1) {
                 return th1;
             },
@@ -76,13 +77,13 @@ var RK = (function () {
                 return -AMP * (W * W) * sin(th);
             }
         );
-        return getPoints();
+        // return getPoints();
     };
 
     funcz.penforsin = function (W, A, C) {
         setInit();
         var EE = C * incr;
-        rk(
+        return rk(
             function (th, th1) {
                 return th1;
             },
@@ -90,12 +91,12 @@ var RK = (function () {
                 return AMP * W * W * sin(th) + A * cos(EE);
             }
         );
-        return getPoints();
+        // return getPoints();
     };
 
     funcz.penSmorz = function (W, A) {
         setInit();
-        rk(
+        return rk(
             function (th, th1) {
                 return th1;
             },
@@ -103,12 +104,12 @@ var RK = (function () {
                 return -AMP * W * W * sin(th) - A * (Math.abs(th1) / th1);
             }
         );
-        return getPoints();
+        // return getPoints();
     };
 
     funcz.oscillator = function (W) {
         setInit();
-        rk(
+        return rk(
             function (th, th1) {
                 return th1;
             },
@@ -116,12 +117,12 @@ var RK = (function () {
                 return -W * W * th;
             }
         );
-        return getPoints();
+        // return getPoints();
     };
 
     funcz.repulsor = function (W) {
         setInit();
-        rk(
+        return rk(
             function (th, th1) {
                 return th1;
             },
@@ -129,12 +130,12 @@ var RK = (function () {
                 return W * W * th;
             }
         );
-        return getPoints();
+        // return getPoints();
     };
 
     funcz.oscillatorSmor = function (W, MU) {
         setInit();
-        rk(
+        return rk(
             function (th, th1) {
                 return th1;
             },
@@ -142,13 +143,13 @@ var RK = (function () {
                 return -2 * (MU * th1) - (W * W * th);
             }
         );
-        return getPoints();
+        // return getPoints();
     };
 
     funcz.oscillatorForSin = function (W, A, C) {
         setInit();
         var EE = A * incr;
-        rk(
+        return rk(
             function (th, th1) {
                 return th1;
             },
@@ -156,12 +157,12 @@ var RK = (function () {
                 return -(W * W * th) + C * cos(EE);
             }
         );
-        return getPoints();
+        // return getPoints();
     };
 
     funcz.lotkavolterra = function (ALFA, BETA, GAMMA, DELTA) {
         setInit();
-        rk(
+        return rk(
             function (th, th1) {
                 return ALFA * th - BETA * th * th1;
             },
@@ -169,12 +170,12 @@ var RK = (function () {
                 return -GAMMA * th1 + DELTA * th * th1;
             }
         );
-        return getPoints();
+        // return getPoints();
     };
 
     funcz.vanderpol = function (BETA, GAMMA) {
         setInit();
-        rk(
+        return rk(
             function (th, th1) {
                 return th1;
             },
@@ -182,12 +183,12 @@ var RK = (function () {
                 return -(BETA / GAMMA) * (th * th - GAMMA) * th1 - th;
             }
         );
-        return getPoints();
+        // return getPoints();
     };
 
     funcz.regWatt = function (W, MU) {
         setInit();
-        rk(
+        return rk(
             function (th, th1) {
                 return th1;
             },
@@ -195,7 +196,7 @@ var RK = (function () {
                 return -100 * W * W * sin(th) + 100 * MU * MU * sin(th) * cos(th);
             }
         );
-        return getPoints();
+        // return getPoints();
     };
 
     return funcz;
