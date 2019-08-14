@@ -51,25 +51,6 @@ function Wnode (conf, done, map, parent) {
             NS.utils.toMemFormat(self.node.innerHTML.length, 'B')
         ].join(''));
     };
-
-    this.events = {
-        onClick: true,
-        onMouseover: true,
-        onMouseout: true,
-        onMouseleave: true,
-        onDblclick: true,
-        onFocus: true,
-        onChange: true,
-        onInput: true,
-        onSelect: true,
-        onKeyup: true,
-        onKeydown: true,
-        onKeypress: true,
-        onSubmit: true,
-        onBlur: true,
-        onDragover: true,
-        onDrop: true
-    };
 }
 
 Wnode.prototype.cleanup = function () {
@@ -331,7 +312,7 @@ Wnode.prototype.checkEnd = function () {
     return this;
 };
 
-Wnode.prototype.setEvents = function () {
+Wnode.prototype.setEventsOLD = function () {
     'use strict';
     var i,
         self = this;
@@ -344,8 +325,30 @@ Wnode.prototype.setEvents = function () {
                     self.conf[name].call(self, e);
                 });
             }
-        })(i);
+        })('on' + i);
     };
+    return this;
+};
+
+Wnode.prototype.setEvents = function () {
+    'use strict';
+    var i,
+        self = this,
+        mat, ev;
+
+    for (i in self.conf) {
+        mat = i.match(/^on([A-Z]{1}[a-z]*)$/);
+        if (mat) {
+            ev = mat[1].toLowerCase();
+            // if (self.eventz.includes(ev)) {
+            (function (eventName) {
+                NS.events.on(self.node, ev, function (e) {
+                    self.conf[eventName].call(self, e);
+                });
+            })(i);
+            // }
+        }
+    }
     return this;
 };
 
