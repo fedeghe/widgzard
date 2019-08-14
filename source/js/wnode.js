@@ -66,7 +66,9 @@ function Wnode (conf, done, map, parent) {
         onKeydown: true,
         onKeypress: true,
         onSubmit: true,
-        onBlur: true
+        onBlur: true,
+        onDragover: true,
+        onDrop: true
     };
 }
 
