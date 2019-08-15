@@ -312,24 +312,6 @@ Wnode.prototype.checkEnd = function () {
     return this;
 };
 
-Wnode.prototype.setEventsOLD = function () {
-    'use strict';
-    var i,
-        self = this;
-    for (i in this.events) {
-        (function (name) {
-            var j;
-            if (name in self.conf) {
-                j = name.match(/on(.*)/)[1].toLowerCase();
-                NS.events.on(self.node, j, function (e) {
-                    self.conf[name].call(self, e);
-                });
-            }
-        })('on' + i);
-    };
-    return this;
-};
-
 Wnode.prototype.setEvents = function () {
     'use strict';
     var i,
@@ -340,13 +322,11 @@ Wnode.prototype.setEvents = function () {
         mat = i.match(/^on([A-Z]{1}[a-z]*)$/);
         if (mat) {
             ev = mat[1].toLowerCase();
-            // if (self.eventz.includes(ev)) {
             (function (eventName) {
                 NS.events.on(self.node, ev, function (e) {
                     self.conf[eventName].call(self, e);
                 });
             })(i);
-            // }
         }
     }
     return this;
