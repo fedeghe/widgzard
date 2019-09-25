@@ -1006,11 +1006,6 @@ malta-less@^1.0.6:
     less "^3.8.1"
     malta "^4.0.4"
 
-malta@^3.9.16:
-  version "3.9.17"
-  resolved "https://registry.yarnpkg.com/malta/-/malta-3.9.17.tgz#a8e5cebb8616c2040c52ac9b6f835ed656773fd0"
-  integrity sha512-dmk3pHFGtu2XddA7djUQRHsFTzPiSpyOo+u+VCebUxexSYEPYZ3b+QwvSEzn4rXsUvU+ra6I+5yfb5i9dpDvjg==
-
 malta@^4.0.4:
   version "4.0.5"
   resolved "https://registry.yarnpkg.com/malta/-/malta-4.0.5.tgz#e013ed4c9d071ac8da6fc5a441af39212185fd95"
