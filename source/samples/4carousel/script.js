@@ -27,9 +27,10 @@
         video = document.location.href.match(/video/),
         fulls = document.location.href.match(/fs/),
         trg = document.getElementById('target'),
-        size = [640, 360],
+        size = [1280, 720],
         w = (fulls ? s.width : size[0]),
-        h = (fulls ? s.height : size[1]);
+        h = (fulls ? s.height : size[1]),
+        config = {};
 
     trg.style.width = w + 'px';
     trg.style.height = h + 'px';
@@ -39,7 +40,7 @@
     }
 
     if (video) {
-        CubeCarousel({
+        config = {
             target: trg,
             width: w,
             height: h,
@@ -61,9 +62,9 @@
             //     'https://www.google.com/#q=freakstyle+it',
             //     'https://www.google.com/#q=npm+balle'
             // ]
-        });
+        };
     } else {
-        CubeCarousel({
+        config = {
             target: trg,
             animation: 'linear', // ease-in-out
             width: w,
@@ -88,6 +89,7 @@
                 'https://www.google.com/#q=npm+balle',
                 'https://www.google.com/#q=npm+ridof'
             ]
-        });
+        };
     }
+    CubeCarousel(config);
 })();
