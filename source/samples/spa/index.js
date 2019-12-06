@@ -33,6 +33,7 @@
             }
         }, true);
     };
+
     App.detail = function (state) {
         Engy.render({
             target: target,
