@@ -21,7 +21,31 @@
                     attrs: { href: '#PARAM{url}' },
                     text: '#PARAM{label}'
                 }],
-            });
+            }),
+
+            links = [
+                {
+                    route: '/samples/4carousel/',
+                    label: 'carousel',
+                    cb: function () { this.done('one'); }
+                }, {
+                    route: '/samples/store/',
+                    label: 'store',
+                    cb: function () { this.done('two'); }
+                }, {
+                    route: '/samples/sub/',
+                    label: 'sub'
+                }, {
+                    route: '/samples/spa/',
+                    label: 'spa'
+                }, {
+                    route: '/samples/deep/',
+                    label: 'deep'
+                }, {
+                    route: '/samples/runge-kutta/',
+                    label: 'runge-kutta'
+                }
+            ];
 
         Engy.render({
             target: target,
@@ -33,29 +57,16 @@
                 text: 'Some samples'
             }, {
                 tag: 'ul',
-                content: [
-                    {
+                content: links.map(l => {
+                    var ret = {
                         component: 'link',
-                        params: { url: '/samples/4carousel/', label: 'carousel' },
-                        cb: function () { this.done('one'); }
-                    }, {
-                        component: 'link',
-                        params: { url: '/samples/store/', label: 'store' },
-                        cb: function () { this.done('one'); }
-                    }, {
-                        component: 'link',
-                        params: { url: '/samples/sub/', label: 'sub' }
-                    }, {
-                        component: 'link',
-                        params: { url: '/samples/spa/', label: 'spa' }
-                    }, {
-                        component: 'link',
-                        params: { url: '/samples/deep/', label: 'deep' }
-                    }, {
-                        component: 'link',
-                        params: { url: '/samples/runge-kutta/', label: 'runge-kutta' }
+                        params: { url: l.route, label: l.label }
                     }
-                ],
+                    if (l.cb) {
+                        ret.cb = l.cb
+                    }
+                    return ret;
+                }),
                 cb: function () {
                     // console.log(arguments);
                     this.done([].slice.call(arguments, 0).concat('four'));
