@@ -57,15 +57,12 @@
                 text: 'Some samples'
             }, {
                 tag: 'ul',
-                content: links.map(l => {
-                    var ret = {
+                content: links.map(function (l) {
+                    return {
                         component: 'link',
-                        params: { url: l.route, label: l.label }
-                    }
-                    if (l.cb) {
-                        ret.cb = l.cb
-                    }
-                    return ret;
+                        params: { url: l.route, label: l.label },
+                        cb: l.cb || null
+                    };
                 }),
                 cb: function () {
                     // console.log(arguments);
