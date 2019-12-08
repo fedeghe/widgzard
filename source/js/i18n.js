@@ -29,7 +29,7 @@ NS.makeNs('i18n', function () {
         },
 
         parse: function (obj) {
-            var replacing = NS.SearchHash.forValue(obj, /i18n\(([^}|]*)?\|?([^}]*)\)/).results,
+            var replacing = NS.object.digForValue(obj, /i18n\(([^}|]*)?\|?([^}]*)\)/),
                 mayP, ref, i, l;
 
             for (i = 0, l = replacing.length; i < l; i++) {

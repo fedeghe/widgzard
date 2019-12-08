@@ -51,7 +51,7 @@
                     && typeof o.nodeName === 'string'
         );
     }
-    /*
+
     function digFor (what, obj, target, limit) {
         if (!what.match(/key|value|keyvalue/)) {
             throw new Error('Bad param for object.digFor');
@@ -133,7 +133,7 @@
         dig(obj, target, [], 0);
         return res;
     }
-*/
+
     /**
      * returning module
      */
@@ -198,9 +198,9 @@
          * @param      {<type>}  lim     The limit
          * @return     {<type>}  { description_of_the_return_value }
          */
-        // digForKey: function (o, k, lim) {
-        //     return NS.SearchHash.forKey(o, k, { limit: lim });
-        // },
+        digForKey: function (o, k, lim) {
+            return digFor('key', o, k, lim);
+        },
 
         /**
          * [digForValues description]
@@ -208,10 +208,9 @@
          * @param  {[type]} k [description]
          * @return {[type]}   [description]
          */
-        // digForValue: function (o, k, lim) {
-        //     // return NS.SearchHash.forValue(o, k, { limit: lim });
-        //     // return digFor('value', o, k, lim);
-        // },
+        digForValue: function (o, k, lim) {
+            return digFor('value', o, k, lim);
+        },
 
         /**
          * { function_description }
@@ -221,10 +220,9 @@
          * @param      {<type>}  lim     The limit
          * @return     {<type>}  { description_of_the_return_value }
          */
-        // digForKeyValue: function (o, kv, lim) {
-        //     // return NS.SearchHash.forKeyValue(o, kv, { limit: lim });
-        //     return digFor('keyvalue', o, kv, lim);
-        // },
+        digForKeyValue: function (o, kv, lim) {
+            return digFor('keyvalue', o, kv, lim);
+        },
 
         extend: function (o, ext, force) {
             var obj = NS.object.clone(o),
