@@ -136,7 +136,7 @@
             };
 
         (function solve () {
-            var component = NS.object.digForKey(self.config, 'component', 1),
+            var component = NS.SearchHash.forKey(self.config, 'component', { limit: 1 }).results,
                 componentName,
                 cached, preLoaded,
                 xhrStart = 0,
@@ -182,7 +182,7 @@
                     // before merging the object check for the presence of parameters
                     if (params) {
                         // check if into the component are used var placeholders
-                        usedParams = NS.object.digForValue(obj, /#PARAM{([^}|]*)?\|?([^}]*)}/);
+                        usedParams = NS.SearchHash.forValue(obj, /#PARAM{([^}|]*)?\|?([^}]*)}/).results;
                         l = usedParams.length;
                         if (l) {
                             for (i = 0; i < l; i++) {

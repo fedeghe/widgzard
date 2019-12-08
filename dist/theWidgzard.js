@@ -17,7 +17,7 @@
                                                 ^"===*"`
 Author: Federico Ghedina <fedeghe@gmail.com>
 Version: 3.1.20
-Size: ~104KB
+Size: ~108KB
 */
 /* eslint-disable */
 Widgzard = null;
@@ -287,7 +287,7 @@ Engy = null;
                 | __  |  _  |  |  |  |  |   __|
                 | __ -|     |  |__|  |__|   __|
                 |_____|__|__|_____|_____|_____|
-                                                v. 1.0.38
+                                                v. 1.0.39
                 Author: federico.ghedina@gmail.com
                 Size: ~2KB
                 
@@ -308,6 +308,36 @@ Engy = null;
                 ;var l=e.length;return new Balle(function(t,a){!function n(r,s){return r===l?t(s):e[r](s).then(function(e){n(++r,e)}).catch(function(e){a(e)})}(0)})},Balle.reject=function(e){
                 return new Balle(function(l,t){return t(e)})},Balle.resolve=function(e){return new Balle(function(l,t){e instanceof Balle?e.then(l).catch(t):l(e)})},"object"==typeof exports&&(module.exports=Balle);
                 NS.Balle = Balle;
+            })();
+            
+            /* eslint-enable */
+            /*
+            [Malta] js/searchhash.js
+            */
+            /* eslint-disable */
+            
+            (function (){
+                'use strict';
+                /*
+                [Malta] ../node_modules/searchhash/dist/index.js
+                */
+                /*
+                SEARCHHASH
+                ~1KB
+                */
+                var searchHash=function(){function e(e,n){return JSON.stringify(e)===JSON.stringify(n)}function n(e){
+                return"object"==typeof Node?e instanceof W.Node:e&&"object"==typeof e&&"number"==typeof e.nodeType&&"string"==typeof e.nodeName}function t(e){
+                return"object"==typeof HTMLElement?e instanceof W.HTMLElement:e&&"object"==typeof e&&null!==e&&1===e.nodeType&&"string"==typeof e.nodeName}function i(e){return"string"==typeof e||e instanceof String}
+                function o(e){return e instanceof RegExp}function r(r,u,a,f){var c,l=+new Date,m=0,y=0,p={key:function(n,t,r){return"function"==typeof r?r(n):i(n)&&o(r)?n.match(r):e(n,r)},value:function(n,t,r){
+                return"function"==typeof r?r(t):i(t)&&o(r)?t.match(r):e(t,r)},keyvalue:function(n,t,r){
+                return("function"==typeof r.key&&r.key(n)||(i(n)&&o(r.key)?n.match(r.key):e(n,r.key)))&&("function"==typeof r.value&&r.value(t)||(i(t)&&o(r.value)?t.match(r.value):e(t,r.value)))}}[r],s={
+                timeElapsed:0,results:[]},v=function(e,n,t,i,o){var r=[].concat.call(e,[n]),u=p(n,i[n],t),a=f.min<=o&&o<=f.max,c=r.length;a&&u&&(s.results.push({obj:i,value:i[n],key:r[c-1],parentKey:r[c-2],
+                path:r.join("/"),container:r.slice(0,c-1).join("/"),parentContainer:r.slice(0,c-2).join("/"),regexp:u,level:o}),y++),d(i[n],t,r,o+1)},d=function(e,i,o,r){var u,a
+                ;if(!n(e)||!t(e))if(e instanceof Array)for(u=0,a=e.length;u<a&&(v(o,u,i,e,r),f.limit!==y);u++);else if("object"==typeof e)for(u in e)if(v(o,u,i,e,r),f.limit===y)break}
+                ;return f.limit="limit"in f?~~f.limit:1/0,f.min="min"in f?~~f.min:0,f.max="max"in f?~~f.max:1/0,f.min=f.min<0?0:f.min,f.max<f.min&&(c=f.min,f.min=f.max,f.max=c),d(u,a,[],0),m=+new Date,
+                s.timeElapsed=m-l,s}return{forKey:function(e,n,t){return r("key",e,n,t||{})},forValue:function(e,n,t){return r("value",e,n,t||{})},forKeyValue:function(e,n,t){return r("keyvalue",e,n,t||{})}}}()
+                ;"object"==typeof exports&&"undefined"!=typeof module&&(module.exports=searchHash);
+                NS.SearchHash = searchHash;
             })();
             
             /* eslint-enable */
@@ -524,15 +554,16 @@ Engy = null;
                 
                 C H A N N E L J S
                 
-                Date: 15/3/2019
+                Date: 24/10/2019
                 Size: ~1KB
                 Author: Federico Ghedina <federico.ghedina@gmail.com>
                 */
                 var Channeljs=function(){"use strict";var t={},i=function(t,i){return t.indexOf(i)},s=function(){this.topic2cbs={},this.lateTopics={},this.enabled=!0},e=function(t,i){var s=t.enabled
                 ;return t.enabled=i,s!==t.enabled},n=s.prototype;return n.enable=function(){return e(this,!0)},n.disable=function(){return e(this,!1)},n.pub=function(t,i){var s,e=0,n=[]
-                ;if(i instanceof Array||(i=[i]),!(t in this.topic2cbs&&this.enabled))return t in this.lateTopics?this.lateTopics[t].push({args:i}):this.lateTopics[t]=[{args:i}],null
-                ;for(s=this.topic2cbs[t].length;e<s;e+=1)n.push(this.topic2cbs[t][e].apply(null,i));return n},n.sub=function(t,i,s){var e,n=0,c=[];if(t in this.topic2cbs&&this.enabled||(this.topic2cbs[t]=[]),
-                this.topic2cbs[t].push(i),s&&t in this.lateTopics){for(n=0,e=this.lateTopics[t].length;n<e;n++)c.push(i.apply(null,this.lateTopics[t][n].args));return c}},n.unsub=function(t,s){var e=0
+                ;if(i instanceof Array||(i=[i]),!(t in this.topic2cbs&&this.enabled))return t in this.lateTopics?this.lateTopics[t].push({args:i}):this.lateTopics[t]=[{args:i}],null;if("*"in this.topic2cbs)for(e=0,
+                s=this.topic2cbs["*"].length;e<s;e+=1)n.push(this.topic2cbs["*"][e].apply(null,i));for(e=0,s=this.topic2cbs[t].length;e<s;e+=1)n.push(this.topic2cbs[t][e].apply(null,i));return n},
+                n.sub=function(t,i,s){var e,n=0,c=[];if(t in this.topic2cbs&&this.enabled||(this.topic2cbs[t]=[]),this.topic2cbs[t].push(i),s&&t in this.lateTopics){for(n=0,
+                e=this.lateTopics[t].length;n<e;n++)c.push(i.apply(null,this.lateTopics[t][n].args));return c}},n.unsub=function(t,s){var e=0
                 ;return t in this.topic2cbs&&(e=i(this.topic2cbs[t],s))>=0&&this.topic2cbs[t].splice(e,1)&&0===this.topic2cbs[t].length&&delete this.topic2cbs[t],t in this.lateTopics&&delete this.lateTopics[t],this},
                 n.once=function(t,i,s){function e(){return n.unsub(t,e),i.apply(null,Array.prototype.slice.call(arguments,0))}var n=this;return this.sub(t,e,s)},n.reset=function(){
                 var t=Array.prototype.slice.call(arguments,0),i=t.length,s=0;if(!i)return this.topic2cbs={},this.lateTopics={},this;for(null;s<i;s+=1)t[s]in this.topic2cbs&&delete this.topic2cbs[t[s]],
@@ -598,7 +629,7 @@ Engy = null;
                                 && typeof o.nodeName === 'string'
                     );
                 }
-            
+                /*
                 function digFor (what, obj, target, limit) {
                     if (!what.match(/key|value|keyvalue/)) {
                         throw new Error('Bad param for object.digFor');
@@ -680,7 +711,7 @@ Engy = null;
                     dig(obj, target, [], 0);
                     return res;
                 }
-            
+            */
                 /**
                  * returning module
                  */
@@ -745,9 +776,9 @@ Engy = null;
                      * @param      {<type>}  lim     The limit
                      * @return     {<type>}  { description_of_the_return_value }
                      */
-                    digForKey: function (o, k, lim) {
-                        return digFor('key', o, k, lim);
-                    },
+                    // digForKey: function (o, k, lim) {
+                    //     return NS.SearchHash.forKey(o, k, { limit: lim });
+                    // },
             
                     /**
                      * [digForValues description]
@@ -755,9 +786,10 @@ Engy = null;
                      * @param  {[type]} k [description]
                      * @return {[type]}   [description]
                      */
-                    digForValue: function (o, k, lim) {
-                        return digFor('value', o, k, lim);
-                    },
+                    // digForValue: function (o, k, lim) {
+                    //     // return NS.SearchHash.forValue(o, k, { limit: lim });
+                    //     // return digFor('value', o, k, lim);
+                    // },
             
                     /**
                      * { function_description }
@@ -767,9 +799,10 @@ Engy = null;
                      * @param      {<type>}  lim     The limit
                      * @return     {<type>}  { description_of_the_return_value }
                      */
-                    digForKeyValue: function (o, kv, lim) {
-                        return digFor('keyvalue', o, kv, lim);
-                    },
+                    // digForKeyValue: function (o, kv, lim) {
+                    //     // return NS.SearchHash.forKeyValue(o, kv, { limit: lim });
+                    //     return digFor('keyvalue', o, kv, lim);
+                    // },
             
                     extend: function (o, ext, force) {
                         var obj = NS.object.clone(o),
@@ -999,7 +1032,7 @@ Engy = null;
                     },
             
                     parse: function (obj) {
-                        var replacing = NS.object.digForValue(obj, /i18n\(([^}|]*)?\|?([^}]*)\)/),
+                        var replacing = NS.SearchHash.forValue(obj, /i18n\(([^}|]*)?\|?([^}]*)\)/).results,
                             mayP, ref, i, l;
             
                         for (i = 0, l = replacing.length; i < l; i++) {
@@ -1352,22 +1385,26 @@ Engy = null;
                  d88      d88 88b  ,88b 88b  d88 d88
                 d88'     d88' `?88P'`88b`?8888P'd88'
                 
-                                                      v. 1.1.5
+                                                      v. 1.2.1
                 
-                Size: ~2KB
+                Size: ~3KB
                 */
-                var Ridof=function(){"use strict";function t(){return{}}function e(t,e){if("function"!=typeof t)throw new Error(e)}function n(t,e){if(void 0===t)throw new Error(e)}function r(t,e,n){
-                var r=t.states[t.currentIndex];t.listeners.forEach(function(t){t(r,e,n)}),t.currentIndex<t.states.length-1&&(t.states=t.states.slice(0,t.currentIndex)),t.states[++t.currentIndex]=e}function s(n,r){
-                this.reducer=n||t(),e(n,o.REDUCERS_FUCTION),this.state=void 0!==r?r:this.reducer(),this.states=[this.state],this.currentIndex=0,this.listeners=[]}function i(t){const e={};var n;for(n in t)e[n]=t[n]()
-                ;return function(n,r,s){n=n||e;var i,o=Object.assign({},n);for(i in t)o[i]=t[i](o[i],r,s);return o}}const o={REDUCERS_FUCTION:"[ERROR] Reducer must be a function!",
-                REDUCERS_RETURN:"[ERROR] Reducer should return something!",SUBSCRIBERS_FUNCTION:"[ERROR] Subscribers must be a functions!",ACTION_TYPE:"[ERROR] Actions needs a type"}
-                ;return s.prototype.getState=function(){return this.states[this.currentIndex]},s.prototype.dispatch=function(t,e){if(!("type"in t))throw new Error(o.ACTION_TYPE)
-                ;var s,i=t.type,u=this.states[this.currentIndex],c=this.reducer(u,i,t);if(n(c,o.REDUCERS_RETURN),delete c.type,e)for(s in t)"type"===s||s in c||(c[s]=t[s]);return r(this,c,i),this},
-                s.prototype.subscribe=function(t){e(t,o.SUBSCRIBERS_FUNCTION);var n,r=this;return this.listeners.push(t),n=this.listeners.length-1,function(){
-                r.listeners=r.listeners.slice(0,n).concat(r.listeners.slice(n+1))}},s.prototype.replaceReducer=function(t){e(t,o.REDUCERS_FUCTION),this.reducer=t},s.prototype.reset=function(){var t=this.states[0]
-                ;this.states=[t],this.currentIndex=0,this.listeners=[]},s.prototype.move=function(t){if(0===t)return this
-                ;var e=this,n=this.currentIndex+t,r=this.getState(),s=t>0?"FORWARD":"BACKWARD",i=n>-1&&n<this.states.length;return this.currentIndex=i?n:this.currentIndex,i&&this.listeners.forEach(function(t){
-                t(r,e.getState(),{type:["TIMETRAVEL_",s].join("")})}),this},{combine:i,getStore:function(t,e){return new s(t,e)},isStore:function(t){return t instanceof s},ERRORS:o}}()
+                var Ridof=function(){"use strict";function t(t,e){if("function"!=typeof t)throw new Error(e)}function e(t,e){if(void 0===t)throw new Error(e)}function s(t,e,s){var n=t.states[t.currentIndex]
+                ;t.listeners.forEach(function(t){t(n,e,s)}),t.currentIndex<t.states.length-1&&(t.states=t.states.slice(0,t.currentIndex),t.tagsManager.reset(t.currentIndex+1)),t.tagsManager.add(s),
+                t.states[++t.currentIndex]=e}function n(t,e){this.activeCheck=!!e,this.config=e||{},this.tags=[t],this.size=1}function r(e,s,r){t(e,o.REDUCERS_FUCTION),this.reducer=e,
+                this.state=void 0!==s?s:this.reducer(),this.states=[this.state],this.tagsManager=new n("INITIAL",r),this.currentIndex=0,this.listeners=[]}function i(t){const e={};var s;for(s in t)e[s]=t[s]()
+                ;return function(s,n,r){s=s||e;var i,o=Object.assign({},s);for(i in t)o[i]=t[i](o[i],n,r);return o}}const o={REDUCERS_FUCTION:"[ERROR] Reducer must be a function!",
+                REDUCERS_RETURN:"[ERROR] Reducer should return something!",SUBSCRIBERS_FUNCTION:"[ERROR] Subscribers must be a functions!",ACTION_TYPE:"[ERROR] Actions needs a type",
+                UNAUTHORIZED_STATECHANGE:"[ERROR] State transition not allowed"};return n.prototype.getCurrent=function(){return this.size?this.tags[this.size-1]:void 0},n.prototype.canMoveTo=function(t){
+                if(this.activeCheck){var e=Object.keys(this.config),s=this.tags[this.size-1],n=~~e.indexOf(t);return n>=0&&this.config[s].includes(n)}return!0},n.prototype.add=function(t){this.size++,
+                this.tags.push(t)},n.prototype.reset=function(t){this.tags=t?this.tags.slice(0,t):[],this.size=t?this.tags.length:0},r.prototype.getState=function(){return this.states[this.currentIndex]},
+                r.prototype.dispatch=function(t,n){this.tagsManager.getCurrent();if(!("type"in t))throw new Error(o.ACTION_TYPE);if(!this.tagsManager.canMoveTo(t.type))throw new Error(o.UNAUTHORIZED_STATECHANGE)
+                ;var r,i=t.type,c=this.states[this.currentIndex],u=this.reducer(c,i,t);if(e(u,o.REDUCERS_RETURN),delete u.type,n)for(r in t)"type"===r||r in u||(u[r]=t[r]);return s(this,u,i),this},
+                r.prototype.subscribe=function(e){t(e,o.SUBSCRIBERS_FUNCTION);var s,n=this;return this.listeners.push(e),s=this.listeners.length-1,function(){
+                n.listeners=n.listeners.slice(0,s).concat(n.listeners.slice(s+1))}},r.prototype.replaceReducer=function(e){t(e,o.REDUCERS_FUCTION),this.reducer=e},r.prototype.reset=function(){var t=this.states[0]
+                ;this.states=[t],this.currentIndex=0,this.tagsManager.reset(),this.listeners=[]},r.prototype.move=function(t){if(0===t)return this
+                ;var e=this,s=this.currentIndex+t,n=this.getState(),r=t>0?"FORWARD":"BACKWARD",i=s>-1&&s<this.states.length;return this.currentIndex=i?s:this.currentIndex,i&&this.listeners.forEach(function(t){
+                t(n,e.getState(),{type:["TIMETRAVEL_",r].join("")})}),this},{combine:i,getStore:function(t,e,s){return new r(t,e,s)},isStore:function(t){return t instanceof r},ERRORS:o}}()
                 ;"object"==typeof exports&&(module.exports=Ridof);
                 NS.getStore = Ridof.getStore;
             })();
@@ -2006,7 +2043,7 @@ Engy = null;
                         };
             
                     (function solve () {
-                        var component = NS.object.digForKey(self.config, 'component', 1),
+                        var component = NS.SearchHash.forKey(self.config, 'component', { limit: 1 }).results,
                             componentName,
                             cached, preLoaded,
                             xhrStart = 0,
@@ -2052,7 +2089,7 @@ Engy = null;
                                 // before merging the object check for the presence of parameters
                                 if (params) {
                                     // check if into the component are used var placeholders
-                                    usedParams = NS.object.digForValue(obj, /#PARAM{([^}|]*)?\|?([^}]*)}/);
+                                    usedParams = NS.SearchHash.forValue(obj, /#PARAM{([^}|]*)?\|?([^}]*)}/).results;
                                     l = usedParams.length;
                                     if (l) {
                                         for (i = 0; i < l; i++) {

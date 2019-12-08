@@ -8,6 +8,7 @@
         _context_ = W;
     $$js/core.js$$
     $$js/balle.js$$
+    $$js/searchhash.js$$
     $$js/history.js$$
     $$js/events.js$$
     $$js/channel.js$$
