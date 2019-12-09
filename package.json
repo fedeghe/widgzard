@@ -39,6 +39,6 @@
         "malta-js-uglify": "^1.0.2",
         "malta-less": "^1.0.6",
         "ridof": "^1.0.6",
-        "searchhash": "^1.1.3"
+        "searchhash": "^1.1.7"
     }
 }

@@ -41,17 +41,18 @@
 
     // Returns true if it is a DOM element
     //
-    function isElement (o) {
-        return (
-            typeof HTMLElement === 'object'
-                ? o instanceof W.HTMLElement
-                : o
-                    && typeof o === 'object'
-                    && o !== null && o.nodeType === 1
-                    && typeof o.nodeName === 'string'
-        );
-    }
-
+    // function isElement (o) {
+    //     return (
+    //         typeof HTMLElement === 'object'
+    //             ? o instanceof W.HTMLElement
+    //             : o
+    //                 && o !== null
+    //                 && typeof o === 'object'
+    //                 && o.nodeType === 1
+    //                 && typeof o.nodeName === 'string'
+    //     );
+    // }
+    /*
     function digFor (what, obj, target, limit) {
         if (!what.match(/key|value|keyvalue/)) {
             throw new Error('Bad param for object.digFor');
@@ -133,7 +134,7 @@
         dig(obj, target, [], 0);
         return res;
     }
-
+*/
     /**
      * returning module
      */
@@ -198,9 +199,9 @@
          * @param      {<type>}  lim     The limit
          * @return     {<type>}  { description_of_the_return_value }
          */
-        digForKey: function (o, k, lim) {
-            return digFor('key', o, k, lim);
-        },
+        // digForKey: function (o, k, lim) {
+        //     return digFor('key', o, k, lim);
+        // },
 
         /**
          * [digForValues description]
@@ -208,9 +209,9 @@
          * @param  {[type]} k [description]
          * @return {[type]}   [description]
          */
-        digForValue: function (o, k, lim) {
-            return digFor('value', o, k, lim);
-        },
+        // digForValue: function (o, k, lim) {
+        //     return digFor('value', o, k, lim);
+        // },
 
         /**
          * { function_description }
@@ -220,9 +221,9 @@
          * @param      {<type>}  lim     The limit
          * @return     {<type>}  { description_of_the_return_value }
          */
-        digForKeyValue: function (o, kv, lim) {
-            return digFor('keyvalue', o, kv, lim);
-        },
+        // digForKeyValue: function (o, kv, lim) {
+        //     return digFor('keyvalue', o, kv, lim);
+        // },
 
         extend: function (o, ext, force) {
             var obj = NS.object.clone(o),
