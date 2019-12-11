@@ -1,13 +1,12 @@
-{   
+{
     "EXE": [
         "cp source/favicon.ico .",
         "mkdir -p dist components"
     ],
-    "source/docs/README.md" : ". -vars=source/vars.json",
-    "source/widgzard.js" : "dist -vars=source/vars.json",
-    "source/theWidgzard.js" : "dist  -plugins=malta-header-comment[name:'source/head.txt'] -vars=source/vars.json",
-    "source/theWidgzard.less" : "dist -plugins=malta-less...malta-css-uglify -vars=source/vars.json",
-    "source/components/*.js" : "components",
+    "source/docs/README.md": ". -vars=source/vars.json",
+    "source/widgzard.js": "dist -vars=source/vars.json",
+    "source/theWidgzard.js": "dist  -plugins=malta-header-comment[name:'source/head.txt'] -vars=source/vars.json",
+    "source/theWidgzard.less": "dist -plugins=malta-less...malta-css-uglify -vars=source/vars.json",
     "source/*.html": ". -plugins=malta-dev-srv...malta-browser-refresh[files:\"local\"]",
     "source/samples/require.json": true
 }
