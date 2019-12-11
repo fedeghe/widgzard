@@ -6,19 +6,25 @@
         W = window,
         WD = W.document,
         _context_ = W;
+    
+    /* ------------ */
+    /* EXTERNAL begin */
     $$js/core.js$$
-    $$js/balle.js$$
-    $$js/searchhash.js$$
+    $$js/_balle.js$$
+    $$js/_searchhash.js$$
+    $$js/_store.js$$
+    /* EXTERNAL end */
+    /* ------------ */
+
     $$js/history.js$$
     $$js/events.js$$
-    $$js/channel.js$$
+    $$js/_channel.js$$
     $$js/object.js$$
     $$js/css.js$$
     $$js/dom.js$$
     $$js/cookie.js$$
     $$js/i18n.js$$
     $$js/io.js$$
-    $$js/store.js$$
     $$js/timer.js$$
     $$js/wnode.js$$
     $$js/Widgzard.js$$
