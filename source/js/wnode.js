@@ -41,6 +41,9 @@ function Wnode (conf, done, map, parent) {
     this.getNodes = map.getNodes;
     this.lateWid = map.lateWid;
 
+    // for rerendering
+    this.replacementTempNode = document.createElement('div');
+
     this.report = function () {
         W.JSON && console.log([
             'json size : ',
@@ -100,21 +103,22 @@ Wnode.prototype.setMap = function (map) {
     this.lateWid = map.lateWid;
 };
 
+Wnode.prototype.clear = function () {
+    this.replacementTempNode = document.createElement('div');
+    this.replacementTempNode.style.display = 'none';
+    this.conf.target.replaceChild(this.replacementTempNode, this.node);
+};
+
 // eslint-disable-next-line complexity
 Wnode.prototype.render = function () {
     var self = this,
         tmp, i, j, k,
         __nodeIdentifier = 'wid',
-        replacementTempNode,
         rerendering = this.node
             && this.parent
             && this.node.parentNode === this.parent.node;
 
-    if (rerendering) {
-        replacementTempNode = document.createElement('div');
-        replacementTempNode.style.display = 'none';
-        this.conf.target.replaceChild(replacementTempNode, this.node);
-    }
+    rerendering && this.clear();
 
     typeof this.conf[__nodeIdentifier] !== _U_
     && this.map.add(this.conf[__nodeIdentifier], this);
@@ -123,6 +127,7 @@ Wnode.prototype.render = function () {
     this.node = this.conf.ns
         ? document.createElementNS(this.conf.ns, this.tag)
         : document.createElement(this.tag);
+
     this.node.innerHTML = (this.conf.html && this.conf.data)
         ? NS.utils.replaceDataInTxt('' + this.conf.html, this.conf.data)
         : (this.conf.html || '');
@@ -133,8 +138,11 @@ Wnode.prototype.render = function () {
         .checkInit()
         .checkWillRender();
 
-    if (/* this.conf.content && */ typeof this.conf.content === 'function') {
+    if (typeof this.conf.content === 'function') {
         this.conf.content = this.conf.content.call(this);
+        if (!(this.conf.content instanceof Array)) {
+            throw 'content function should return an array';
+        }
     }
 
     this.wlen = this.conf.content
@@ -157,7 +165,7 @@ Wnode.prototype.render = function () {
     }
 
     rerendering
-        ? this.conf.target.replaceChild(this.node, replacementTempNode)
+        ? this.conf.target.replaceChild(this.node, this.replacementTempNode)
         : this.conf.target.appendChild(this.node);
 
     this.checkEnd();
