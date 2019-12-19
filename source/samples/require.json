@@ -16,5 +16,5 @@
     "source/samples/spa/index.js": "samples/spa",
     "source/samples/deep/index.html": "samples/deep",
     "source/samples/deep/index.js": "samples/deep",
-    "source/samples/components/*.js": "components",
+    "source/samples/components/*.js": "components"
 }
