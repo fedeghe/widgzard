@@ -10,6 +10,7 @@
     /* ------------ */
     /* EXTERNAL begin */
     $$js/core.js$$
+    $$js/utils.js$$
     $$js/_balle.js$$
     $$js/_searchhash.js$$
     $$js/_store.js$$
