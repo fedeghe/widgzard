@@ -39,6 +39,16 @@
         );
     }
 
+    function extract (data, where) {
+        var key,
+            g = where || (typeof global !== 'undefined' ? global : (typeof window !== 'undefined' ? window : this));
+        for (key in data) {
+            if (data.hasOwnProperty(key)) {
+                g[key] = data[key];
+            }
+        }
+    }
+
     // Returns true if it is a DOM element
     //
     // function isElement (o) {
@@ -57,6 +67,7 @@
      * returning module
      */
     NS.makeNs('object', {
+        extract: extract,
         fromQs: function () {
             var els = document.location.search.substr(1).split('&'),
                 i, len, tmp, out = [];
@@ -108,40 +119,6 @@
             }
             throw new Error('Unable to copy obj! Its type isn\'t supported.');
         },
-
-        /**
-         * { function_description }
-         *
-         * @param      {<type>}  o       { parameter_description }
-         * @param      {<type>}  k       { parameter_description }
-         * @param      {<type>}  lim     The limit
-         * @return     {<type>}  { description_of_the_return_value }
-         */
-        // digForKey: function (o, k, lim) {
-        //     return digFor('key', o, k, lim);
-        // },
-
-        /**
-         * [digForValues description]
-         * @param  {[type]} o [description]
-         * @param  {[type]} k [description]
-         * @return {[type]}   [description]
-         */
-        // digForValue: function (o, k, lim) {
-        //     return digFor('value', o, k, lim);
-        // },
-
-        /**
-         * { function_description }
-         *
-         * @param      {<type>}  o       { parameter_description }
-         * @param      {<type>}  kv      { parameter_description }
-         * @param      {<type>}  lim     The limit
-         * @return     {<type>}  { description_of_the_return_value }
-         */
-        // digForKeyValue: function (o, kv, lim) {
-        //     return digFor('keyvalue', o, kv, lim);
-        // },
 
         extend: function (o, ext, force) {
             var obj = NS.object.clone(o),
