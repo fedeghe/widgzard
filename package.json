@@ -22,8 +22,8 @@
         "url": "https://fedeghe@github.com/fedeghe/widgzard.git"
     },
     "devDependencies": {
-        "@fedeghe/channeljs": "^1.2.0",
-        "balle": "^1.0.36",
+        "@fedeghe/channeljs": "^1.2.4",
+        "balle": "^1.0.39",
         "eslint": "^5.15.1",
         "eslint-config-standard": "^12.0.0",
         "eslint-plugin-import": "^2.16.0",
@@ -31,14 +31,14 @@
         "eslint-plugin-promise": "^4.0.1",
         "eslint-plugin-standard": "^4.0.0",
         "lodash": "^4.17.15",
-        "malta": "^4.0.4",
-        "malta-browser-refresh": "^1.2.1",
-        "malta-css-uglify": "^1.0.2",
-        "malta-dev-srv": "^1.0.5",
-        "malta-header-comment": "^1.0.4",
-        "malta-js-uglify": "^1.0.2",
-        "malta-less": "^1.0.6",
-        "ridof": "^1.0.6",
+        "malta": "^4.1.19",
+        "malta-browser-refresh": "^1.2.6",
+        "malta-css-uglify": "^1.0.8",
+        "malta-dev-srv": "^1.1.7",
+        "malta-header-comment": "^1.0.9",
+        "malta-js-uglify": "^1.0.11",
+        "malta-less": "^1.0.11",
+        "ridof": "^1.2.9",
         "searchhash": "^1.1.7"
     }
 }
