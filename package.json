@@ -2,7 +2,7 @@
     "name": "widgzard",
     "version": "3.1.23",
     "description": "A simple engine to build webapps",
-    "main": "index.js",
+    "main": "dist/index.js",
     "scripts": {
         "test": "echo \"Error: no test implemented yet\" && exit 1",
         "buildev": "malta source/buildDev.json",
