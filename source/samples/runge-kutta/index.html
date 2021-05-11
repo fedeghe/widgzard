@@ -6,27 +6,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Runge - Kutta</title>
+    <script src="https://cdn.jsdelivr.net/npm/web-page-monitor@0.0.14/dist/index.min.js"></script>
     <script src="../../dist/theWidgzard.js"></script>
     <script src="runge-kutta.js"></script>
-    
+
     <style>
         body {
             background-color: #111;
             font-family: verdana, sans;
-            text-align:center
+            text-align: center
         }
-        button{
-            margin:0px 5px;
+        
+        button {
+            margin: 0px 5px;
             color: white;
             background-color: #222;
         }
-        hr {border-color:#333;}
+        
+        hr {
+            border-color: #333;
+        }
     </style>
+
 </head>
 
 <body>
     <div id="trg"></div>
     <script src="script.js"></script>
+    <script>
+        WebPageMonitor
+            .showNET()
+            .showFPS()
+            .showMEM({
+                height: 30,
+            })
+            .showTAGS({
+                frequency: 10,
+            })
+            .showEVENTS({
+                frequency: 10,
+                exclude: [
+                    'onmousemove',
+                ]
+            })
+            .render({
+                collapsible: true
+            });
+    </script>
 </body>
 
 </html>
