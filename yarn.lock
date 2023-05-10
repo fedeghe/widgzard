@@ -983,10 +983,12 @@ longest@^1.0.1:
   resolved "https://registry.yarnpkg.com/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
   integrity sha1-MKCy2jj3N3DoKUoNIuZiXtd9AJc=
 
-malta-browser-refresh@^1.2.6:
-  version "1.2.6"
-  resolved "https://registry.yarnpkg.com/malta-browser-refresh/-/malta-browser-refresh-1.2.6.tgz#e50a69f97470623b36b3e8f3819bdb3a17778f35"
-  integrity sha512-Pc48g+jhu1LK950N5Uqg8HAoBXRPyYr4SGkLTQWFF3iIAmiUrZZUg9CCE8vJ3DBKGVXJoXxA0pdGzSW2VOh6zg==
+malta-browser-refresh@^1.2.16:
+  version "1.2.16"
+  resolved "https://registry.yarnpkg.com/malta-browser-refresh/-/malta-browser-refresh-1.2.16.tgz#9c238553f4b14acb333ae6bca9e387eebe1f9a9a"
+  integrity sha512-GSS15mWRX/lYpE+y8rEyt4xeKgfhZPD2K3px/VpNRdwZpmYi+BHIyxoMtd/rDiN9X8HxJxEXUHDHqJDIzU87jQ==
+  dependencies:
+    ws "^7.4.2"
 
 malta-css-uglify@^1.0.8:
   version "1.0.8"
@@ -1019,10 +1021,10 @@ malta-less@^1.0.11:
   dependencies:
     less "^3.8.1"
 
-malta@^4.1.19:
-  version "4.1.19"
-  resolved "https://registry.yarnpkg.com/malta/-/malta-4.1.19.tgz#0213af7afc66245f75688dd8a931e9f550e7dd8f"
-  integrity sha512-EQT2oG1cKzhPJNBEYvw4UJjY8UdejVpf5WucwarOENKB4hT1A2pD/OzAvX/mlQ9c+OwWndmqjmUHYxvrKBc8kA==
+malta@^4.1.33:
+  version "4.1.36"
+  resolved "https://registry.yarnpkg.com/malta/-/malta-4.1.36.tgz#a701835147551f6d775eea151378c4c1e76dd081"
+  integrity sha512-YPgvojmSXx80UDQ8tYSwL7U+eJXSSbHMUFVYqQkngmnvNyU5iOKAP3RWMWjtSn1etujNSiWmGt3rI7IfMiglPg==
 
 mime-db@1.43.0:
   version "1.43.0"
@@ -1698,6 +1700,11 @@ write@1.0.3:
   integrity sha512-/lg70HAjtkUgWPVZhZcm+T4hkL8Zbtp1nFNOn3lRrxnlv50SRBv7cR7RqR+GMsd3hUXy9hWBo4CHTbFTcOYwig==
   dependencies:
     mkdirp "^0.5.1"
+
+ws@^7.4.2:
+  version "7.5.9"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.5.9.tgz#54fa7db29f4c7cec68b1ddd3a89de099942bb591"
+  integrity sha512-F+P9Jil7UiSKSkppIiD94dN07AwvFixvLIj1Og1Rl9GGMuNipJnV9JzjD6XuqmAeiswGvUmNLjr5cFuXwNS77Q==
 
 yargs@~3.10.0:
   version "3.10.0"
