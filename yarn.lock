@@ -997,10 +997,10 @@ malta-css-uglify@^1.0.8:
   dependencies:
     uglifycss "0.0.29"
 
-malta-dev-srv@^1.1.7:
-  version "1.1.7"
-  resolved "https://registry.yarnpkg.com/malta-dev-srv/-/malta-dev-srv-1.1.7.tgz#eb2220cc0813acb7454df09646853f5556ef5e22"
-  integrity sha512-piqBphgHdIzndyBP1H45GeGlRMhx5T4v7chGjF+UgtWU+e1qYDm5SBX9osBWnsPTLYc8lSOe1b2ljJmpgrYuWw==
+malta-dev-srv@^1.1.8:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/malta-dev-srv/-/malta-dev-srv-1.1.8.tgz#61d833a12e351510bab5511f624fbb4703aca02e"
+  integrity sha512-6/mJuQKcsFrxFJFyNCINrzXzvdteBe4JYX4tWuVVr1Jjx8GNdQyRwAaP3qXMF8Fx719iQERj64lHZETH+k++JQ==
 
 malta-header-comment@^1.0.9:
   version "1.0.9"
@@ -1021,10 +1021,10 @@ malta-less@^1.0.11:
   dependencies:
     less "^3.8.1"
 
-malta@^4.1.33:
-  version "4.1.36"
-  resolved "https://registry.yarnpkg.com/malta/-/malta-4.1.36.tgz#a701835147551f6d775eea151378c4c1e76dd081"
-  integrity sha512-YPgvojmSXx80UDQ8tYSwL7U+eJXSSbHMUFVYqQkngmnvNyU5iOKAP3RWMWjtSn1etujNSiWmGt3rI7IfMiglPg==
+malta@^4.1.38:
+  version "4.1.38"
+  resolved "https://registry.yarnpkg.com/malta/-/malta-4.1.38.tgz#a47c80abb58ae1479a2ddff7a3307b0f8d6a6094"
+  integrity sha512-vWPA+vjzJJEFY5AeRMx1I2WLHjNdwmfJLi3sQbaz8yujGQ3Hz2ztlefiANRz+VBJg47bhUxbcJ9yTeMlN9lkcw==
 
 mime-db@1.43.0:
   version "1.43.0"
